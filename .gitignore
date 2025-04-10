@@ -1,0 +1,5 @@
+# Remove all files and folders starting with . in the repository except
+.*
+
+# Except for .gitignore
+!.gitignore
