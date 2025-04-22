@@ -8,6 +8,14 @@ class EnvelopeFollower:
     """
     A simple envelope follower that tracks the amplitude envelope of an audio signal with
     adjustable attack and decay times.
+
+    Properties:
+    ----------
+        sample_rate: The sample rate of the audio signal.
+
+        attack_time: The time constant for the attack phase (in seconds).
+
+        decay_time: The time constant for the decay phase (in seconds).
     """
     def __init__(self, sample_rate, attack_time=0.01, decay_time=0.1):
         self.sample_rate = sample_rate

@@ -19,15 +19,25 @@ class WahFilter:
     A Wah filter implementation using morphing. The morphing is between LPF,
     BPF and HPF.
 
-    When morph = 0, the filter is a low-pass filter (LPF).
-    When morph = 0.5, the filter is a band-pass filter (BPF).
-    When morph = 1, the filter is a high-pass filter (HPF).
+    Properties:
+    ----------
+        sample_rate: The sample rate of the audio signal.
+
+        morph: The morph value (0 to 1) that determines the filter type.
+        0 = LPF, 0.5 = BPF, 1 = HPF.
+
+        fc: The cutoff frequency of the filter.
+
+        res: The resonance factor of the filter.
     """
     def __init__(self, sample_rate, morph, fc, res):
         self.sample_rate = sample_rate
         self.morph = morph
         self.fc = fc
         self.res = res
+
+        self.x_mem_tap = np.zeros(2)  # Memory for input samples
+        self.y_mem_tap = np.zeros(2)  # Memory for output samples
 
     def calculate_filter_coeff(self, filter_type):
         """
@@ -101,6 +111,33 @@ class WahFilter:
         a = w_lpf * a_lpf + w_bpf * a_bpf + w_hpf * a_hpf
 
         return b, a
+
+    def process_signal(self, input_signal, filter_frequency):
+        """
+        Process the input signal through the Wah filter.
+
+        Parameters:
+            input_signal (numpy.ndarray): The input audio signal.
+
+            filter_frequency (numpy.ndarray): The filter frequency for each sample.
+        Returns:
+            numpy.ndarray: The filtered output signal.
+        """
+        output_signal = np.zeros_like(input_signal)
+
+        for idx, sample in enumerate(input_signal):
+            self.fc = filter_frequency[idx]
+            b, a = self.blend_coefficients()
+            output_signal[idx] = (b[0] * sample + b[1] * self.x_mem_tap[0] + b[2] * self.x_mem_tap[1] -
+                                  a[1] * self.y_mem_tap[0] - a[2] * self.y_mem_tap[1])
+
+            # Update memory taps
+            self.x_mem_tap[1] = self.x_mem_tap[0]
+            self.x_mem_tap[0] = sample
+            self.y_mem_tap[1] = self.y_mem_tap[0]
+            self.y_mem_tap[0] = output_signal[idx]
+
+        return output_signal
 
 
 if __name__ == "__main__":

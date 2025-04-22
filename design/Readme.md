@@ -35,3 +35,10 @@ python WahFilter.py
 
 The following figure shows the the filter response at 1kHz for different morph and resonance values:
 ![Envelope Follower Example](./pictures/wahfilter.JPG)
+
+### AutWah
+
+In order to listen to the Autowah effect, a script has been developed to run audio through the effect. As a result, the script plays an A to B comparison i.e. it is going to play the raw audio first and then the processed audio. One can run the following command to try out the processing
+```bash
+python AutoWah.py --input_file audio_files/56139__guitarmaster__d7th_108bpm.wav
+```
