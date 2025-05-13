@@ -17,7 +17,7 @@ class EnvelopeFollower:
 
         decay_time: The time constant for the decay phase (in seconds).
     """
-    def __init__(self, sample_rate, attack_time=0.01, decay_time=0.1):
+    def __init__(self, sample_rate, attack_time=0.00001, decay_time=0.1):
         self.sample_rate = sample_rate
         self.attack_time = attack_time
         self.decay_time = decay_time
@@ -38,6 +38,8 @@ class EnvelopeFollower:
         # Compute the attack and decay coefficients
         attack_coeff = np.exp(-1.0 / (self.attack_time * self.sample_rate))
         decay_coeff = np.exp(-1.0 / (self.decay_time * self.sample_rate))
+
+        print(f"Attack Coefficient: {attack_coeff}, Decay Coefficient: {decay_coeff}")
 
         for i in range(1, len(signal)):
             if signal[i] > envelope[i - 1]:
@@ -72,6 +74,7 @@ if __name__ == "__main__":
 
     sample_rate, num_channels, channels_data = utils.get_audio(parsed_args.input_file)
 
+    print(f"Sample Rate: {sample_rate}, Number of Channels: {num_channels}")
     # Create an envelope follower instance
     envelope_follower = EnvelopeFollower(sample_rate, attack_time=parsed_args.attack_time, decay_time=parsed_args.decay_time)
 

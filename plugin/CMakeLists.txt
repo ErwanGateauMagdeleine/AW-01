@@ -40,6 +40,7 @@ set(SourceFiles
     src/PluginProcessor.h
     src/PluginEditor.cpp
     src/PluginProcessor.cpp)
+
 target_sources("${PROJECT_NAME}" PRIVATE ${SourceFiles})
 
 set_target_properties("${PROJECT_NAME}" PROPERTIES FOLDER "")
@@ -67,3 +68,19 @@ target_link_libraries("${PROJECT_NAME}"
     juce::juce_recommended_config_flags
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags)
+
+add_subdirectory(src/tests/Catch2)
+
+add_executable(Catch2Tests
+    src/tests/catch_main.cpp
+    src/tests/EnvelopeFollowerTests.h
+)
+
+target_link_libraries(Catch2Tests
+    PRIVATE
+        Catch2::Catch2WithMain
+)
+
+target_include_directories(Catch2Tests PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/dsp/
+)
