@@ -54,7 +54,16 @@ public:
     /** Reset the internal state of the enveloppe follower. */
     void reset()
     {
+        delayTap = 0.0f;
+    }
 
+    /** Process a single sample of data */
+    void process (SampleType* sample)
+    {
+        auto coeff = (*sample) > delayTap ? attackCoeff : decayCoeff;
+
+        (*sample) = coeff * delayTap + (1.0 - coeff) * (*sample);
+        delayTap = (*sample);
     }
 
 private:
@@ -76,4 +85,6 @@ private:
 
     SampleType attackCoeff;
     SampleType decayCoeff;
+
+    SampleType delayTap;
 };

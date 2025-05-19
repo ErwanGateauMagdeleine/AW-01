@@ -39,8 +39,6 @@ class EnvelopeFollower:
         attack_coeff = np.exp(-1.0 / (self.attack_time * self.sample_rate))
         decay_coeff = np.exp(-1.0 / (self.decay_time * self.sample_rate))
 
-        print(f"Attack Coefficient: {attack_coeff}, Decay Coefficient: {decay_coeff}")
-
         for i in range(1, len(signal)):
             if signal[i] > envelope[i - 1]:
                 # Attack phase
