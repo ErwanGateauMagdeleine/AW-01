@@ -84,3 +84,7 @@ target_link_libraries(Catch2Tests
 target_include_directories(Catch2Tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/dsp/
 )
+
+enable_testing()
+
+add_test(NAME CATCH2_TESTS COMMAND Catch2Tests)
