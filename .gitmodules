@@ -4,3 +4,6 @@
 [submodule "plugin/src/tests/Catch2"]
 	path = plugin/src/tests/Catch2
 	url = https://github.com/catchorg/Catch2.git
+[submodule "plugin/src/tests/external/kissfft"]
+	path = plugin/src/tests/external/kissfft
+	url = https://github.com/mborgerding/kissfft.git
