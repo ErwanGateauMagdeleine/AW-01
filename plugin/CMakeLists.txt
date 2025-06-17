@@ -69,16 +69,23 @@ target_link_libraries("${PROJECT_NAME}"
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags)
 
+add_library(kissfft STATIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/external/kissfft/kiss_fft.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/external/kissfft/kiss_fft.c
+)
+
 add_subdirectory(src/tests/Catch2)
 
 add_executable(Catch2Tests
     src/tests/catch_main.cpp
     src/tests/EnvelopeFollowerTests.h
+    src/tests/WahFilterTests.h
 )
 
 target_link_libraries(Catch2Tests
     PRIVATE
         Catch2::Catch2WithMain
+        kissfft
 )
 
 target_include_directories(Catch2Tests PRIVATE
