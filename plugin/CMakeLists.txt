@@ -71,7 +71,7 @@ target_link_libraries("${PROJECT_NAME}"
 
 add_library(kissfft STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/external/kissfft/kiss_fft.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/external/kissfft/kiss_fft.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/external/kissfft/kiss_fftr.c
 )
 
 add_subdirectory(src/tests/Catch2)
@@ -80,6 +80,7 @@ add_executable(Catch2Tests
     src/tests/catch_main.cpp
     src/tests/EnvelopeFollowerTests.h
     src/tests/WahFilterTests.h
+    src/tests/kissFFTUtility.cpp
 )
 
 target_link_libraries(Catch2Tests
@@ -90,6 +91,7 @@ target_link_libraries(Catch2Tests
 
 target_include_directories(Catch2Tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/dsp/
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/external/kissfft
 )
 
 enable_testing()
