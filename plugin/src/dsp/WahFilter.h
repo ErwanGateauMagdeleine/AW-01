@@ -77,13 +77,38 @@ public:
         sampleRate = newSampleRate;
         omegaConst = 2.0 * PI / sampleRate;
         computeCoefficients();
+        reset();
     }
 
     /** Reset the internal state of the wah filter */
-    void reset() {}
+    void reset()
+    {
+        for (int i = 0; i < NUM_STATES; i++)
+        {
+            stateArray[i] = 0.0;
+        }
+    }
 
     /** Process a single sample of data */
-    void process (SampleType* sample) {}
+    void process (SampleType* sample)
+    {
+        /* Compute the output */
+        SampleType yn = coeffs[B0] * (*sample) +
+                        coeffs[B1] * stateArray[X_Z1] +
+                        coeffs[B2] * stateArray[X_Z2] -
+                        coeffs[A1] * stateArray[Y_Z1] -
+                        coeffs[A2] * stateArray[Y_Z2];
+
+        /* Update states */
+        stateArray[X_Z2] = stateArray[X_Z1];
+        stateArray[X_Z1] = (*sample);
+
+        stateArray[Y_Z2] = stateArray[Y_Z1];
+        stateArray[Y_Z1] = yn;
+
+        /* Update the in-place processing of the sample. */
+        (*sample) = yn;
+    }
 
 private:
 
@@ -146,4 +171,5 @@ private:
     const SampleType PI = static_cast<SampleType>(3.14159265359);
     SampleType coeffs[NUM_COEFFS];
     SampleType filterWeights[NUM_FILTERS];
+    SampleType stateArray[NUM_STATES];
 };
