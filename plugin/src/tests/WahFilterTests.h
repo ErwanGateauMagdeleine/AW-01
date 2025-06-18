@@ -46,7 +46,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
         float magCutOff = getMagnitudeAtFrequency(magnitude, FREQ_CUTOFF, SAMPLE_RATE, IR_LENGTH);
         float magNyquist = magnitude[IR_LENGTH / 2];
 
-        REQUIRE(magDC > 0.5);
+        REQUIRE(magDC > 0.9);
         REQUIRE(magNyquist < 0.1);
         REQUIRE(magCutOff > magNyquist);
     }
@@ -81,7 +81,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
     SECTION("High-Pass filter functions properly")
     {
         WahFilter<float> hpf;
-        hpf.setMorphing(0.5);
+        hpf.setMorphing(1.0);
         hpf.setCenterFrequency(FREQ_CUTOFF);
         hpf.setResonance(Q);
         hpf.prepare(SAMPLE_RATE);
@@ -101,7 +101,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
         float magNyquist = magnitude[IR_LENGTH / 2];
 
         REQUIRE(magDC < 0.1);
-        REQUIRE(magNyquist > 0.5);
+        REQUIRE(magNyquist > 0.9);
         REQUIRE(magCutOff > magDC);
     }
 }

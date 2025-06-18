@@ -5,7 +5,6 @@
 /** Enumeration of the coefficient indexes. */
 enum filterCoefficients
 {
-    A0,
     A1,
     A2,
     B0,
@@ -39,7 +38,12 @@ class WahFilter
 public:
     //==============================================================================
     /** Constructor */
-    WahFilter(){}
+    WahFilter()
+    {
+        morphing = 0.0;
+        centerFrequency = 1000.0;
+        resonance = 0.707;
+    }
 
     //==============================================================================
     /**
@@ -115,43 +119,38 @@ private:
     void computeCoefficients()
     {
         SampleType filtersCoefficients[NUM_FILTERS][NUM_COEFFS];
+
         SampleType omega = omegaConst * centerFrequency;
         SampleType cosOmega = std::cos(omega);
         SampleType sinOmega = std::sin(omega);
-        SampleType alpha = sinOmega / (2.0 * resonance);
+        SampleType d = 1.0 / resonance;
+        SampleType beta = 0.5 * (1.0 - d * sinOmega / 2.0) / (1.0 + d * sinOmega / 2.0);
+        SampleType gamma = (0.5 + beta) * cosOmega;
+        SampleType k = std::tan(PI * centerFrequency / sampleRate);
+        SampleType delta = k * k * resonance + k + resonance;
 
         /* Calculating LPF */
-        filtersCoefficients[LPF][A0] = 1.0 + alpha;
-        filtersCoefficients[LPF][A1] = -2.0 * cosOmega;
-        filtersCoefficients[LPF][A2] = 1.0 - alpha;
-        filtersCoefficients[LPF][B0] = (1.0 - cosOmega) / 2.0;
-        filtersCoefficients[LPF][B1] = 1.0 - cosOmega;
-        filtersCoefficients[LPF][B2] = (1.0 - cosOmega) / 2.0;
+        filtersCoefficients[LPF][A1] = -2 * gamma;
+        filtersCoefficients[LPF][A2] = 2 * beta;
+        filtersCoefficients[LPF][B0] = (0.5 + beta - gamma) / 2.0;
+        filtersCoefficients[LPF][B1] = 0.5 + beta - gamma;
+        filtersCoefficients[LPF][B2] = filtersCoefficients[LPF][B0];
 
         /* Calculating BPF */
-        filtersCoefficients[BPF][A0] = filtersCoefficients[LPF][A0];
-        filtersCoefficients[BPF][A1] = filtersCoefficients[LPF][A1];
-        filtersCoefficients[BPF][A2] = filtersCoefficients[LPF][A2];
-        filtersCoefficients[BPF][B0] = alpha;
+        // filtersCoefficients[BPF][A0] = filtersCoefficients[LPF][A0];
+        filtersCoefficients[BPF][A1] = (2.0 * resonance * (k * k - 1.0)) / delta;
+        filtersCoefficients[BPF][A2] = (k * k * resonance - k + resonance) / delta;
+        filtersCoefficients[BPF][B0] = k / delta;
         filtersCoefficients[BPF][B1] = 0.0;
-        filtersCoefficients[BPF][B2] = -alpha;
+        filtersCoefficients[BPF][B2] = -filtersCoefficients[BPF][B0];
 
         /* Calculating HPF */
-        filtersCoefficients[HPF][A0] = filtersCoefficients[LPF][A0];
+        // filtersCoefficients[HPF][A0] = filtersCoefficients[LPF][A0];
         filtersCoefficients[HPF][A1] = filtersCoefficients[LPF][A1];
         filtersCoefficients[HPF][A2] = filtersCoefficients[LPF][A2];
-        filtersCoefficients[HPF][B0] = (1.0 + cosOmega) / 2.0;
-        filtersCoefficients[HPF][B1] = -(1.0 + cosOmega) / 2.0;
-        filtersCoefficients[HPF][B2] = (1.0 + cosOmega) /2.0;
-
-        /* Normalize Coefficients */
-        for (int i = 0; i < NUM_FILTERS; i++)
-        {
-            for (int j = 0; j < NUM_COEFFS; j++)
-            {
-                filtersCoefficients[i][j] /= filtersCoefficients[i][A0];
-            }
-        }
+        filtersCoefficients[HPF][B0] = (0.5 + beta + gamma) / 2.0;
+        filtersCoefficients[HPF][B1] = -(0.5 + beta + gamma);
+        filtersCoefficients[HPF][B2] = filtersCoefficients[HPF][B0];
 
         /* Update filter coefficients */
         for (int i = 0; i < NUM_COEFFS; i++)

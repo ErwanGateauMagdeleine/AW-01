@@ -55,7 +55,9 @@ class WahFilter:
         cos_omega = math.cos(omega)
 
         # Q factor (resonance)
-        alpha = sin_omega / (2 * self.res)
+        d = 1 / self.res
+        beta = 0.5 * (1 - d * sin_omega / 2) / (1 + d * sin_omega / 2)
+        gamma = (0.5 + beta) * cos_omega
 
         # Initialize coefficient arrays
         b = np.zeros(3)  # [b0, b1, b2]
@@ -63,35 +65,33 @@ class WahFilter:
 
         if filter_type == FilterType.LPF:
             # Low-Pass Filter
-            b[0] = (1 - cos_omega) / 2
-            b[1] = 1 - cos_omega
-            b[2] = (1 - cos_omega) / 2
-            a[0] = 1 + alpha
-            a[1] = -2 * cos_omega
-            a[2] = 1 - alpha
+            b[0] = (0.5 + beta - gamma) / 2
+            b[1] = 0.5 + beta - gamma
+            b[2] = b[0]
+            a[0] = 1
+            a[1] = -2 * gamma
+            a[2] = 2 * beta
 
         elif filter_type == FilterType.HPF:
             # High-Pass Filter
-            b[0] = (1 + cos_omega) / 2
-            b[1] = -(1 + cos_omega)
-            b[2] = (1 + cos_omega) / 2
-            a[0] = 1 + alpha
-            a[1] = -2 * cos_omega
-            a[2] = 1 - alpha
+            b[0] = (0.5 + beta + gamma) / 2
+            b[1] = -(0.5 + beta + gamma)
+            b[2] = b[0]
+            a[0] = 1
+            a[1] = -2 * gamma
+            a[2] = 2 * beta
 
         elif filter_type == FilterType.BPF:
             # Band-Pass Filter
-            b[0] = alpha
-            b[1] = 0
-            b[2] = -alpha
-            a[0] = 1 + alpha
-            a[1] = -2 * cos_omega
-            a[2] = 1 - alpha
+            k = math.tan(math.pi * self.fc / self.sample_rate)
+            delta = k * k * self.res + k + self.res
 
-        # Normalize coefficients
-        b /= a[0]
-        a[1:] /= a[0]  # Normalize a1 and a2 (a[0] is already 1)
-        a[0] = 1       # Ensure a[0] is explicitly set to 1
+            b[0] = k / delta
+            b[1] = 0.0
+            b[2] = -b[0]
+            a[0] = 1
+            a[1] = (2 * self.res * (k * k - 1)) / delta
+            a[2] = (k * k * self.res - k + self.res) / delta
 
         return b, a
 
