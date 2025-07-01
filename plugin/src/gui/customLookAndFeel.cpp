@@ -3,6 +3,7 @@
 #include "BinaryData.h"
 #include "customLookAndFeel.h"
 
+//==============================================================================
 customLookAndFeel::customLookAndFeel()
 {
     knobImage = juce::ImageCache::getFromMemory(BinaryData::knob_png, BinaryData::knob_pngSize);
@@ -12,6 +13,7 @@ customLookAndFeel::customLookAndFeel()
     knobTotalFrames = knobImage.getHeight() / knobFrameWidth;
 }
 
+//==============================================================================
 void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int, int, int, int,
                                          float sliderPos, float, float, juce::Slider&)
 {
@@ -24,4 +26,11 @@ void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int, int, int, int,
     const int frame = juce::jlimit(0, knobTotalFrames - 1, static_cast<int>(std::round(sliderPos * (knobTotalFrames - 1))));
 
     g.drawImage(knobImage, 0, 0, knobFrameWidth, knobFrameWidth, 0, frame * knobFrameWidth, knobFrameWidth, knobFrameWidth);
+}
+
+//==============================================================================
+int customLookAndFeel::getKnobFrameHeightAndWidth()
+{
+    /* Return one single value as the knob image is square. */
+    return knobFrameWidth;
 }

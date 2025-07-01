@@ -26,5 +26,10 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
 void AudioPluginAudioProcessorEditor::resized()
 {
-    dummyKnob.setBounds(getWidth() / 2, getHeight() / 2, 60, 60); // Adjust the bounds of the dummy slider
+    /* Get the size of the custom knob */
+    auto knobHeigth = dummyKnob.getHeight();
+    auto knobWidth = dummyKnob.getWidth();
+
+    /* Paint it*/
+    dummyKnob.setBounds(getWidth() / 2, getHeight() / 2, knobWidth, knobHeigth);
 }

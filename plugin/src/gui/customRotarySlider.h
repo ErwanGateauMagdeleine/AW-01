@@ -10,7 +10,12 @@ public:
     CustomRotarySlider(juce::RangedAudioParameter& rap);
     ~CustomRotarySlider();
 
+    int getHeight();
+    int getWidth();
+
 private:
     juce::RangedAudioParameter* param;
     customLookAndFeel lnf;
+
+    const int textBoxHeight = 20;
 };

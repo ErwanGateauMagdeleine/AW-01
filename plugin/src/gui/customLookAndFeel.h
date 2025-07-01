@@ -11,6 +11,8 @@ public:
     void drawRotarySlider(juce::Graphics& g, int, int, int, int,
                           float sliderPos, float, float, juce::Slider&) override;
 
+    int getKnobFrameHeightAndWidth();
+
 private:
     juce::Image knobImage;
     int knobFrameWidth = 0;
