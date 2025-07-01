@@ -19,6 +19,12 @@ option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects
 
 add_subdirectory(JUCE)
 
+juce_add_binary_data(
+    BinaryData
+    SOURCES
+    src/gui/knob.png
+)
+
 juce_add_plugin("${PROJECT_NAME}"
                 COMPANY_NAME GateAudio
                 IS_SYNTH FALSE
@@ -67,7 +73,8 @@ target_link_libraries("${PROJECT_NAME}"
     PUBLIC
     juce::juce_recommended_config_flags
     juce::juce_recommended_lto_flags
-    juce::juce_recommended_warning_flags)
+    juce::juce_recommended_warning_flags
+    BinaryData)
 
 add_library(kissfft STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/external/kissfft/kiss_fft.c
