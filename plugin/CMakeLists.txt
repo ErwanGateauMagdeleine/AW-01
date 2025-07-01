@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 
-set(PROJECT_NAME "AD-01")
+set(PROJECT_NAME "AW-01")
 
 # Sets the format the plugin will be built
 set(FORMATS VST3)
