@@ -41,11 +41,17 @@ juce_add_plugin("${PROJECT_NAME}"
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_20)
 
+juce_generate_juce_header("${PROJECT_NAME}")
+
 set(SourceFiles
     src/PluginEditor.h
     src/PluginProcessor.h
     src/PluginEditor.cpp
-    src/PluginProcessor.cpp)
+    src/PluginProcessor.cpp
+    src/gui/customLookAndFeel.h
+    src/gui/customLookAndFeel.cpp
+    src/gui/CustomRotarySlider.h
+    src/gui/CustomRotarySlider.cpp)
 
 target_sources("${PROJECT_NAME}" PRIVATE ${SourceFiles})
 
