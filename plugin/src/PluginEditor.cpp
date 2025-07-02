@@ -4,7 +4,7 @@
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p),
-      dummyKnob(*processorRef.parameters.getParameter("Dummy")),
+      dummyKnob(*processorRef.parameters.getParameter("Dummy"), "dummy knob"),
       dummySliderAttachment(processorRef.parameters, "Dummy", dummyKnob)
 {
     addAndMakeVisible(dummyKnob);

@@ -2,6 +2,7 @@
 
 #include "BinaryData.h"
 #include "customLookAndFeel.h"
+#include "customRotarySlider.h"
 
 //==============================================================================
 customLookAndFeel::customLookAndFeel()
@@ -14,8 +15,8 @@ customLookAndFeel::customLookAndFeel()
 }
 
 //==============================================================================
-void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int, int, int, int,
-                                         float sliderPos, float, float, juce::Slider&)
+void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height,
+                                         float sliderPos, float, float, juce::Slider& slider)
 {
     if (!knobImage.isValid() || knobTotalFrames <= 0)
     {
@@ -23,14 +24,29 @@ void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int, int, int, int,
         return;
     }
 
-    const int frame = juce::jlimit(0, knobTotalFrames - 1, static_cast<int>(std::round(sliderPos * (knobTotalFrames - 1))));
+    g.setFont(14.0f);
+    g.setColour(juce::Colours::white);
+    g.drawFittedText(slider.getName(),
+                     x,
+                     y,
+                     width - 5,
+                     labelHeight,
+                     juce::Justification::centred,
+                     1);
 
-    g.drawImage(knobImage, 0, 0, knobFrameWidth, knobFrameWidth, 0, frame * knobFrameWidth, knobFrameWidth, knobFrameWidth);
+    /* Draw the knob image */
+    const int frame = juce::jlimit(0, knobTotalFrames - 1, static_cast<int>(std::round(sliderPos * (knobTotalFrames - 1))));
+    g.drawImage(knobImage, x, y + labelHeight, knobFrameWidth, knobFrameWidth, 0, frame * knobFrameWidth, knobFrameWidth, knobFrameWidth);
+
 }
 
 //==============================================================================
-int customLookAndFeel::getKnobFrameHeightAndWidth()
+int customLookAndFeel::getKnobHeight()
 {
-    /* Return one single value as the knob image is square. */
+    return knobFrameWidth + labelHeight;
+}
+
+int customLookAndFeel::getKnobWidth()
+{
     return knobFrameWidth;
 }

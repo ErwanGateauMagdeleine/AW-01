@@ -4,15 +4,13 @@
 #include "customRotarySlider.h"
 
 //==============================================================================
-CustomRotarySlider::CustomRotarySlider(juce::RangedAudioParameter& rap) :
+CustomRotarySlider::CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel) :
         param(&rap)
 {
     setLookAndFeel(&lnf);
     setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
-    setTextBoxStyle(juce::Slider::TextBoxBelow,
-                    false,
-                    lnf.getKnobFrameHeightAndWidth() - 10,
-                    textBoxHeight);
+    setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
+    setName(knobLabel);
 }
 
 CustomRotarySlider::~CustomRotarySlider()
@@ -24,10 +22,10 @@ CustomRotarySlider::~CustomRotarySlider()
 //==============================================================================
 int CustomRotarySlider::getHeight()
 {
-    return lnf.getKnobFrameHeightAndWidth() + textBoxHeight;
+    return lnf.getKnobHeight() + textBoxHeight;
 }
 
 int CustomRotarySlider::getWidth()
 {
-    return lnf.getKnobFrameHeightAndWidth();
+    return lnf.getKnobWidth();
 }
