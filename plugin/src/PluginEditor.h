@@ -25,6 +25,8 @@ private:
     using APVTS = juce::AudioProcessorValueTreeState;
     using attachment = APVTS::SliderAttachment;
 
+    juce::Image textureImage;
+
     CustomRotarySlider dummyKnob;
 
     attachment dummySliderAttachment;
