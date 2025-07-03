@@ -23,6 +23,7 @@ juce_add_binary_data(
     BinaryData
     SOURCES
     src/gui/knob.png
+    src/gui/Metal009_1K-PNG_Color.png
 )
 
 juce_add_plugin("${PROJECT_NAME}"
