@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.31)
 
-set(PROJECT_NAME "AD-01")
+set(PROJECT_NAME "AW-01")
 
 # Sets the format the plugin will be built
 set(FORMATS VST3)
@@ -19,6 +19,12 @@ option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects
 
 add_subdirectory(JUCE)
 
+juce_add_binary_data(
+    BinaryData
+    SOURCES
+    src/gui/knob.png
+)
+
 juce_add_plugin("${PROJECT_NAME}"
                 COMPANY_NAME GateAudio
                 IS_SYNTH FALSE
@@ -35,11 +41,17 @@ juce_add_plugin("${PROJECT_NAME}"
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_20)
 
+juce_generate_juce_header("${PROJECT_NAME}")
+
 set(SourceFiles
     src/PluginEditor.h
     src/PluginProcessor.h
     src/PluginEditor.cpp
-    src/PluginProcessor.cpp)
+    src/PluginProcessor.cpp
+    src/gui/customLookAndFeel.h
+    src/gui/customLookAndFeel.cpp
+    src/gui/CustomRotarySlider.h
+    src/gui/CustomRotarySlider.cpp)
 
 target_sources("${PROJECT_NAME}" PRIVATE ${SourceFiles})
 
@@ -67,7 +79,8 @@ target_link_libraries("${PROJECT_NAME}"
     PUBLIC
     juce::juce_recommended_config_flags
     juce::juce_recommended_lto_flags
-    juce::juce_recommended_warning_flags)
+    juce::juce_recommended_warning_flags
+    BinaryData)
 
 add_library(kissfft STATIC
     ${CMAKE_CURRENT_SOURCE_DIR}/src/tests/external/kissfft/kiss_fft.c
