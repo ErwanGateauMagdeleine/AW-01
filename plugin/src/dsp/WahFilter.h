@@ -74,6 +74,20 @@ public:
         computeCoefficients();
     }
 
+    void setFilterParameters(SampleType newCenterFrequency, SampleType newResonance, SampleType newMorphing)
+    {
+        centerFrequency = newCenterFrequency;
+        resonance = newResonance;
+        morphing = newMorphing;
+
+        /* Recalculate filter weights */
+        filterWeights[LPF] = std::max(0.0, 1.0 - 2.0 * morphing);
+        filterWeights[BPF] = 1 - std::abs(2.0 * morphing - 1.0);
+        filterWeights[HPF] = std::max(0.0, 2.0 * morphing - 1.0);
+
+        computeCoefficients();
+    }
+
     //==============================================================================
     /** Initialize the wah filter */
     void prepare(double newSampleRate)
