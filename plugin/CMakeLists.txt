@@ -54,7 +54,9 @@ set(SourceFiles
     src/gui/CustomRotarySlider.h
     src/gui/CustomRotarySlider.cpp
     src/gui/FilterComponent.h
-    src/gui/FilterComponent.cpp)
+    src/gui/FilterComponent.cpp
+    src/gui/EnvelopeComponent.h
+    src/gui/EnvelopeComponent.cpp)
 
 target_sources("${PROJECT_NAME}" PRIVATE ${SourceFiles})
 

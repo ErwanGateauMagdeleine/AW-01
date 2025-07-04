@@ -4,6 +4,7 @@
 #include "juceHeader.h"
 #include "gui/customRotarySlider.h"
 #include "gui/FilterComponent.h"
+#include "gui/EnvelopeComponent.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
@@ -28,13 +29,7 @@ private:
 
     juce::Image textureImage;
 
-    CustomRotarySlider envFollowerAttackSlider,
-                       envFollowerDecaySlider,
-                       envAmountSlider;
-
-    attachment envFollowerAttackSliderAttachment,
-               envFollowerDecaySliderAttachment,
-               envAmountSliderAttachment;
+    EnvelopeComponent envelopeComponent;
 
     FilterComponent filterComponent;
 
