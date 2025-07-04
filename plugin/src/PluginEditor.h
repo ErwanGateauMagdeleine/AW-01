@@ -3,6 +3,7 @@
 #include "PluginProcessor.h"
 #include "juceHeader.h"
 #include "gui/customRotarySlider.h"
+#include "gui/FilterComponent.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
@@ -29,17 +30,13 @@ private:
 
     CustomRotarySlider envFollowerAttackSlider,
                        envFollowerDecaySlider,
-                       envAmountSlider,
-                       FilterCenterFreqSlider,
-                       FilterResonanceSlider,
-                       FilterMorphSlider;
+                       envAmountSlider;
 
     attachment envFollowerAttackSliderAttachment,
                envFollowerDecaySliderAttachment,
-               envAmountSliderAttachment,
-               FilterCenterFreqSliderAttachment,
-               FilterResonanceSliderAttachment,
-               FilterMorphSliderAttachment;
+               envAmountSliderAttachment;
+
+    FilterComponent filterComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };
