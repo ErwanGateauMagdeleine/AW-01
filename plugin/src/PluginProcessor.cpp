@@ -191,10 +191,42 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 {
     juce::AudioProcessorValueTreeState::ParameterLayout layout;
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Dummy",
-                                                           "Dummy",
-                                                           juce::NormalisableRange<float>(20.f, 20000.f, 1.f, 0.25f),
-                                                           20.f
+    /* Envelope follower parameters */
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Follower Attack",
+                                                           "Envelope Follower Attack",
+                                                           juce::NormalisableRange<float>(0.1f, 5000.0f, 0.1f, 0.5f),
+                                                           100.0f
+                                                          ));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Follower Decay",
+                                                           "Envelope Follower Decay",
+                                                           juce::NormalisableRange<float>(10.0f, 2000.0f, 0.1f, 0.5f),
+                                                           500.0f
+                                                          ));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Follower Amount",
+                                                           "Envelope Follower Amount",
+                                                           juce::NormalisableRange<float>(0.0f, 5.0f, 0.1f, 1.0f),
+                                                           1.0f
+                                                          ));
+
+    /* Filter parameters */
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Center Frequency",
+                                                           "Filter Center Frequency",
+                                                           juce::NormalisableRange<float>(20.0f, 20000.0f, 1.0f, 0.5f),
+                                                           500.0f
+                                                          ));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Renonance",
+                                                           "Filter Renonance",
+                                                           juce::NormalisableRange<float>(0.1f, 10.0f, 0.01f, 0.5f),
+                                                           -30.0f
+                                                          ));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Morph",
+                                                           "Filter Morph",
+                                                           juce::NormalisableRange<float>(0.0f, 1.0f, 0.1f, 1.0f),
+                                                           0.5f
                                                           ));
 
     return layout;

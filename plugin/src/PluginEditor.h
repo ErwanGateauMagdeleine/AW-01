@@ -27,9 +27,19 @@ private:
 
     juce::Image textureImage;
 
-    CustomRotarySlider dummyKnob;
+    CustomRotarySlider envFollowerAttackSlider,
+                       envFollowerDecaySlider,
+                       envAmountSlider,
+                       FilterCenterFreqSlider,
+                       FilterResonanceSlider,
+                       FilterMorphSlider;
 
-    attachment dummySliderAttachment;
+    attachment envFollowerAttackSliderAttachment,
+               envFollowerDecaySliderAttachment,
+               envAmountSliderAttachment,
+               FilterCenterFreqSliderAttachment,
+               FilterResonanceSliderAttachment,
+               FilterMorphSliderAttachment;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };
