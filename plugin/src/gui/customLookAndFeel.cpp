@@ -15,7 +15,7 @@ customLookAndFeel::customLookAndFeel()
 }
 
 //==============================================================================
-void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height,
+void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int width, int,
                                          float sliderPos, float, float, juce::Slider& slider)
 {
     if (!knobImage.isValid() || knobTotalFrames <= 0)
@@ -25,7 +25,7 @@ void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
     }
 
     g.setFont(14.0f);
-    g.setColour(juce::Colours::white);
+    g.setColour(juce::Colours::black);
     g.drawFittedText(slider.getName(),
                      x,
                      y,

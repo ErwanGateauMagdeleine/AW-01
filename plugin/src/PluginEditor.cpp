@@ -4,17 +4,19 @@
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p),
-      dummyKnob(*processorRef.parameters.getParameter("Dummy"), "dummy knob"),
-      dummySliderAttachment(processorRef.parameters, "Dummy", dummyKnob)
+      envelopeComponent(processorRef.parameters),
+      filterComponent(processorRef.parameters)
 {
     /* Load Background image */
     textureImage = juce::ImageCache::getFromMemory(BinaryData::Metal009_1KPNG_Color_png,
                                                    BinaryData::Metal009_1KPNG_Color_pngSize);
 
-    addAndMakeVisible(dummyKnob);
+    addAndMakeVisible(envelopeComponent);
+
+    addAndMakeVisible(filterComponent);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (400, 300);
+    setSize (500, 100);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -39,10 +41,9 @@ void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 
 void AudioPluginAudioProcessorEditor::resized()
 {
-    /* Get the size of the custom knob */
-    auto knobHeigth = dummyKnob.getHeight();
-    auto knobWidth = dummyKnob.getWidth();
+    /* Draw envelope component */
+    envelopeComponent.setBounds(0, 0, 250, 100);
 
-    /* Paint it*/
-    dummyKnob.setBounds(getWidth() / 2, getHeight() / 2, knobWidth, knobHeigth);
+    /* Draw filter component */
+    filterComponent.setBounds(250, 0, 250, 100);
 }

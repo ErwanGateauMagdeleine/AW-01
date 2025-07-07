@@ -3,6 +3,8 @@
 #include "PluginProcessor.h"
 #include "juceHeader.h"
 #include "gui/customRotarySlider.h"
+#include "gui/FilterComponent.h"
+#include "gui/EnvelopeComponent.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
@@ -27,9 +29,9 @@ private:
 
     juce::Image textureImage;
 
-    CustomRotarySlider dummyKnob;
+    EnvelopeComponent envelopeComponent;
 
-    attachment dummySliderAttachment;
+    FilterComponent filterComponent;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };

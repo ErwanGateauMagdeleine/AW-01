@@ -8,7 +8,7 @@ class customLookAndFeel : public juce::LookAndFeel_V4
 public:
     customLookAndFeel();
 
-    void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int height,
+    void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int,
                           float sliderPos, float, float, juce::Slider& slider) override;
 
     int getKnobHeight();
