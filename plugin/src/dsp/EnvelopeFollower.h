@@ -60,12 +60,14 @@ public:
     }
 
     /** Process a single sample of data */
-    void process (SampleType* sample)
+    SampleType process (SampleType sample)
     {
-        auto coeff = (*sample) > delayTap ? attackCoeff : decayCoeff;
+        SampleType coeff = sample > delayTap ? attackCoeff : decayCoeff;
 
-        (*sample) = coeff * delayTap + (1.0 - coeff) * (*sample);
-        delayTap = (*sample);
+        SampleType yn = coeff * delayTap + (1.0 - coeff) * std::abs(sample);
+        delayTap = yn;
+
+        return yn;
     }
 
 private:

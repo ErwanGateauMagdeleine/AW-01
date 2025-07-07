@@ -31,18 +31,18 @@ public:
 
     void process(SampleType* sample)
     {
-        SampleType envelope = (*sample);
-
         /* Get the enveloppe */
-        envFollower.process(&envelope);
+        envelope = envFollower.process(sample);
 
         /* Use the envelope follower to update the filter center frequency.
            Cap the filter frequency to the audible range. */
-        SampleType filterFrequency = std::max(settings.filtFreq + settings.envAmnt * envelope, 20000);
+        filterFrequency = static_cast<SampleType>(std::max(settings.filtFreq + settings.envAmnt * envelope, 20000.0));
         wahFilt.setCenterFrequency(filterFrequency);
 
         /* Process the sample with the filter */
-        wahFilt.process(sample);
+        SampleType yn = wahFilt.process(sample);
+
+        return yn;
     }
 
     void updateSettings(autoWahSettings<SampleType> newSettings)
@@ -60,4 +60,8 @@ private:
     WahFilter<SampleType> wahFilt;
 
     autoWahSettings<SampleType> settings;
+
+    /* Keep values internal to the object. */
+    SampleType envelope;
+    SampleType filterFrequency;
 };

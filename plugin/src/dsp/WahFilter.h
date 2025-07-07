@@ -108,10 +108,10 @@ public:
     }
 
     /** Process a single sample of data */
-    void process (SampleType* sample)
+    SampleType process (SampleType sample)
     {
         /* Compute the output */
-        SampleType yn = coeffs[B0] * (*sample) +
+        SampleType yn = coeffs[B0] * sample +
                         coeffs[B1] * stateArray[X_Z1] +
                         coeffs[B2] * stateArray[X_Z2] -
                         coeffs[A1] * stateArray[Y_Z1] -
@@ -119,13 +119,12 @@ public:
 
         /* Update states */
         stateArray[X_Z2] = stateArray[X_Z1];
-        stateArray[X_Z1] = (*sample);
+        stateArray[X_Z1] = sample;
 
         stateArray[Y_Z2] = stateArray[Y_Z1];
         stateArray[Y_Z1] = yn;
 
-        /* Update the in-place processing of the sample. */
-        (*sample) = yn;
+        return yn;
     }
 
 private:
