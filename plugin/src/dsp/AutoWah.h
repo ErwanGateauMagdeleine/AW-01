@@ -29,14 +29,14 @@ public:
         wahFilt.reset();
     }
 
-    void process(SampleType* sample)
+    SampleType process(SampleType sample)
     {
         /* Get the enveloppe */
         envelope = envFollower.process(sample);
 
         /* Use the envelope follower to update the filter center frequency.
            Cap the filter frequency to the audible range. */
-        filterFrequency = static_cast<SampleType>(std::max(settings.filtFreq + settings.envAmnt * envelope, 20000.0));
+        filterFrequency = static_cast<SampleType>(std::min(settings.filtFreq * (1 + settings.envAmnt * envelope), 20000.0f));
         wahFilt.setCenterFrequency(filterFrequency);
 
         /* Process the sample with the filter */
@@ -53,6 +53,11 @@ public:
         envFollower.setDecayTime(settings.envDecay);
 
         wahFilt.setFilterParameters(settings.filtFreq, settings.filtRes, settings.filtMorph);
+    }
+
+    SampleType getFilterFrequency()
+    {
+        return filterFrequency;
     }
 
 private:
