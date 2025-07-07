@@ -40,9 +40,9 @@ public:
     /** Constructor */
     WahFilter()
     {
-        morphing = 0.0;
-        centerFrequency = 1000.0;
-        resonance = 0.707;
+        morphing = static_cast<float>(0.0);
+        centerFrequency = static_cast<float>(1000.0);
+        resonance = static_cast<float>(0.707);
     }
 
     //==============================================================================
@@ -81,9 +81,9 @@ public:
         morphing = newMorphing;
 
         /* Recalculate filter weights */
-        filterWeights[LPF] = std::max(0.0, 1.0 - 2.0 * morphing);
-        filterWeights[BPF] = 1 - std::abs(2.0 * morphing - 1.0);
-        filterWeights[HPF] = std::max(0.0, 2.0 * morphing - 1.0);
+        filterWeights[LPF] = static_cast<SampleType>(std::max(0.0, 1.0 - 2.0 * morphing));
+        filterWeights[BPF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
+        filterWeights[HPF] = static_cast<SampleType>(std::max(0.0, 2.0 * morphing - 1.0));
 
         computeCoefficients();
     }
@@ -93,7 +93,7 @@ public:
     void prepare(double newSampleRate)
     {
         sampleRate = newSampleRate;
-        omegaConst = 2.0 * PI / sampleRate;
+        omegaConst = static_cast<SampleType>(2.0) * PI / static_cast<SampleType>(sampleRate);
         computeCoefficients();
         reset();
     }
@@ -137,33 +137,33 @@ private:
         SampleType omega = omegaConst * centerFrequency;
         SampleType cosOmega = std::cos(omega);
         SampleType sinOmega = std::sin(omega);
-        SampleType d = 1.0 / resonance;
-        SampleType beta = 0.5 * (1.0 - d * sinOmega / 2.0) / (1.0 + d * sinOmega / 2.0);
-        SampleType gamma = (0.5 + beta) * cosOmega;
-        SampleType k = std::tan(PI * centerFrequency / sampleRate);
+        SampleType d = static_cast<SampleType>(1.0 / resonance);
+        SampleType beta = static_cast<SampleType>(0.5 * (1.0 - d * sinOmega / 2.0) / (1.0 + d * sinOmega / 2.0));
+        SampleType gamma = static_cast<SampleType>((0.5 + beta) * cosOmega);
+        SampleType k = static_cast<SampleType>(std::tan(PI * centerFrequency / sampleRate));
         SampleType delta = k * k * resonance + k + resonance;
 
         /* Calculating LPF */
-        filtersCoefficients[LPF][A1] = -2 * gamma;
-        filtersCoefficients[LPF][A2] = 2 * beta;
-        filtersCoefficients[LPF][B0] = (0.5 + beta - gamma) / 2.0;
-        filtersCoefficients[LPF][B1] = 0.5 + beta - gamma;
+        filtersCoefficients[LPF][A1] = static_cast<SampleType>(-2.0 * gamma);
+        filtersCoefficients[LPF][A2] = static_cast<SampleType>(2.0 * beta);
+        filtersCoefficients[LPF][B0] = static_cast<SampleType>((0.5 + beta - gamma) / 2.0);
+        filtersCoefficients[LPF][B1] = static_cast<SampleType>(0.5 + beta - gamma);
         filtersCoefficients[LPF][B2] = filtersCoefficients[LPF][B0];
 
         /* Calculating BPF */
         // filtersCoefficients[BPF][A0] = filtersCoefficients[LPF][A0];
-        filtersCoefficients[BPF][A1] = (2.0 * resonance * (k * k - 1.0)) / delta;
+        filtersCoefficients[BPF][A1] = static_cast<SampleType>((2.0 * resonance * (k * k - 1.0)) / delta);
         filtersCoefficients[BPF][A2] = (k * k * resonance - k + resonance) / delta;
         filtersCoefficients[BPF][B0] = k / delta;
-        filtersCoefficients[BPF][B1] = 0.0;
+        filtersCoefficients[BPF][B1] = static_cast<SampleType>(0.0);
         filtersCoefficients[BPF][B2] = -filtersCoefficients[BPF][B0];
 
         /* Calculating HPF */
         // filtersCoefficients[HPF][A0] = filtersCoefficients[LPF][A0];
         filtersCoefficients[HPF][A1] = filtersCoefficients[LPF][A1];
         filtersCoefficients[HPF][A2] = filtersCoefficients[LPF][A2];
-        filtersCoefficients[HPF][B0] = (0.5 + beta + gamma) / 2.0;
-        filtersCoefficients[HPF][B1] = -(0.5 + beta + gamma);
+        filtersCoefficients[HPF][B0] = static_cast<SampleType>((0.5 + beta + gamma) / 2.0);
+        filtersCoefficients[HPF][B1] = static_cast<SampleType>(-(0.5 + beta + gamma));
         filtersCoefficients[HPF][B2] = filtersCoefficients[HPF][B0];
 
         /* Update filter coefficients */

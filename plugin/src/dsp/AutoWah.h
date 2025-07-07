@@ -32,7 +32,7 @@ public:
     void process(SampleType* sample)
     {
         SampleType envelope = (*sample);
-        
+
         /* Get the enveloppe */
         envFollower.process(&envelope);
 
