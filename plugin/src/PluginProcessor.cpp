@@ -87,9 +87,14 @@ void AudioPluginAudioProcessor::changeProgramName (int index, const juce::String
 //==============================================================================
 void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
-    juce::ignoreUnused (sampleRate, samplesPerBlock);
+    juce::ignoreUnused (samplesPerBlock);
+
+    /* Prepare the L & R autowah objects */
+    leftWah.prepare(sampleRate);
+    rightWah.prepare(sampleRate);
+
+    /* Update initial autowah settings */
+    updateAllWahSettings();
 }
 
 void AudioPluginAudioProcessor::releaseResources()
@@ -230,4 +235,18 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
                                                           ));
 
     return layout;
+}
+
+//==============================================================================
+void AudioPluginAudioProcessor::updateAllWahSettings()
+{
+    wahSettings.envAttack = parameters.getRawParameterValue("Envelope Follower Attack")->load();
+    wahSettings.envDecay = parameters.getRawParameterValue("Envelope Follower Decay")->load();
+    wahSettings.envAmnt = parameters.getRawParameterValue("Envelope Follower Amount")->load();
+    wahSettings.filtFreq = parameters.getRawParameterValue("Filter Center Frequency")->load();
+    wahSettings.filtRes = parameters.getRawParameterValue("Filter Renonance")->load();
+    wahSettings.filtMorph = parameters.getRawParameterValue("Filter Morph")->load();
+
+    leftWah.updateSettings(wahSettings);
+    rightWah.updateSettings(wahSettings);
 }
