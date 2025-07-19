@@ -53,13 +53,11 @@ public:
     void setCenterFrequency(SampleType newCenterFrequency)
     {
         centerFrequency = newCenterFrequency;
-        computeCoefficients();
     }
 
     void setResonance(SampleType newResonance)
     {
         resonance = newResonance;
-        computeCoefficients();
     }
 
     void setMorphing(SampleType newMorphing)
@@ -70,8 +68,6 @@ public:
         filterWeights[LPF] = static_cast<SampleType>(std::max(0.0, 1.0 - 2.0 * morphing));
         filterWeights[BPF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
         filterWeights[HPF] = static_cast<SampleType>(std::max(0.0, 2.0 * morphing - 1.0));
-
-        computeCoefficients();
     }
 
     void setFilterParameters(SampleType newCenterFrequency, SampleType newResonance, SampleType newMorphing)
@@ -84,8 +80,6 @@ public:
         filterWeights[LPF] = static_cast<SampleType>(std::max(0.0, 1.0 - 2.0 * morphing));
         filterWeights[BPF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
         filterWeights[HPF] = static_cast<SampleType>(std::max(0.0, 2.0 * morphing - 1.0));
-
-        computeCoefficients();
     }
 
     //==============================================================================
@@ -94,7 +88,6 @@ public:
     {
         sampleRate = newSampleRate;
         omegaConst = static_cast<SampleType>(2.0) * PI / static_cast<SampleType>(sampleRate);
-        computeCoefficients();
         reset();
     }
 
@@ -110,6 +103,9 @@ public:
     /** Process a single sample of data */
     SampleType process (SampleType sample)
     {
+        /* Compute the filter coefficients */
+        computeCoefficients();
+
         /* Compute the output */
         SampleType yn = coeffs[B0] * sample +
                         coeffs[B1] * stateArray[X_Z1] +

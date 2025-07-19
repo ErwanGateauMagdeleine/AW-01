@@ -89,6 +89,7 @@ public:
         settings.filtRes = newRes;
         wahFilt.setResonance(settings.filtRes);
     }
+
     SampleType getFilterFrequency()
     {
         return filterFrequency;
