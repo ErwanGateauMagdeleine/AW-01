@@ -67,9 +67,9 @@ public:
         morphing = newMorphing;
 
         /* Recalculate filter weights */
-        filterWeights[LPF] = std::max(0.0, 1.0 - 2.0 * morphing);
-        filterWeights[BPF] = 1 - std::abs(2.0 * morphing - 1.0);
-        filterWeights[HPF] = std::max(0.0, 2.0 * morphing - 1.0);
+        filterWeights[LPF] = static_cast<SampleType>(std::max(0.0, 1.0 - 2.0 * morphing));
+        filterWeights[BPF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
+        filterWeights[HPF] = static_cast<SampleType>(std::max(0.0, 2.0 * morphing - 1.0));
 
         computeCoefficients();
     }

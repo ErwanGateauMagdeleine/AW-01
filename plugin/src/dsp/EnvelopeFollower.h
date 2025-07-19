@@ -64,7 +64,7 @@ public:
     {
         SampleType coeff = sample > delayTap ? attackCoeff : decayCoeff;
 
-        SampleType yn = coeff * delayTap + (1.0 - coeff) * std::abs(sample);
+        SampleType yn = coeff * delayTap + (static_cast<SampleType>(1.0) - coeff) * std::abs(sample);
         delayTap = yn;
 
         return yn;

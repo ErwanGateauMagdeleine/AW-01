@@ -55,6 +55,40 @@ public:
         wahFilt.setFilterParameters(settings.filtFreq, settings.filtRes, settings.filtMorph);
     }
 
+    void updateEnvAttack(SampleType newAttack)
+    {
+        settings.envAttack = newAttack;
+        envFollower.setAttackTime(settings.envAttack);
+    }
+
+    void updateEnvDecay(SampleType newDecay)
+    {
+        settings.envDecay = newDecay;
+        envFollower.setDecayTime(settings.envDecay);
+    }
+
+    void updateEnvAmount(SampleType newAmount)
+    {
+        settings.envAmnt = newAmount;
+    }
+
+    void updateFiltFreq(SampleType newFreq)
+    {
+        settings.filtFreq = newFreq;
+        wahFilt.setCenterFrequency(settings.filtFreq);
+    }
+
+    void updateFiltMorph(SampleType newMorph)
+    {
+        settings.filtMorph = newMorph;
+        wahFilt.setMorphing(settings.filtMorph);
+    }
+
+    void updateFiltRes(SampleType newRes)
+    {
+        settings.filtRes = newRes;
+        wahFilt.setResonance(settings.filtRes);
+    }
     SampleType getFilterFrequency()
     {
         return filterFrequency;
