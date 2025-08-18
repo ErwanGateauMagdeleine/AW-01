@@ -18,13 +18,15 @@ public:
     /** Sets the attack time. */
     void setAttackTime(SampleType newAttackTime)
     {
-        attackTime = newAttackTime;
+        /* Convert milliseconds to seconds */
+        attackTime = newAttackTime / static_cast<SampleType>(1000.0);
         updateAttackCoeff();
     }
 
     void setDecayTime(SampleType newDecayTime)
     {
-        decayTime = newDecayTime;
+        /* Convert milliseconds to seconds */
+        decayTime = newDecayTime / static_cast<SampleType>(1000.0);
         updateDecayCoeff();
     }
 
