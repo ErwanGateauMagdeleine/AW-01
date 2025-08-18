@@ -16,7 +16,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     addAndMakeVisible(filterComponent);
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
-    setSize (500, 100);
+    setSize (505, 100);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -45,5 +45,5 @@ void AudioPluginAudioProcessorEditor::resized()
     envelopeComponent.setBounds(0, 0, 250, 100);
 
     /* Draw filter component */
-    filterComponent.setBounds(250, 0, 250, 100);
+    filterComponent.setBounds(255, 0, 250, 100);
 }
