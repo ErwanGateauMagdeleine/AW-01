@@ -1,12 +1,16 @@
 #pragma once
 
 #include <juce_audio_processors/juce_audio_processors.h>
+#include "dsp/AutoWah.h"
 
-class AudioPluginAudioProcessor : public juce::AudioProcessor
+class AudioPluginAudioProcessor : public juce::AudioProcessor,
+                                  public juce::AudioProcessorValueTreeState::Listener
 {
 public:
     AudioPluginAudioProcessor();
     ~AudioPluginAudioProcessor() override;
+
+    void parameterChanged(const juce::String& parameterID, float newValue) override;
 
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     void releaseResources() override;
@@ -38,5 +42,11 @@ public:
     juce::AudioProcessorValueTreeState parameters;
 
 private:
+
+    void updateAllWahSettings();
+
+    autoWahSettings<float> wahSettings;
+    AutoWah<float> leftWah, rightWah;
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessor)
 };

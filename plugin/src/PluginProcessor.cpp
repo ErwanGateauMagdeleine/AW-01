@@ -13,6 +13,13 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                        ),
        parameters(*this, nullptr, "parameters", createParameterLayout())
 {
+    /* Add parameter listeners */
+    parameters.addParameterListener("Envelope Follower Attack", this);
+    parameters.addParameterListener("Envelope Follower Decay", this);
+    parameters.addParameterListener("Envelope Follower Amount", this);
+    parameters.addParameterListener("Filter Center Frequency", this);
+    parameters.addParameterListener("Filter Renonance", this);
+    parameters.addParameterListener("Filter Morph", this);
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -87,9 +94,14 @@ void AudioPluginAudioProcessor::changeProgramName (int index, const juce::String
 //==============================================================================
 void AudioPluginAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
-    juce::ignoreUnused (sampleRate, samplesPerBlock);
+    juce::ignoreUnused (samplesPerBlock);
+
+    /* Prepare the L & R autowah objects */
+    leftWah.prepare(sampleRate);
+    rightWah.prepare(sampleRate);
+
+    /* Update initial autowah settings */
+    updateAllWahSettings();
 }
 
 void AudioPluginAudioProcessor::releaseResources()
@@ -138,17 +150,14 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
-    for (int channel = 0; channel < totalNumInputChannels; ++channel)
+    /* Obtain The Left And Right Audio Data Pointers */
+    float* leftChannel = buffer.getWritePointer(0);
+    float* rightChannel = buffer.getWritePointer(1);
+
+    for (int i = 0;i < buffer.getNumSamples();i++)
     {
-        auto* channelData = buffer.getWritePointer (channel);
-        juce::ignoreUnused (channelData);
-        // ..do something to the data...
+        buffer.setSample(0, i, leftWah.process(leftChannel[i]));
+        buffer.setSample(1, i, rightWah.process(rightChannel[i]));
     }
 }
 
@@ -230,4 +239,54 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
                                                           ));
 
     return layout;
+}
+
+//==============================================================================
+void AudioPluginAudioProcessor::updateAllWahSettings()
+{
+    wahSettings.envAttack = parameters.getRawParameterValue("Envelope Follower Attack")->load();
+    wahSettings.envDecay = parameters.getRawParameterValue("Envelope Follower Decay")->load();
+    wahSettings.envAmnt = parameters.getRawParameterValue("Envelope Follower Amount")->load();
+    wahSettings.filtFreq = parameters.getRawParameterValue("Filter Center Frequency")->load();
+    wahSettings.filtRes = parameters.getRawParameterValue("Filter Renonance")->load();
+    wahSettings.filtMorph = parameters.getRawParameterValue("Filter Morph")->load();
+
+    leftWah.updateSettings(wahSettings);
+    rightWah.updateSettings(wahSettings);
+}
+
+//==============================================================================
+
+void AudioPluginAudioProcessor::parameterChanged(const juce::String& parameterID, float newValue)
+{
+    if (parameterID == "Envelope Follower Attack")
+    {
+        leftWah.updateEnvAttack(newValue);
+        rightWah.updateEnvAttack(newValue);
+    }
+    else if (parameterID == "Envelope Follower Decay")
+    {
+        leftWah.updateEnvDecay(newValue);
+        rightWah.updateEnvDecay(newValue);
+    }
+    else if (parameterID == "Envelope Follower Amount")
+    {
+        leftWah.updateEnvAmount(newValue);
+        rightWah.updateEnvAmount(newValue);
+    }
+    else if (parameterID == "Filter Center Frequency")
+    {
+        leftWah.updateFiltFreq(newValue);
+        rightWah.updateFiltFreq(newValue);
+    }
+    else if (parameterID == "Filter Renonance")
+    {
+        leftWah.updateFiltRes(newValue);
+        rightWah.updateFiltRes(newValue);
+    }
+    else if (parameterID == "Filter Morph")
+    {
+        leftWah.updateFiltMorph(newValue);
+        rightWah.updateFiltMorph(newValue);
+    }
 }

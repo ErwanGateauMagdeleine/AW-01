@@ -9,7 +9,7 @@ using namespace Catch;
 TEST_CASE("Attack and decay coeffs are calculated properly", "[envelopeFollower]")
 {
     double sampleRate = 44100.0;
-    double tolerance = 0.0001f;
+    double tolerance = 1e-4f;
 
     /** Test for float */
     EnvelopeFollower<float> env_float;
@@ -55,7 +55,7 @@ TEST_CASE("Envelope follower output is correct with float processing", "[envelop
 {
     const int NumSamples = 80;
     double sampleRate = 44100.0;
-    double tolerance = 0.00001f;
+    double tolerance = 1e-5f;
 
     float inputSignal[NumSamples] = {
         -0.0015259254737998596, 0.000946073793755913, 0.0011597033600878933, -0.001586962492751854, 0.0025025177770317698, 0.0016174810022278512, 0.002838221381267739, 0.003509628589739677, 0.0036011841181676687, 0.003631702627643666, 0.0032349620044557024, 0.003662221137119663, 0.0037232581560716575, 0.004425183874019593, 0.004394665364543596, 0.003906369212927641, 0.004150517288735618, 0.004058961760307627, 0.004394665364543596, 0.004394665364543596,
@@ -71,14 +71,17 @@ TEST_CASE("Envelope follower output is correct with float processing", "[envelop
         0.008969076282274478, 0.008966955173049847, 0.008965095998685, 0.00896336030468881, 0.008961225258937899, 0.008959183010052465, 0.008957102834401015, 0.008955030871039516, 0.00895302862390101, 0.008951449734933416, 0.008949471454708638, 0.008947239960596173, 0.008945162793648438, 0.008943655080499976, 0.008941425051653712, 0.008940248874880739, 0.008937996639378134, 0.008936290837027518, 0.00893474691765913, 0.008933718500002151
     };
 
+    float output[NumSamples];
+
     EnvelopeFollower<float> envelopeFollower;
     envelopeFollower.prepare(sampleRate);
 
     for (int i = 0; i < NumSamples; ++i)
     {
         /** Process the input signal */
-        envelopeFollower.process(&inputSignal[i]);
-        REQUIRE_THAT(inputSignal[i], Catch::Matchers::WithinAbs(expectedOutput[i], tolerance));
+        output[i] = envelopeFollower.process(inputSignal[i]);
+        REQUIRE_THAT(output[i], Catch::Matchers::WithinAbs(expectedOutput[i], tolerance));
+        REQUIRE(output[i] > 0.0f);
     }
 }
 
@@ -86,7 +89,7 @@ TEST_CASE("Envelope follower output is correct with double processing", "[envelo
 {
     const int NumSamples = 80;
     double sampleRate = 44100.0;
-    double tolerance = 0.00001f;
+    double tolerance = 1e-5f;
 
     double inputSignal[NumSamples] = {
         -0.0015259254737998596, 0.000946073793755913, 0.0011597033600878933, -0.001586962492751854, 0.0025025177770317698, 0.0016174810022278512, 0.002838221381267739, 0.003509628589739677, 0.0036011841181676687, 0.003631702627643666, 0.0032349620044557024, 0.003662221137119663, 0.0037232581560716575, 0.004425183874019593, 0.004394665364543596, 0.003906369212927641, 0.004150517288735618, 0.004058961760307627, 0.004394665364543596, 0.004394665364543596,
@@ -102,13 +105,16 @@ TEST_CASE("Envelope follower output is correct with double processing", "[envelo
         0.008969076282274478, 0.008966955173049847, 0.008965095998685, 0.00896336030468881, 0.008961225258937899, 0.008959183010052465, 0.008957102834401015, 0.008955030871039516, 0.00895302862390101, 0.008951449734933416, 0.008949471454708638, 0.008947239960596173, 0.008945162793648438, 0.008943655080499976, 0.008941425051653712, 0.008940248874880739, 0.008937996639378134, 0.008936290837027518, 0.00893474691765913, 0.008933718500002151
     };
 
+    double output[NumSamples];
+
     EnvelopeFollower<double> envelopeFollower;
     envelopeFollower.prepare(sampleRate);
 
     for (int i = 0; i < NumSamples; ++i)
     {
         /** Process the input signal */
-        envelopeFollower.process(&inputSignal[i]);
-        REQUIRE_THAT(inputSignal[i], Catch::Matchers::WithinAbs(expectedOutput[i], tolerance));
+        output[i] = envelopeFollower.process(inputSignal[i]);
+        REQUIRE_THAT(output[i], Catch::Matchers::WithinAbs(expectedOutput[i], tolerance));
+        REQUIRE(output[i] > 0.0);
     }
 }

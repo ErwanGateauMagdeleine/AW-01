@@ -35,9 +35,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
         /* Process the signal using temp as the process is in place */
         for (int i = 0; i < IR_LENGTH; i++)
         {
-            float sample = impulse[i];
-            lpf.process(&sample);
-            response[i] = sample;
+            response[i] = lpf.process(impulse[i]);
         }
 
         getFFTResponseFromSignal(response, magnitude);
@@ -62,9 +60,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
         /* Process the signal using temp as the process is in place */
         for (int i = 0; i < IR_LENGTH; i++)
         {
-            float sample = impulse[i];
-            bpf.process(&sample);
-            response[i] = sample;
+            response[i] = bpf.process(impulse[i]);
         }
 
         getFFTResponseFromSignal(response, magnitude);
@@ -89,9 +85,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
         /* Process the signal using temp as the process is in place */
         for (int i = 0; i < IR_LENGTH; i++)
         {
-            float sample = impulse[i];
-            hpf.process(&sample);
-            response[i] = sample;
+            response[i] = hpf.process(impulse[i]);
         }
 
         getFFTResponseFromSignal(response, magnitude);

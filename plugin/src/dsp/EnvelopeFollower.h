@@ -1,3 +1,5 @@
+#pragma once
+
 #include <cmath>
 
 template <typename SampleType>
@@ -16,13 +18,15 @@ public:
     /** Sets the attack time. */
     void setAttackTime(SampleType newAttackTime)
     {
-        attackTime = newAttackTime;
+        /* Convert milliseconds to seconds */
+        attackTime = newAttackTime / static_cast<SampleType>(1000.0);
         updateAttackCoeff();
     }
 
     void setDecayTime(SampleType newDecayTime)
     {
-        decayTime = newDecayTime;
+        /* Convert milliseconds to seconds */
+        decayTime = newDecayTime / static_cast<SampleType>(1000.0);
         updateDecayCoeff();
     }
 
@@ -58,12 +62,14 @@ public:
     }
 
     /** Process a single sample of data */
-    void process (SampleType* sample)
+    SampleType process (SampleType sample)
     {
-        auto coeff = (*sample) > delayTap ? attackCoeff : decayCoeff;
+        SampleType coeff = sample > delayTap ? attackCoeff : decayCoeff;
 
-        (*sample) = coeff * delayTap + (1.0 - coeff) * (*sample);
-        delayTap = (*sample);
+        SampleType yn = coeff * delayTap + (static_cast<SampleType>(1.0) - coeff) * std::abs(sample);
+        delayTap = yn;
+
+        return yn;
     }
 
 private:

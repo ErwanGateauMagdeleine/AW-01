@@ -2,3 +2,4 @@
 #include <catch2/catch_all.hpp>
 #include "EnvelopeFollowerTests.h"
 #include "WahFilterTests.h"
+#include "AutoWahTests.h"
