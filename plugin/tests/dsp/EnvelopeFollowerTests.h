@@ -26,9 +26,9 @@ TEST_CASE("Attack and decay coeffs are calculated properly", "[envelopeFollower]
 
     /** Make sure coeffs are properly calculated after update */
     env_float.setAttackTime(0.1f);
-    REQUIRE_THAT(env_float.getAttackCoeff(), Catch::Matchers::WithinAbs(0.9997f, tolerance));
+    REQUIRE_THAT(env_float.getAttackCoeff(), Catch::Matchers::WithinAbs(0.7971f, tolerance));
 
-    env_float.setDecayTime(0.00001f);
+    env_float.setDecayTime(0.01f);
     REQUIRE_THAT(env_float.getDecayCoeff(), Catch::Matchers::WithinAbs(0.1035f, tolerance));
 
     /** Test for double */
@@ -45,9 +45,9 @@ TEST_CASE("Attack and decay coeffs are calculated properly", "[envelopeFollower]
 
     /** Make sure coeffs are properly calculated after update */
     env_double.setAttackTime(0.1f);
-    REQUIRE_THAT(env_double.getAttackCoeff(), Catch::Matchers::WithinAbs(0.9997f, tolerance));
+    REQUIRE_THAT(env_double.getAttackCoeff(), Catch::Matchers::WithinAbs(0.7971f, tolerance));
 
-    env_double.setDecayTime(0.00001f);
+    env_double.setDecayTime(0.01f);
     REQUIRE_THAT(env_double.getDecayCoeff(), Catch::Matchers::WithinAbs(0.1035f, tolerance));
 }
 
