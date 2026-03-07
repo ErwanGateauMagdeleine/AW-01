@@ -1,9 +1,9 @@
 [submodule "plugin/JUCE"]
 	path = plugin/JUCE
 	url = https://github.com/juce-framework/JUCE.git
-[submodule "plugin/src/tests/Catch2"]
-	path = plugin/src/tests/Catch2
+[submodule "plugin/tests/Catch2"]
+	path = plugin/tests/Catch2
 	url = https://github.com/catchorg/Catch2.git
-[submodule "plugin/src/tests/external/kissfft"]
-	path = plugin/src/tests/external/kissfft
+[submodule "plugin/tests/dsp/external/kissfft"]
+	path = plugin/tests/dsp/external/kissfft
 	url = https://github.com/mborgerding/kissfft.git

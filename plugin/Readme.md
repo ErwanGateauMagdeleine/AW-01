@@ -4,17 +4,17 @@ This folder gathers the sources to build a plugin. It is a vst3 plugin that is b
 
 ## Generating the IDE project
 
-To generate a project for your IDE, one can run the following command:
+To generate a project for your IDE, one can run the following command in the root of the repository:
 ```
-cmake -B Builds -G <your_IDE_generator>
+cmake -B build -S plugin -G <your_IDE_generator>
 ```
 You can find the list of available IDE generators [here](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html).
 
 ## Build the plugin
-Once you have generated your IDE project, you can from the command line build the plugin running the following command:
+Once you have generated your IDE project, you can from the command line build the plugin running the following command in the root of the repository:
 
 ```
-cmake --build Builds --target AD-01_VST3 --config Release
+cmake --build build --target AW-01_VST3 --config Release
 ```
 
 Once the build is finished, the built plugin `.vst3` is automatically moved to the OUT folder.
@@ -23,12 +23,12 @@ Once the build is finished, the built plugin `.vst3` is automatically moved to t
 
 The software comes along with Catch2 tests. To build the tests, on can run the following command:
 ```
-cmake --build Builds --target Catch2Tests --config Debug
+cmake --build build --target dspTests --config Debug
 ```
 
 Once the test target is built, one can run them using the following command:
 ```
-.\build\Debug\Catch2Tests.exe
+./build/tests/dsp/Debug/dspTests.exe
 ```
 
 ## References
