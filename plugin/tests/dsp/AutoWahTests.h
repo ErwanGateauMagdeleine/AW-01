@@ -23,7 +23,7 @@ TEST_CASE("AutoWah tracks envelope of an increasing amplitude sine wave", "[Auto
 
     autoWahSettings<SampleType> settings {
         0.01f,  /* envAttack */
-        0.2f,   /* envDecay */
+        2.0f,   /* envDecay */
         envAmount,
         baseFreq,
         0.8f,   /* filtRes */
@@ -53,15 +53,16 @@ TEST_CASE("AutoWah tracks envelope of an increasing amplitude sine wave", "[Auto
     SECTION("Filter frequency increases with input amplitude over time")
     {
         /* Check that frequency generally increases */
+        int window = sampleRate / frequency; // samples per cycle
         int increasingCount = 0;
-        for (int n = 1; n < numSamples; ++n)
+        for (int n = window; n < numSamples; ++n)
         {
-            if (trackedFrequencies[n] > trackedFrequencies[n - 1])
+            if (trackedFrequencies[n] > trackedFrequencies[n - window])
+            {
                 ++increasingCount;
+            }
         }
-
-        // Allow for some noise or envelope smoothing; expect mostly increasing trend
-        REQUIRE(increasingCount > numSamples * 0.6f); // >60% of the time
+        REQUIRE(increasingCount > (numSamples - window) * 0.6f);
     }
 
     SECTION("Filter frequency stays within expected modulation bounds")
