@@ -1,7 +1,6 @@
 #pragma once
 
 #include "PluginProcessor.h"
-#include "juceHeader.h"
 #include "gui/customRotarySlider.h"
 #include "gui/FilterComponent.h"
 #include "gui/EnvelopeComponent.h"
