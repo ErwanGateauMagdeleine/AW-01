@@ -164,7 +164,7 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
 //==============================================================================
 bool AudioPluginAudioProcessor::hasEditor() const
 {
-    return true; // (change this to false if you choose to not supply an editor)
+    return true;
 }
 
 juce::AudioProcessorEditor* AudioPluginAudioProcessor::createEditor()
@@ -232,7 +232,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Renonance",
                                                            "Filter Renonance",
                                                            juce::NormalisableRange<float>(0.1f, 10.0f, 0.01f, 0.5f),
-                                                           -30.0f
+                                                           0.7f
                                                           ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Morph",
