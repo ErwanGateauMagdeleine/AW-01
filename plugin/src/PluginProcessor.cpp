@@ -218,7 +218,12 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Envelope Follower Amount",
                                                            "Envelope Follower Amount",
-                                                           juce::NormalisableRange<float>(0.0f, 5.0f, 0.1f, 1.0f),
+                                                           /* Ensure that the skewing amount is in the middle. */
+                                                           []{
+                                                               juce::NormalisableRange<float> r(-20.0f, 20.0f, 1.0f);
+                                                               r.setSkewForCentre(0.0f);
+                                                               return r;
+                                                           }(),
                                                            1.0f
                                                           ));
 
