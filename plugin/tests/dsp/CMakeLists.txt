@@ -10,6 +10,8 @@ add_executable(dspTests
     kissFFTUtility.cpp
 )
 
+target_compile_features(dspTests PRIVATE cxx_std_17)
+
 target_link_libraries(dspTests
     PRIVATE
         Catch2::Catch2WithMain
