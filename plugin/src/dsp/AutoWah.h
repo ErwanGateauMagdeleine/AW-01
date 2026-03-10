@@ -36,7 +36,7 @@ public:
 
         /* Use the envelope follower to update the filter center frequency.
            Cap the filter frequency to the audible range. */
-        filterFrequency = static_cast<SampleType>(std::clamp(settings.filtFreq * (1 + settings.envAmnt * envelope), 20.0f, 20000.0f));
+        filterFrequency = static_cast<SampleType>(std::clamp(settings.filtFreq * (1 + settings.envAmnt * envelope), 500.0f, 15000.0f));
         wahFilt.setCenterFrequency(filterFrequency);
 
         /* Process the sample with the filter */
