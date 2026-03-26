@@ -70,6 +70,8 @@ target_compile_definitions("${PROJECT_NAME}"
     JUCE_USE_CURL=0     # If you remove this, add `NEEDS_CURL TRUE` to the `juce_add_plugin` call
     JUCE_VST3_CAN_REPLACE_VST2=0)
 
+target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
+
 target_link_libraries("${PROJECT_NAME}"
     PRIVATE
     ${JUCE_DEPENDENCIES}

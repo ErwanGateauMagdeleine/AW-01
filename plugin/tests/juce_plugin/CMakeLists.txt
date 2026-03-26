@@ -8,6 +8,8 @@ add_executable(juce_pluginTests
     ${CMAKE_CURRENT_SOURCE_DIR}/../../src/gui/EnvelopeComponent.cpp
 )
 
+target_compile_features(juce_pluginTests PRIVATE cxx_std_17)
+
 target_sources(juce_pluginTests PRIVATE ${SourceFiles})
 
 target_link_libraries(juce_pluginTests PRIVATE
