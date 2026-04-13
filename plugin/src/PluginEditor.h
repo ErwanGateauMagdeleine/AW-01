@@ -26,11 +26,11 @@ private:
     using APVTS = juce::AudioProcessorValueTreeState;
     using attachment = APVTS::SliderAttachment;
 
-    juce::Image textureImage;
-
     EnvelopeComponent envelopeComponent;
 
     FilterComponent filterComponent;
+
+    const juce::String colourString = "ff1a1f13";
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };

@@ -7,10 +7,6 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
       envelopeComponent(processorRef.parameters),
       filterComponent(processorRef.parameters)
 {
-    /* Load Background image */
-    textureImage = juce::ImageCache::getFromMemory(BinaryData::Metal009_1KPNG_Color_png,
-                                                   BinaryData::Metal009_1KPNG_Color_pngSize);
-
     addAndMakeVisible(envelopeComponent);
 
     addAndMakeVisible(filterComponent);
@@ -26,17 +22,7 @@ AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 //==============================================================================
 void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    /* Tile the background  texture */
-    if (textureImage.isValid())
-    {
-        for (int y = 0; y < getHeight(); y += textureImage.getHeight())
-        {
-            for (int x = 0; x < getWidth(); x += textureImage.getWidth())
-            {
-                g.drawImageAt(textureImage, x, y);
-            }
-        }
-    }
+    g.fillAll(juce::Colour::fromString(colourString));
 }
 
 void AudioPluginAudioProcessorEditor::resized()
