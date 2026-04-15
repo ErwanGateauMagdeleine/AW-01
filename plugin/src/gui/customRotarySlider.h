@@ -7,7 +7,7 @@
 class CustomRotarySlider : public juce::Slider
 {
 public:
-    CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel);
+    CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel, juce::Font newFont, juce::Colour newFontColour);
     ~CustomRotarySlider();
 
     int getHeight();

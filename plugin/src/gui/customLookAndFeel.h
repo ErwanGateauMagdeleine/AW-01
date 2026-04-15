@@ -6,7 +6,7 @@
 class customLookAndFeel : public juce::LookAndFeel_V4
 {
 public:
-    customLookAndFeel();
+    customLookAndFeel(juce::Font newFont, juce::Colour newFontColour);
 
     void drawRotarySlider(juce::Graphics& g, int x, int y, int width, int,
                           float sliderPos, float, float, juce::Slider& slider) override;
@@ -21,4 +21,7 @@ private:
 
     int labelHeight = 12;
     float labelFontSize = 12.0f;
+
+    juce::Font font;
+    juce::Colour fontColour;
 };

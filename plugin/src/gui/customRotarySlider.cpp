@@ -5,8 +5,9 @@
 #include "customRotarySlider.h"
 
 //==============================================================================
-CustomRotarySlider::CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel) :
-        param(&rap)
+CustomRotarySlider::CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel, juce::Font newFont, juce::Colour newFontColour) :
+        param(&rap),
+        lnf(newFont, newFontColour)
 {
     setLookAndFeel(&lnf);
     setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);

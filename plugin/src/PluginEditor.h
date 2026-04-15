@@ -26,6 +26,10 @@ private:
     using APVTS = juce::AudioProcessorValueTreeState;
     using attachment = APVTS::SliderAttachment;
 
+    const juce::String fontColourString = "ffe8a020";
+    juce::FontOptions fontOptions;
+    juce::Font font;
+
     EnvelopeComponent envelopeComponent;
 
     FilterComponent filterComponent;

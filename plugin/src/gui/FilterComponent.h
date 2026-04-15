@@ -7,7 +7,7 @@
 class FilterComponent : public juce::Component
 {
 public:
-    FilterComponent(juce::AudioProcessorValueTreeState& state);
+    FilterComponent(juce::AudioProcessorValueTreeState& state, juce::Font newFont, juce::Colour newFontColour);
 
     void paint(juce::Graphics& g) override;
 
@@ -22,4 +22,7 @@ private:
     attachment freqAttachment;
     attachment resAttachment;
     attachment morphAttachment;
+
+    juce::Font font;
+    juce::Colour fontColour;
 };

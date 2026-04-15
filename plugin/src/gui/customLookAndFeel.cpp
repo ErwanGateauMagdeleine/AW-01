@@ -5,8 +5,11 @@
 #include "customRotarySlider.h"
 
 //==============================================================================
-customLookAndFeel::customLookAndFeel()
+customLookAndFeel::customLookAndFeel(juce::Font newFont, juce::Colour newFontColour) :
+        font(std::move(newFont))
 {
+    fontColour = newFontColour;
+
     knobImage = juce::ImageCache::getFromMemory(BinaryData::knob_png, BinaryData::knob_pngSize);
 
     /* Knob frames are square */
@@ -24,20 +27,19 @@ void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
         return;
     }
 
-    g.setFont(14.0f);
-    g.setColour(juce::Colours::black);
+    /* Draw the knob image */
+    const int frame = juce::jlimit(0, knobTotalFrames - 1, static_cast<int>(std::round(sliderPos * (knobTotalFrames - 1))));
+    g.drawImage(knobImage, x, y, knobFrameWidth, knobFrameWidth, 0, frame * knobFrameWidth, knobFrameWidth, knobFrameWidth);
+
+    g.setColour(fontColour);
+    g.setFont(font.withHeight(10.0));
     g.drawFittedText(slider.getName(),
                      x,
-                     y,
+                     y + knobFrameWidth - 5,
                      width - 5,
                      labelHeight,
                      juce::Justification::centred,
                      1);
-
-    /* Draw the knob image */
-    const int frame = juce::jlimit(0, knobTotalFrames - 1, static_cast<int>(std::round(sliderPos * (knobTotalFrames - 1))));
-    g.drawImage(knobImage, x, y + labelHeight, knobFrameWidth, knobFrameWidth, 0, frame * knobFrameWidth, knobFrameWidth, knobFrameWidth);
-
 }
 
 //==============================================================================
