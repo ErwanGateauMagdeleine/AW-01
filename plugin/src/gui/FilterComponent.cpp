@@ -35,12 +35,10 @@ void FilterComponent::paint(juce::Graphics& g)
 
 void FilterComponent::resized()
 {
-    int knobWidth = freqSlider.getWidth();
-    int knobHeight = freqSlider.getHeight();
-    const int spacing = 20;
-    const int y = 30;
+    auto knobsAreaBounds = getLocalBounds().reduced(20, 20).translated(0, 5);
+    auto knobWidth = knobsAreaBounds.getWidth() / 3;
 
-    freqSlider.setBounds(spacing, y, knobWidth, knobHeight);
-    resSlider.setBounds(spacing * 2 + knobWidth, y, knobWidth, knobHeight);
-    morphSlider.setBounds(spacing * 3 + knobWidth * 2, y, knobWidth, knobHeight);
+    freqSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
+    resSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
+    morphSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
 }

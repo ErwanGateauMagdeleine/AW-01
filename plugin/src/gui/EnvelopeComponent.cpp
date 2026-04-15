@@ -35,12 +35,10 @@ void EnvelopeComponent::paint(juce::Graphics& g)
 
 void EnvelopeComponent::resized()
 {
-    int knobWidth = 50;
-    int knobHeight = 50;
-    const int spacing = 20;
-    const int y = 30;
+    auto knobsAreaBounds = getLocalBounds().reduced(20, 20).translated(0, 5);
+    auto knobWidth = knobsAreaBounds.getWidth() / 3;
 
-    attackSlider.setBounds(spacing, y, knobWidth, knobHeight);
-    decaySlider.setBounds(spacing * 2 + knobWidth, y, knobWidth, knobHeight);
-    amountSlider.setBounds(spacing * 3 + knobWidth * 2, y, knobWidth, knobHeight);
+    attackSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
+    decaySlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
+    amountSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
 }

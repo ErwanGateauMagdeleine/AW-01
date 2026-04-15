@@ -14,9 +14,7 @@ target_sources(juce_pluginTests PRIVATE ${SourceFiles})
 
 target_link_libraries(juce_pluginTests PRIVATE
     Catch2::Catch2WithMain
-    juce::juce_audio_processors
-    BinaryData
-)
+    juce::juce_audio_processors)
 
 target_include_directories(juce_pluginTests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../../src/
