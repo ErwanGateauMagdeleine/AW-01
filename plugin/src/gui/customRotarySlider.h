@@ -10,9 +10,6 @@ public:
     CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel, juce::Font newFont, juce::Colour newFontColour);
     ~CustomRotarySlider();
 
-    int getHeight();
-    int getWidth();
-
 private:
     juce::RangedAudioParameter* param;
     customLookAndFeel lnf;

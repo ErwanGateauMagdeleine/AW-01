@@ -35,8 +35,8 @@ void EnvelopeComponent::paint(juce::Graphics& g)
 
 void EnvelopeComponent::resized()
 {
-    int knobWidth = attackSlider.getWidth();
-    int knobHeight = attackSlider.getHeight();
+    int knobWidth = 50;
+    int knobHeight = 50;
     const int spacing = 20;
     const int y = 30;
 

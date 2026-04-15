@@ -41,14 +41,3 @@ void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
                      juce::Justification::centred,
                      1);
 }
-
-//==============================================================================
-int customLookAndFeel::getKnobHeight()
-{
-    return knobFrameWidth + labelHeight;
-}
-
-int customLookAndFeel::getKnobWidth()
-{
-    return knobFrameWidth;
-}

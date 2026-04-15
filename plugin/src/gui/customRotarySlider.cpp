@@ -20,14 +20,3 @@ CustomRotarySlider::~CustomRotarySlider()
     /* Reset the LookAndFeel to avoid dangling pointer */
     setLookAndFeel(nullptr);
 }
-
-//==============================================================================
-int CustomRotarySlider::getHeight()
-{
-    return lnf.getKnobHeight() + textBoxHeight;
-}
-
-int CustomRotarySlider::getWidth()
-{
-    return lnf.getKnobWidth();
-}
