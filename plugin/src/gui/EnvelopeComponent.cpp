@@ -19,16 +19,11 @@ EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState& paramet
 
 void EnvelopeComponent::paint(juce::Graphics& g)
 {
-    float cornerRadius = 10.0f;
-    float lineThickness = 2.0f;
-
-    g.setColour(findColour(colourScheme::componentOutlineColourId));
-    auto bounds = getLocalBounds().toFloat().reduced(lineThickness / 2.0f);
-    g.drawRoundedRectangle(bounds, cornerRadius, lineThickness);
+    auto bounds = getLocalBounds().toFloat();
 
     if (auto* lnf = dynamic_cast<customLookAndFeel*> (&getLookAndFeel()))
     {
-        lnf->drawGlowText(g, "Envelope", bounds.reduced(8, 6), juce::Justification::topLeft, lnf->getTitleFont());
+        lnf->drawComponentBoundaries(g, "Envelope", bounds, juce::Justification::topLeft);
     }
 }
 

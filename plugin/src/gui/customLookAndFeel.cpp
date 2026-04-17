@@ -140,3 +140,17 @@ void customLookAndFeel::drawGlowText(juce::Graphics& g, const juce::String& text
     g.setColour(findColour(colourScheme::fontColourId));
     g.drawText(text, bounds, justification);
 }
+
+void customLookAndFeel::drawComponentBoundaries(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification)
+{
+    juce::Path borderPath;
+
+    borderPath.addRoundedRectangle(bounds, compBorderCornerRadius, compBorderCornerRadius);
+    g.setColour(findColour(colourScheme::componentOutlineColourId).withAlpha(0.35f));
+    g.strokePath(borderPath, juce::PathStrokeType(6.0f));
+
+    g.setColour(findColour(colourScheme::componentOutlineColourId));
+    g.strokePath(borderPath, juce::PathStrokeType(1.0f));
+
+    drawGlowText(g, text, bounds.reduced(8, 6), justification, getTitleFont());
+}

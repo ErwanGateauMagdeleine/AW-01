@@ -13,7 +13,10 @@ public:
 
     juce::Font getTitleFont();
     juce::Font getLabelFont();
+
     void drawGlowText (juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font);
+
+    void drawComponentBoundaries(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification);
 
 private:
 
@@ -23,8 +26,7 @@ private:
     void drawLabel(juce::Graphics& g, int x, int y, int width,  int height, juce::Slider& slider);
     void drawPointerLine(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle, float sliderPos);
 
-    int labelHeight = 12;
-    float labelFontSize = 12.0f;
+    float compBorderCornerRadius = 10.0f;
 
     juce::Typeface::Ptr typeface;
     juce::Font titleFont;

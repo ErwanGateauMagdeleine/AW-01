@@ -19,16 +19,11 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters)
 
 void FilterComponent::paint(juce::Graphics& g)
 {
-    float cornerRadius = 10.0f;
-    float lineThickness = 2.0f;
-
-    g.setColour(findColour(colourScheme::componentOutlineColourId));
-    auto bounds = getLocalBounds().toFloat().reduced(lineThickness / 2.0f);
-    g.drawRoundedRectangle(bounds, cornerRadius, lineThickness);
+    auto bounds = getLocalBounds().toFloat();
 
     if (auto* lnf = dynamic_cast<customLookAndFeel*> (&getLookAndFeel()))
     {
-        lnf->drawGlowText(g, "Filter", bounds.reduced(8, 6), juce::Justification::topLeft, lnf->getTitleFont());
+        lnf->drawComponentBoundaries(g, "Filter", bounds, juce::Justification::topLeft);
     }
 }
 
