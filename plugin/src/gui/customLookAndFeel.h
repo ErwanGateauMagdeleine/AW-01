@@ -13,6 +13,7 @@ public:
 
     juce::Font getTitleFont();
     juce::Font getLabelFont();
+    void drawGlowText (juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font);
 
 private:
 

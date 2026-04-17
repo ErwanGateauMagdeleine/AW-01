@@ -92,10 +92,7 @@ void customLookAndFeel::drawLabel(juce::Graphics& g, int x, int y, int width,  i
 
     g.setFont (getLabelFont());
     g.setColour(findColour(colourScheme::fontColourId));
-    g.drawFittedText(slider.getName(),
-                     textArea,
-                     juce::Justification::centred,
-                     1);
+    drawGlowText(g, slider.getName(), textArea.toFloat(), juce::Justification::centred, getLabelFont());
 }
 
 //==============================================================================
@@ -121,4 +118,25 @@ juce::Font customLookAndFeel::getTitleFont()
 juce::Font customLookAndFeel::getLabelFont()
 {
     return labelFont;
+}
+
+void customLookAndFeel::drawGlowText(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font)
+{
+    for (int i = 3; i >= 1; --i)
+    {
+        g.setColour(findColour(colourScheme::fontColourId).withAlpha(0.05f));
+        g.setFont(font);
+
+        g.drawText(text, bounds.translated((float)i,  0), justification);
+        g.drawText(text, bounds.translated((float)-i,  0), justification);
+        g.drawText(text, bounds.translated(0, (float)i), justification);
+        g.drawText(text, bounds.translated(0, (float)-i), justification);
+        g.drawText(text, bounds.translated((float)i, (float)i), justification);
+        g.drawText(text, bounds.translated((float)-i, (float)-i), justification);
+        g.drawText(text, bounds.translated((float)i, (float)-i), justification);
+        g.drawText(text, bounds.translated((float)-i, (float)i), justification);
+    }
+
+    g.setColour(findColour(colourScheme::fontColourId));
+    g.drawText(text, bounds, justification);
 }

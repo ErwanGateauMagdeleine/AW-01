@@ -28,11 +28,8 @@ void FilterComponent::paint(juce::Graphics& g)
 
     if (auto* lnf = dynamic_cast<customLookAndFeel*> (&getLookAndFeel()))
     {
-        g.setFont (lnf->getTitleFont());
+        lnf->drawGlowText(g, "Filter", bounds.reduced(8, 6), juce::Justification::topLeft, lnf->getTitleFont());
     }
-
-    g.setColour(findColour(colourScheme::fontColourId));
-    g.drawText("Filter", bounds.reduced(8,6), juce::Justification::topLeft);
 }
 
 void FilterComponent::resized()
