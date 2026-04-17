@@ -3,9 +3,14 @@
 #include "customLookAndFeel.h"
 #include "customRotarySlider.h"
 #include "colourScheme.h"
+#include "binaryData.h"
 
 //==============================================================================
-customLookAndFeel::customLookAndFeel()
+customLookAndFeel::customLookAndFeel() :
+        typeface(juce::Typeface::createSystemTypefaceFor(BinaryData::OrbitronRegular_ttf,
+                                                         BinaryData::OrbitronRegular_ttfSize)),
+        titleFont(juce::Font(juce::FontOptions().withTypeface(typeface).withHeight(15.0f))),
+        labelFont(juce::Font(juce::FontOptions().withTypeface(typeface).withHeight(10.0f)))
 {
     setColour(colourScheme::backgroundColourId, juce::Colour::fromString("ff1a1f13"));
     setColour(colourScheme::fontColourId, juce::Colour::fromString("ffe8a020"));
@@ -85,6 +90,7 @@ void customLookAndFeel::drawLabel(juce::Graphics& g, int x, int y, int width,  i
     juce::Rectangle localArea(x, y, width, height);
     auto textArea = localArea.removeFromBottom(11);
 
+    g.setFont (getLabelFont());
     g.setColour(findColour(colourScheme::fontColourId));
     g.drawFittedText(slider.getName(),
                      textArea,
@@ -105,4 +111,14 @@ void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
     drawKnobBody(g, center, radius);
     drawPointerLine(g, center, radius, rotaryStartAngle, rotaryEndAngle, sliderPos);
     drawLabel(g, x, y, width, height, slider);
+}
+
+juce::Font customLookAndFeel::getTitleFont()
+{
+    return titleFont;
+}
+
+juce::Font customLookAndFeel::getLabelFont()
+{
+    return labelFont;
 }

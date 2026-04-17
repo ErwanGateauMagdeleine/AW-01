@@ -26,6 +26,11 @@ void FilterComponent::paint(juce::Graphics& g)
     auto bounds = getLocalBounds().toFloat().reduced(lineThickness / 2.0f);
     g.drawRoundedRectangle(bounds, cornerRadius, lineThickness);
 
+    if (auto* lnf = dynamic_cast<customLookAndFeel*> (&getLookAndFeel()))
+    {
+        g.setFont (lnf->getTitleFont());
+    }
+
     g.setColour(findColour(colourScheme::fontColourId));
     g.drawText("Filter", bounds.reduced(8,6), juce::Justification::topLeft);
 }

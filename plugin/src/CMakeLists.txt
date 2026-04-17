@@ -66,10 +66,17 @@ target_compile_definitions("${PROJECT_NAME}"
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 
+juce_add_binary_data(
+    BINARY_DATA
+    SOURCES
+    gui/Orbitron-Regular.ttf
+)
+
 target_link_libraries("${PROJECT_NAME}"
     PRIVATE
     ${JUCE_DEPENDENCIES}
     PUBLIC
     juce::juce_recommended_config_flags
     juce::juce_recommended_lto_flags
-    juce::juce_recommended_warning_flags)
+    juce::juce_recommended_warning_flags
+    BINARY_DATA)

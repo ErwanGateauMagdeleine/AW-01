@@ -11,6 +11,9 @@ public:
                                          float sliderPos, float rotaryStartAngle, float rotaryEndAngle,
                                          juce::Slider& slider) override;
 
+    juce::Font getTitleFont();
+    juce::Font getLabelFont();
+
 private:
 
     void drawTrackArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle);
@@ -21,4 +24,8 @@ private:
 
     int labelHeight = 12;
     float labelFontSize = 12.0f;
+
+    juce::Typeface::Ptr typeface;
+    juce::Font titleFont;
+    juce::Font labelFont;
 };
