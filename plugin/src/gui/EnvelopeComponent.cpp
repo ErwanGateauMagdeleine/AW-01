@@ -1,6 +1,7 @@
 #pragma once
 
 #include "EnvelopeComponent.h"
+#include "colourScheme.h"
 
 EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState& parameters) :
     attackSlider(*parameters.getParameter("Envelope Follower Attack"), "Attack"),
@@ -18,28 +19,20 @@ EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState& paramet
 
 void EnvelopeComponent::paint(juce::Graphics& g)
 {
-    g.setColour(juce::Colours::black);
-    float cornerRadius = 10.0f;
-    float lineThickness = 2.0f;
+    auto bounds = getLocalBounds().toFloat();
 
-    auto bounds = getLocalBounds().toFloat().reduced(lineThickness / 2.0f);
-    g.drawRoundedRectangle(bounds, cornerRadius, lineThickness);
-
-    juce::FontOptions options("Futura", 15.0f, juce::Font::bold);
-    juce::Font customFont(options);
-
-    g.setFont(customFont);
-    g.drawText("Envelope", getLocalBounds().removeFromTop(20), juce::Justification::centred);
+    if (auto* lnf = dynamic_cast<customLookAndFeel*> (&getLookAndFeel()))
+    {
+        lnf->drawComponentBoundaries(g, "Envelope", bounds, juce::Justification::topLeft);
+    }
 }
 
 void EnvelopeComponent::resized()
 {
-    int knobWidth = attackSlider.getWidth();
-    int knobHeight = attackSlider.getHeight();
-    const int spacing = 20;
-    const int y = 25;
+    auto knobsAreaBounds = getLocalBounds().reduced(20, 20).translated(0, 5);
+    auto knobWidth = knobsAreaBounds.getWidth() / 3;
 
-    attackSlider.setBounds(spacing, y, knobWidth, knobHeight);
-    decaySlider.setBounds(spacing * 2 + knobWidth, y, knobWidth, knobHeight);
-    amountSlider.setBounds(spacing * 3 + knobWidth * 2, y, knobWidth, knobHeight);
+    attackSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
+    decaySlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
+    amountSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
 }

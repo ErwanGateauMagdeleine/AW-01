@@ -1,5 +1,6 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "gui/colourScheme.h"
 
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
@@ -7,36 +8,26 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
       envelopeComponent(processorRef.parameters),
       filterComponent(processorRef.parameters)
 {
-    /* Load Background image */
-    textureImage = juce::ImageCache::getFromMemory(BinaryData::Metal009_1KPNG_Color_png,
-                                                   BinaryData::Metal009_1KPNG_Color_pngSize);
+    setLookAndFeel(&lnf);
 
     addAndMakeVisible(envelopeComponent);
 
     addAndMakeVisible(filterComponent);
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
-    setSize (505, 100);
+
+    /* Set size is the last thing to do. */
+    setSize (250, 205);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 {
+    /* Reset the LookAndFeel to avoid dangling pointer */
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================
 void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    /* Tile the background  texture */
-    if (textureImage.isValid())
-    {
-        for (int y = 0; y < getHeight(); y += textureImage.getHeight())
-        {
-            for (int x = 0; x < getWidth(); x += textureImage.getWidth())
-            {
-                g.drawImageAt(textureImage, x, y);
-            }
-        }
-    }
+    g.fillAll(findColour(colourScheme::backgroundColourId));
 }
 
 void AudioPluginAudioProcessorEditor::resized()
@@ -45,5 +36,5 @@ void AudioPluginAudioProcessorEditor::resized()
     envelopeComponent.setBounds(0, 0, 250, 100);
 
     /* Draw filter component */
-    filterComponent.setBounds(255, 0, 250, 100);
+    filterComponent.setBounds(0, 105, 250, 100);
 }

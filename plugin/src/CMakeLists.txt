@@ -13,13 +13,6 @@ set_property(GLOBAL PROPERTY USE_FOLDERS YES)
 
 option(JUCE_ENABLE_MODULE_SOURCE_GROUPS "Show all module sources in IDE projects" ON)
 
-juce_add_binary_data(
-    BinaryData
-    SOURCES
-    gui/knob.png
-    gui/Metal009_1K-PNG_Color.png
-)
-
 juce_add_plugin("${PROJECT_NAME}"
                 COMPANY_NAME GateAudio
                 IS_SYNTH FALSE
@@ -50,7 +43,8 @@ set(SourceFiles
     gui/FilterComponent.h
     gui/FilterComponent.cpp
     gui/EnvelopeComponent.h
-    gui/EnvelopeComponent.cpp)
+    gui/EnvelopeComponent.cpp
+    gui/colourScheme.h)
 
 target_sources("${PROJECT_NAME}" PRIVATE ${SourceFiles})
 
@@ -72,6 +66,12 @@ target_compile_definitions("${PROJECT_NAME}"
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_17)
 
+juce_add_binary_data(
+    BINARY_DATA
+    SOURCES
+    gui/Orbitron-Regular.ttf
+)
+
 target_link_libraries("${PROJECT_NAME}"
     PRIVATE
     ${JUCE_DEPENDENCIES}
@@ -79,4 +79,4 @@ target_link_libraries("${PROJECT_NAME}"
     juce::juce_recommended_config_flags
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags
-    BinaryData)
+    BINARY_DATA)

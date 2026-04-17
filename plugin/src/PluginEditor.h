@@ -4,6 +4,7 @@
 #include "gui/customRotarySlider.h"
 #include "gui/FilterComponent.h"
 #include "gui/EnvelopeComponent.h"
+#include "gui/customLookAndFeel.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
@@ -22,11 +23,10 @@ private:
     AudioPluginAudioProcessor& processorRef;
 
     //==============================================================================
+    customLookAndFeel lnf;
 
     using APVTS = juce::AudioProcessorValueTreeState;
     using attachment = APVTS::SliderAttachment;
-
-    juce::Image textureImage;
 
     EnvelopeComponent envelopeComponent;
 
