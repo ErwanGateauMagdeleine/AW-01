@@ -1,30 +1,33 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "gui/colourScheme.h"
 
 //==============================================================================
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p),
-      fontOptions("Orbitron", 15.0f, juce::Font::bold),
-      font(fontOptions),
-      envelopeComponent(processorRef.parameters, font, juce::Colour::fromString(fontColourString)),
-      filterComponent(processorRef.parameters, font, juce::Colour::fromString(fontColourString))
+      envelopeComponent(processorRef.parameters),
+      filterComponent(processorRef.parameters)
 {
+    setLookAndFeel(&lnf);
+
     addAndMakeVisible(envelopeComponent);
 
     addAndMakeVisible(filterComponent);
-    // Make sure that before the constructor has finished, you've set the
-    // editor's size to whatever you need it to be.
+
+    /* Set size is the last thing to do. */
     setSize (505, 100);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
 {
+    /* Reset the LookAndFeel to avoid dangling pointer */
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================
 void AudioPluginAudioProcessorEditor::paint (juce::Graphics& g)
 {
-    g.fillAll(juce::Colour::fromString(colourString));
+    g.fillAll(findColour(colourScheme::backgroundColourId));
 }
 
 void AudioPluginAudioProcessorEditor::resized()

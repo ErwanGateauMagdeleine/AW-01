@@ -7,12 +7,11 @@
 class CustomRotarySlider : public juce::Slider
 {
 public:
-    CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel, juce::Font newFont, juce::Colour newFontColour);
+    CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel);
     ~CustomRotarySlider();
 
 private:
     juce::RangedAudioParameter* param;
-    customLookAndFeel lnf;
 
     const int textBoxHeight = 20;
 };

@@ -5,11 +5,9 @@
 #include "customRotarySlider.h"
 
 //==============================================================================
-CustomRotarySlider::CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel, juce::Font newFont, juce::Colour newFontColour) :
-        param(&rap),
-        lnf(newFont, newFontColour)
+CustomRotarySlider::CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel) :
+        param(&rap)
 {
-    setLookAndFeel(&lnf);
     setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);
     setName(knobLabel);
@@ -17,6 +15,4 @@ CustomRotarySlider::CustomRotarySlider(juce::RangedAudioParameter& rap, juce::St
 
 CustomRotarySlider::~CustomRotarySlider()
 {
-    /* Reset the LookAndFeel to avoid dangling pointer */
-    setLookAndFeel(nullptr);
 }

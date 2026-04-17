@@ -1,18 +1,16 @@
 #pragma once
 
 #include "FilterComponent.h"
+#include "colourScheme.h"
 
-FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters, juce::Font newFont, juce::Colour newFontColour) :
-    freqSlider(*parameters.getParameter("Filter Center Frequency"), "Cutoff", newFont, newFontColour),
-    resSlider(*parameters.getParameter("Filter Renonance"), "Res", newFont, newFontColour),
-    morphSlider(*parameters.getParameter("Filter Morph"), "Morph", newFont, newFontColour),
+FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters) :
+    freqSlider(*parameters.getParameter("Filter Center Frequency"), "Cutoff"),
+    resSlider(*parameters.getParameter("Filter Renonance"), "Res"),
+    morphSlider(*parameters.getParameter("Filter Morph"), "Morph"),
     freqAttachment(parameters, "Filter Center Frequency", freqSlider),
     resAttachment(parameters, "Filter Renonance", resSlider),
-    morphAttachment(parameters, "Filter Morph", morphSlider),
-    font(std::move(newFont))
+    morphAttachment(parameters, "Filter Morph", morphSlider)
 {
-    fontColour = newFontColour;
-
     for (auto* s : { &freqSlider, &resSlider, &morphSlider })
     {
         addAndMakeVisible(*s);
@@ -21,15 +19,14 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters,
 
 void FilterComponent::paint(juce::Graphics& g)
 {
-    g.setColour(juce::Colours::black);
     float cornerRadius = 10.0f;
     float lineThickness = 2.0f;
 
-    g.setColour(fontColour);
+    g.setColour(findColour(colourScheme::componentOutlineColourId));
     auto bounds = getLocalBounds().toFloat().reduced(lineThickness / 2.0f);
     g.drawRoundedRectangle(bounds, cornerRadius, lineThickness);
 
-    g.setFont(font);
+    g.setColour(findColour(colourScheme::fontColourId));
     g.drawText("Filter", bounds.reduced(8,6), juce::Justification::topLeft);
 }
 

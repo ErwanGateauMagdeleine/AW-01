@@ -7,7 +7,7 @@
 class EnvelopeComponent : public juce::Component
 {
 public:
-    EnvelopeComponent(juce::AudioProcessorValueTreeState& state, juce::Font newFont, juce::Colour newFontColour);
+    EnvelopeComponent(juce::AudioProcessorValueTreeState& state);
 
     void paint(juce::Graphics& g) override;
 
@@ -22,7 +22,4 @@ private:
     attachment attackAttachment;
     attachment decayAttachment;
     attachment amountAttachment;
-
-    juce::Font font;
-    juce::Colour fontColour;
 };

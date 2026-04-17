@@ -1,18 +1,16 @@
 #pragma once
 
 #include "EnvelopeComponent.h"
+#include "colourScheme.h"
 
-EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState& parameters, juce::Font newFont, juce::Colour newFontColour) :
-    attackSlider(*parameters.getParameter("Envelope Follower Attack"), "Attack", newFont, newFontColour),
-    decaySlider(*parameters.getParameter("Envelope Follower Decay"), "Decay", newFont, newFontColour),
-    amountSlider(*parameters.getParameter("Envelope Follower Amount"), "Amount", newFont, newFontColour),
+EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState& parameters) :
+    attackSlider(*parameters.getParameter("Envelope Follower Attack"), "Attack"),
+    decaySlider(*parameters.getParameter("Envelope Follower Decay"), "Decay"),
+    amountSlider(*parameters.getParameter("Envelope Follower Amount"), "Amount"),
     attackAttachment(parameters, "Envelope Follower Attack", attackSlider),
     decayAttachment(parameters, "Envelope Follower Decay", decaySlider),
-    amountAttachment(parameters, "Envelope Follower Amount", amountSlider),
-    font(std::move(newFont))
+    amountAttachment(parameters, "Envelope Follower Amount", amountSlider)
 {
-    fontColour = newFontColour;
-
     for (auto* s : { &attackSlider, &decaySlider, &amountSlider })
     {
         addAndMakeVisible(*s);
@@ -21,15 +19,14 @@ EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState& paramet
 
 void EnvelopeComponent::paint(juce::Graphics& g)
 {
-    g.setColour(juce::Colours::black);
     float cornerRadius = 10.0f;
     float lineThickness = 2.0f;
 
-    g.setColour(fontColour);
+    g.setColour(findColour(colourScheme::componentOutlineColourId));
     auto bounds = getLocalBounds().toFloat().reduced(lineThickness / 2.0f);
     g.drawRoundedRectangle(bounds, cornerRadius, lineThickness);
 
-    g.setFont(font);
+    g.setColour(findColour(colourScheme::fontColourId));
     g.drawText("Envelope", bounds.reduced(8, 6), juce::Justification::topLeft);
 }
 

@@ -2,12 +2,18 @@
 
 #include "customLookAndFeel.h"
 #include "customRotarySlider.h"
+#include "colourScheme.h"
 
 //==============================================================================
-customLookAndFeel::customLookAndFeel(juce::Font newFont, juce::Colour newFontColour) :
-        font(std::move(newFont))
+customLookAndFeel::customLookAndFeel()
 {
-    fontColour = newFontColour;
+    setColour(colourScheme::backgroundColourId, juce::Colour::fromString("ff1a1f13"));
+    setColour(colourScheme::fontColourId, juce::Colour::fromString("ffe8a020"));
+    setColour(colourScheme::componentOutlineColourId, juce::Colour::fromString("ffe8a020"));
+    setColour(colourScheme::sliderTrackColourId, juce::Colour::fromString("ff1e2615"));
+    setColour(colourScheme::knobOutlineColourId, juce::Colour::fromString("ffe8a020"));
+    setColour(colourScheme::knobBodyInsidecolourId, juce::Colour::fromString("ff2e3820"));
+    setColour(colourScheme::knowBodyOutsideColourId, juce::Colour::fromString("ff141a0c"));
 }
 
 void customLookAndFeel::drawTrackArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle)
@@ -18,7 +24,7 @@ void customLookAndFeel::drawTrackArk(juce::Graphics& g, juce::Point<float> cente
                     radius * 2, radius * 2,
                     rotaryStartAngle, rotaryEndAngle, true);
 
-    g.setColour(juce::Colour(0xff1e2615));
+    g.setColour(findColour(colourScheme::sliderTrackColourId));
     g.strokePath(trackArk, juce::PathStrokeType(4.0f));
 }
 
@@ -31,19 +37,19 @@ void customLookAndFeel::drawValueArk(juce::Graphics& g, juce::Point<float> cente
                     radius * 2, radius * 2,
                     rotaryStartAngle, valueAngle, true);
 
-    g.setColour(juce::Colour(0xffe8a020).withAlpha(0.35f));
+    g.setColour(findColour(colourScheme::knobOutlineColourId).withAlpha(0.35f));
     g.strokePath(valueArk, juce::PathStrokeType(6.0f));
 
-    g.setColour(juce::Colour(0xffe8a020));
+    g.setColour(findColour(colourScheme::knobOutlineColourId));
     g.strokePath(valueArk, juce::PathStrokeType(2.5f));
 }
 
 void customLookAndFeel::drawKnobBody(juce::Graphics& g, juce::Point<float> center, float radius)
 {
-    juce::ColourGradient bodyGrad(juce::Colour(0xff2e3820),
+    juce::ColourGradient bodyGrad(findColour(colourScheme::knobBodyInsidecolourId),
                                   center.getX(),
                                   center.getY(),
-                                  juce::Colour(0xff141a0c),
+                                  findColour(colourScheme::knowBodyOutsideColourId),
                                   center.getX() - radius,
                                   center.getY() - radius,
                                   true);
@@ -67,10 +73,10 @@ void customLookAndFeel::drawPointerLine(juce::Graphics& g, juce::Point<float> ce
 
     pointerLine.addLineSegment(pointer, 1.5f);
 
-    g.setColour(juce::Colour(0xffe8a020).withAlpha(0.35f));
+    g.setColour(findColour(colourScheme::knobOutlineColourId).withAlpha(0.35f));
     g.strokePath(pointerLine,juce::PathStrokeType(3.0f));
 
-    g.setColour(juce::Colour(0xffe8a020));
+    g.setColour(findColour(colourScheme::knobOutlineColourId));
     g.strokePath(pointerLine, juce::PathStrokeType(1.5f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
 }
 
@@ -79,8 +85,7 @@ void customLookAndFeel::drawLabel(juce::Graphics& g, int x, int y, int width,  i
     juce::Rectangle localArea(x, y, width, height);
     auto textArea = localArea.removeFromBottom(11);
 
-    g.setColour(fontColour);
-    g.setFont(font.withHeight(10.0));
+    g.setColour(findColour(colourScheme::fontColourId));
     g.drawFittedText(slider.getName(),
                      textArea,
                      juce::Justification::centred,

@@ -4,6 +4,7 @@
 #include "gui/customRotarySlider.h"
 #include "gui/FilterComponent.h"
 #include "gui/EnvelopeComponent.h"
+#include "gui/customLookAndFeel.h"
 
 //==============================================================================
 class AudioPluginAudioProcessorEditor  : public juce::AudioProcessorEditor
@@ -22,19 +23,14 @@ private:
     AudioPluginAudioProcessor& processorRef;
 
     //==============================================================================
+    customLookAndFeel lnf;
 
     using APVTS = juce::AudioProcessorValueTreeState;
     using attachment = APVTS::SliderAttachment;
 
-    const juce::String fontColourString = "ffe8a020";
-    juce::FontOptions fontOptions;
-    juce::Font font;
-
     EnvelopeComponent envelopeComponent;
 
     FilterComponent filterComponent;
-
-    const juce::String colourString = "ff1a1f13";
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (AudioPluginAudioProcessorEditor)
 };
