@@ -15,6 +15,8 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters)
     {
         addAndMakeVisible(*s);
     }
+
+    addAndMakeVisible(screen);
 }
 
 void FilterComponent::paint(juce::Graphics& g)
@@ -29,10 +31,15 @@ void FilterComponent::paint(juce::Graphics& g)
 
 void FilterComponent::resized()
 {
-    auto knobsAreaBounds = getLocalBounds().reduced(20, 20).translated(0, 5);
+    auto bounds = getLocalBounds().reduced(20, 20);
+    auto knobsAreaBounds = bounds.removeFromTop((int)(bounds.getHeight() / 4.0f)).reduced(0, 5).translated(0,5);
+    bounds = bounds.reduced(0, 5).translated(0,5);
+
     auto knobWidth = knobsAreaBounds.getWidth() / 3;
 
     freqSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
     resSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
     morphSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
+
+    screen.setBounds(bounds);
 }

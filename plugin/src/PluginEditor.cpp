@@ -15,7 +15,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     addAndMakeVisible(filterComponent);
 
     /* Set size is the last thing to do. */
-    setSize (250, 205);
+    setSize (250, 355);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -36,5 +36,5 @@ void AudioPluginAudioProcessorEditor::resized()
     envelopeComponent.setBounds(0, 0, 250, 100);
 
     /* Draw filter component */
-    filterComponent.setBounds(0, 105, 250, 100);
+    filterComponent.setBounds(0, 105, 250, 250);
 }
