@@ -31,9 +31,10 @@ void FilterComponent::paint(juce::Graphics& g)
 
 void FilterComponent::resized()
 {
-    auto bounds = getLocalBounds().reduced(20, 20);
-    auto knobsAreaBounds = bounds.removeFromTop((int)(bounds.getHeight() / 4.0f)).reduced(0, 5).translated(0,5);
-    bounds = bounds.reduced(0, 5).translated(0,5);
+    auto bounds = getLocalBounds();
+    auto knobsAreaBounds = bounds.removeFromTop((int)(bounds.getHeight() / 3.0f)).reduced(20, 20).translated(0, 5);
+
+    bounds = bounds.reduced(20, 20);
 
     knobWidth = knobsAreaBounds.getWidth() / 3;
     knobHeight = knobsAreaBounds.getHeight();
