@@ -35,11 +35,18 @@ void FilterComponent::resized()
     auto knobsAreaBounds = bounds.removeFromTop((int)(bounds.getHeight() / 4.0f)).reduced(0, 5).translated(0,5);
     bounds = bounds.reduced(0, 5).translated(0,5);
 
-    auto knobWidth = knobsAreaBounds.getWidth() / 3;
+    knobWidth = knobsAreaBounds.getWidth() / 3;
+    knobHeight = knobsAreaBounds.getHeight();
 
     freqSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
     resSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
     morphSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
 
     screen.setBounds(bounds);
+}
+
+void FilterComponent::getKnobSize(int* width, int* height)
+{
+    *width = knobWidth;
+    *height = knobHeight;
 }

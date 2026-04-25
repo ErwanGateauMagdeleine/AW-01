@@ -38,3 +38,9 @@ void AudioPluginAudioProcessorEditor::resized()
     /* Draw filter component */
     filterComponent.setBounds(0, 105, 250, 250);
 }
+
+void AudioPluginAudioProcessorEditor::getKnobSizes(int* filterCompKnobWidth, int* filterCompKnobHeight, int* EnvelopeKnobWidth, int* EnvelopeKnobHeight)
+{
+    envelopeComponent.getKnobSize(EnvelopeKnobWidth, EnvelopeKnobHeight);
+    filterComponent.getKnobSize(filterCompKnobWidth, filterCompKnobHeight);
+}

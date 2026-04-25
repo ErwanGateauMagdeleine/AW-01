@@ -14,6 +14,8 @@ public:
 
     void resized() override;
 
+    void getKnobSize(int* width, int* height);
+
 private:
     CustomRotarySlider freqSlider, resSlider, morphSlider;
 
@@ -24,4 +26,7 @@ private:
     attachment freqAttachment;
     attachment resAttachment;
     attachment morphAttachment;
+
+    int knobWidth;
+    int knobHeight;
 };

@@ -13,6 +13,8 @@ public:
 
     void resized() override;
 
+    void getKnobSize(int* width, int* height);
+
 private:
     CustomRotarySlider attackSlider, decaySlider, amountSlider;
 
@@ -22,4 +24,7 @@ private:
     attachment attackAttachment;
     attachment decayAttachment;
     attachment amountAttachment;
+
+    int knobWidth;
+    int knobHeight;
 };
