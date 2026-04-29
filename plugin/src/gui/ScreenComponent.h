@@ -14,12 +14,19 @@ public:
 private:
     juce::Rectangle<float> gainLabelArea;
     juce::Rectangle<float> screenArea;
+    juce::Rectangle<float> frequencyLabelArea;
 
     const float dBMin = -30.0f;
     const float dBMax = 30.0f;
     static constexpr int dBMarks[] = {-24, -18, -12, -6, 0, 6, 12, 18, 24};
+
     const float dashLen = 4.0f;
     const float gapLen = 6.0f;
+
+    const float freqMin = 15.0f;
+    const float freqMax = 30000.0f;
+    static constexpr int freqMarks[] = { 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 15000, 20000 };
+    static constexpr int freqLabels[] = { 20, 100, 1000, 10000 };
 
     float cornerSize = 12.0f;
     float strokeWidth = 2.0f;
@@ -27,6 +34,9 @@ private:
     void drawScreenBoundaries(juce::Graphics& g);
     void drawScreenBackground(juce::Graphics& g);
     float dbToY(float gain, float yMin, float yMax);
+    float freqToX(float freq, float xMin, float xMax);
     void drawScreenGainLines(juce::Graphics& g);
     void drawGainLabels(juce::Graphics& g);
+    void drawFreqLabels(juce::Graphics& g);
+    void drawFreqLines(juce::Graphics& g);
 };

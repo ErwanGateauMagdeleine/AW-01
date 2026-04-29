@@ -11,6 +11,11 @@ float ScreenComponent::dbToY(float gain, float yMin, float yMax)
     return juce::jmap(gain, dBMin, dBMax, yMax, yMin);
 }
 
+float ScreenComponent::freqToX(float freq, float xMin, float xMax)
+{
+    return juce::jmap(std::log10(freq), std::log10(freqMin), std::log10(freqMax), xMin, xMax);
+}
+
 void ScreenComponent::drawScreenBoundaries(juce::Graphics& g)
 {
     juce::Path ScreenBoundsPath;
@@ -71,7 +76,7 @@ void ScreenComponent::drawGainLabels(juce::Graphics& g)
 {
     for (int mark : dBMarks)
     {
-        float y = dbToY((float)mark, screenArea.getY(), screenArea.getY() + screenArea.getHeight());
+        float y = dbToY((float)mark, gainLabelArea.getY(), gainLabelArea.getY() + gainLabelArea.getHeight());
         juce::String label = (mark > 0 ? "+" : "") + juce::String(mark);
 
         if (auto* lnf = dynamic_cast<customLookAndFeel*> (&getLookAndFeel()))
@@ -84,12 +89,54 @@ void ScreenComponent::drawGainLabels(juce::Graphics& g)
     }
 }
 
+void ScreenComponent::drawFreqLabels(juce::Graphics& g)
+{
+    for (int mark : freqLabels)
+    {
+        float x = freqToX((float)mark, frequencyLabelArea.getX(), frequencyLabelArea.getX() + frequencyLabelArea.getWidth());
+        juce::String label = (mark >= 1000) ? (juce::String(mark / 1000) + "k") : (juce::String(mark));
+
+        if (auto* lnf = dynamic_cast<customLookAndFeel*> (&getLookAndFeel()))
+        {
+            lnf->drawGlowText(g, label,
+                              juce::Rectangle<float>(x - 12, frequencyLabelArea.getY(), 24, frequencyLabelArea.getHeight()),
+                              juce::Justification::centred,
+                              lnf->getScreenLabelsFont());
+        }
+    }
+}
+
+void ScreenComponent::drawFreqLines(juce::Graphics& g)
+{
+    g.setColour(findColour(colourScheme::screenLinesColourId));
+
+    for (int mark : freqMarks)
+    {
+        juce::Path dashedLine;
+        float yPos = screenArea.getY();
+        float h = yPos + screenArea.getHeight();
+
+        float x = freqToX((float)mark, frequencyLabelArea.getX(), frequencyLabelArea.getX() + frequencyLabelArea.getWidth());
+
+        while(yPos < h)
+        {
+            dashedLine.startNewSubPath(x, yPos);
+            dashedLine.lineTo(x, juce::jmin(yPos + dashLen, h));
+            yPos += dashLen + gapLen;
+        }
+
+        g.strokePath(dashedLine, juce::PathStrokeType(1.0f));
+    }
+}
+
 void ScreenComponent::paint(juce::Graphics& g)
 {
     drawScreenBackground(g);
     drawScreenGainLines(g);
     drawScreenBoundaries(g);
     drawGainLabels(g);
+    drawFreqLabels(g);
+    drawFreqLines(g);
 }
 
 void ScreenComponent::resized()
@@ -97,5 +144,6 @@ void ScreenComponent::resized()
     auto bounds = getLocalBounds().toFloat();
 
     gainLabelArea = bounds.removeFromLeft(24.0f);
+    frequencyLabelArea = bounds.removeFromBottom(10.0f);
     screenArea = bounds;
 }
