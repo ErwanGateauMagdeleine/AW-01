@@ -19,6 +19,9 @@ customLookAndFeel::customLookAndFeel() :
     setColour(colourScheme::knobOutlineColourId, juce::Colour::fromString("ffe8a020"));
     setColour(colourScheme::knobBodyInsidecolourId, juce::Colour::fromString("ff2e3820"));
     setColour(colourScheme::knowBodyOutsideColourId, juce::Colour::fromString("ff141a0c"));
+    setColour(colourScheme::screenBoundaryInnerColour, juce::Colour::fromString("ff4a5c38"));
+    setColour(colourScheme::screenBoundaryOuterColour, juce::Colour::fromString("ff0a0e07"));
+    setColour(colourScheme::screenBackgroundColour, juce::Colour::fromString("ff060a04"));
 }
 
 void customLookAndFeel::drawTrackArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle)

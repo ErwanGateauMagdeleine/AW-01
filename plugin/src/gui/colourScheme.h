@@ -9,5 +9,8 @@ namespace colourScheme
         knowBodyOutsideColourId     = 0x1200004,
         fontColourId                = 0x1200005,
         componentOutlineColourId    = 0x1200006,
+        screenBoundaryInnerColour   = 0x1200007,
+        screenBoundaryOuterColour   = 0x1200008,
+        screenBackgroundColour      = 0x1200009,
     };
 }

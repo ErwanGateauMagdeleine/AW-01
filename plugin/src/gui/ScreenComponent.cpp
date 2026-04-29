@@ -5,33 +5,47 @@ ScreenComponent::ScreenComponent()
 
 }
 
-void ScreenComponent::drawScreenBoundaries(juce::Graphics& g, juce::Rectangle<float> bounds)
+void ScreenComponent::drawScreenBoundaries(juce::Graphics& g)
 {
-    float cornerSize = 12.0f;
-    float strokeWidth = 2.0f;
+    auto bounds = getLocalBounds().toFloat();
     juce::Path ScreenBoundsPath;
 
-    ScreenBoundsPath.addRoundedRectangle(bounds, cornerSize);
+    g.setColour(findColour(colourScheme::screenBoundaryOuterColour));
+    g.drawRoundedRectangle(bounds.expanded(1), cornerSize, strokeWidth);
 
-    juce::PathStrokeType strokeType(strokeWidth,
-                                    juce::PathStrokeType::curved,
-                                    juce::PathStrokeType::rounded);
-    strokeType.createStrokedPath(ScreenBoundsPath, ScreenBoundsPath);
+    g.setColour(findColour(colourScheme::screenBoundaryInnerColour));
+    g.drawRoundedRectangle(bounds, cornerSize, strokeWidth);
+}
 
-    juce::ColourGradient gradient(
-        juce::Colours::cyan,   0.0f,              bounds.getCentreY(),
-        juce::Colours::purple, bounds.getWidth(), bounds.getCentreY(),
-        false
-    );
+void ScreenComponent::drawScreenBackground(juce::Graphics& g)
+{
+    auto bounds = getLocalBounds().toFloat().reduced(2.0f);
+    float cx = getWidth() / 2.0f;
+    float cy = getHeight() / 2.0f;
+    float radius = std::sqrt(cx * cx + cy * cy);
 
-    g.setGradientFill(gradient);
-    g.fillPath(ScreenBoundsPath);
+    g.setColour(findColour(colourScheme::screenBackgroundColour));
+    g.fillRoundedRectangle(bounds, cornerSize);
+
+    juce::ColourGradient warmGlow(juce::Colour(0x991e280a), cx, cy,
+                                  juce::Colour(0x00000000), cx, cy + radius,
+                                  true);
+    g.setGradientFill(warmGlow);
+    g.fillRoundedRectangle(bounds, cornerSize);
+
+    juce::ColourGradient vignette(juce::Colour(0x00000000), cx, cy,
+                                  juce::Colour(0x8c000000), cx, cy + radius,
+                                  true);
+    g.setGradientFill(vignette);
+    g.fillRoundedRectangle(bounds, cornerSize);
+
+
 }
 
 void ScreenComponent::paint(juce::Graphics& g)
 {
-    auto bounds = getLocalBounds().toFloat();
-    drawScreenBoundaries(g, bounds);
+    drawScreenBoundaries(g);
+    drawScreenBackground(g);
 }
 
 void ScreenComponent::resized()

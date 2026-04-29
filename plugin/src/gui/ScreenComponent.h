@@ -12,5 +12,8 @@ public:
     void resized() override;
 
 private:
-    void drawScreenBoundaries(juce::Graphics& g, juce::Rectangle<float> bounds);
-};
+    float cornerSize = 12.0f;
+    float strokeWidth = 2.0f;
+
+    void drawScreenBoundaries(juce::Graphics& g);
+    void drawScreenBackground(juce::Graphics& g);
