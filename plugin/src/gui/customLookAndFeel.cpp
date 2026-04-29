@@ -9,8 +9,8 @@
 customLookAndFeel::customLookAndFeel() :
         typeface(juce::Typeface::createSystemTypefaceFor(BinaryData::OrbitronRegular_ttf,
                                                          BinaryData::OrbitronRegular_ttfSize)),
-        titleFont(juce::Font(juce::FontOptions().withTypeface(typeface).withHeight(15.0f))),
-        labelFont(juce::Font(juce::FontOptions().withTypeface(typeface).withHeight(10.0f)))
+        titleFont(juce::FontOptions().withHeight(15.0f).withName("").withStyle("").withTypeface(typeface)),
+        labelFont(juce::FontOptions().withHeight(10.0f).withName("").withStyle("").withTypeface(typeface))
 {
     setColour(colourScheme::backgroundColourId, juce::Colour::fromString("ff1a1f13"));
     setColour(colourScheme::fontColourId, juce::Colour::fromString("ffe8a020"));
