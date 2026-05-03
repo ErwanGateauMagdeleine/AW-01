@@ -3,8 +3,8 @@
 #include <catch2/catch_test_macros.hpp>
 #include <cmath>
 #include <vector>
-#include "AutoWah.h"
 #include <numbers>
+#include "AutoWah.h"
 
 TEST_CASE("AutoWah tracks envelope of an increasing amplitude sine wave", "[AutoWah]")
 {

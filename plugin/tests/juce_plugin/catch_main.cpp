@@ -3,3 +3,4 @@
 
 #include "ParameterStateTests.h"
 #include "KnobSizeTest.h"
+#include "AudioProcessingTest.h"
