@@ -4,6 +4,7 @@
 #include <cmath>
 #include <vector>
 #include "AutoWah.h"
+#include <numbers>
 
 TEST_CASE("AutoWah tracks envelope of an increasing amplitude sine wave", "[AutoWah]")
 {
@@ -12,8 +13,6 @@ TEST_CASE("AutoWah tracks envelope of an increasing amplitude sine wave", "[Auto
     constexpr int numSamples  = 512;
     constexpr float sampleRate = 44100.0f;
     constexpr float frequency  = 440.0f; // Hz
-
-    const SampleType PI = static_cast<SampleType>(3.14159265359);
 
     // Setup AutoWah
     AutoWah<SampleType> autoWah;
@@ -39,7 +38,7 @@ TEST_CASE("AutoWah tracks envelope of an increasing amplitude sine wave", "[Auto
     {
         float t = static_cast<float>(n) / sampleRate;
         float amp = static_cast<float>(n) / numSamples; // linearly increases from 0 to 1
-        inputSignal[n] = amp * std::sin(2.0f * PI * frequency * t);
+        inputSignal[n] = amp * std::sin(2.0f * std::numbers::pi_v<SampleType> * frequency * t);
     }
 
     /* Track filter frequencies per sample */
