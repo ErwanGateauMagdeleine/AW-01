@@ -3,13 +3,14 @@
 #include "FilterComponent.h"
 #include "colourScheme.h"
 
-FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters) :
+FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters, AutoWah<float>& leftWah, AutoWah<float>& rightWah) :
     freqSlider(*parameters.getParameter("Filter Center Frequency"), "Cutoff"),
     resSlider(*parameters.getParameter("Filter Renonance"), "Res"),
     morphSlider(*parameters.getParameter("Filter Morph"), "Morph"),
     freqAttachment(parameters, "Filter Center Frequency", freqSlider),
     resAttachment(parameters, "Filter Renonance", resSlider),
-    morphAttachment(parameters, "Filter Morph", morphSlider)
+    morphAttachment(parameters, "Filter Morph", morphSlider),
+    screen(leftWah, rightWah)
 {
     for (auto* s : { &freqSlider, &resSlider, &morphSlider })
     {

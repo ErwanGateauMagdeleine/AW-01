@@ -1,11 +1,12 @@
 #pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
+#include "../dsp/AutoWah.h"
 
 class ScreenComponent : public juce::Component
 {
 public:
-    ScreenComponent();
+    ScreenComponent(AutoWah<float>& leftWah, AutoWah<float>& rightWah);
 
     void paint(juce::Graphics& g) override;
 
@@ -39,4 +40,7 @@ private:
     void drawGainLabels(juce::Graphics& g);
     void drawFreqLabels(juce::Graphics& g);
     void drawFreqLines(juce::Graphics& g);
+
+    AutoWah<float> leftWah, rightWah;
+
 };

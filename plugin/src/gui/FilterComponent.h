@@ -8,7 +8,7 @@
 class FilterComponent : public juce::Component
 {
 public:
-    FilterComponent(juce::AudioProcessorValueTreeState& state);
+    FilterComponent(juce::AudioProcessorValueTreeState& state, AutoWah<float>& leftWah, AutoWah<float>& rightWah);
 
     void paint(juce::Graphics& g) override;
 

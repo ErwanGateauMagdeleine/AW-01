@@ -2,7 +2,9 @@
 #include "colourScheme.h"
 #include "customLookAndFeel.h"
 
-ScreenComponent::ScreenComponent()
+ScreenComponent::ScreenComponent(AutoWah<float>& leftWah, AutoWah<float>& rightWah)
+    : leftWah(leftWah),
+      rightWah(rightWah)
 {
 }
 
