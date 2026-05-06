@@ -3,9 +3,9 @@
 #include "customLookAndFeel.h"
 
 ScreenComponent::ScreenComponent(AutoWah<float>& leftWah, AutoWah<float>& rightWah)
-    : leftWah(leftWah),
-      rightWah(rightWah)
+    : curveDisplay(leftWah, rightWah, dBMin, dBMax, freqMin, freqMax, cornerSize)
 {
+    addAndMakeVisible(curveDisplay);
 }
 
 float ScreenComponent::dbToY(float gain, float yMin, float yMax)
@@ -148,4 +148,6 @@ void ScreenComponent::resized()
     gainLabelArea = bounds.removeFromLeft(24.0f);
     frequencyLabelArea = bounds.removeFromBottom(10.0f);
     screenArea = bounds;
+
+    curveDisplay.setBounds(screenArea.toNearestInt().reduced(1));
 }

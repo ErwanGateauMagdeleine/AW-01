@@ -25,6 +25,7 @@ customLookAndFeel::customLookAndFeel() :
     setColour(colourScheme::screenBackgroundColourId, juce::Colour::fromString("ff060a04"));
     setColour(colourScheme::screenLinesColourId, juce::Colour::fromString("18e8a020"));
     setColour(colourScheme::screenLabelColourId, juce::Colour::fromString("66e8a020"));
+    setColour(colourScheme::FilterCurveColourId, juce::Colour::fromString("ffe8a020"));
 }
 
 void customLookAndFeel::drawTrackArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle)

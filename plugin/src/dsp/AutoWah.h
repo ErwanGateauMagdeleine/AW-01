@@ -95,6 +95,16 @@ public:
         return filterFrequency;
     }
 
+    SampleType getMagnitudeFromFrequency(SampleType frequency)
+    {
+        return wahFilt.getMagnitudeFromFrequency(frequency);
+    }
+
+    double getSampleRate()
+    {
+        return wahFilt.getSampleRate();
+    }
+
 private:
     EnvelopeFollower<SampleType> envFollower;
     WahFilter<SampleType> wahFilt;

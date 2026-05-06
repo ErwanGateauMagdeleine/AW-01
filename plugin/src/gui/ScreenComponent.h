@@ -1,7 +1,7 @@
 #pragma once
 
 #include <juce_gui_basics/juce_gui_basics.h>
-#include "../dsp/AutoWah.h"
+#include "FilterCurveDisplay.h"
 
 class ScreenComponent : public juce::Component
 {
@@ -25,7 +25,7 @@ private:
     const float gapLen = 6.0f;
 
     const float freqMin = 15.0f;
-    const float freqMax = 30000.0f;
+    const float freqMax = 21000.0f;
     static constexpr int freqMarks[] = { 20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 15000, 20000 };
     static constexpr int freqLabels[] = { 20, 100, 1000, 10000 };
 
@@ -41,6 +41,5 @@ private:
     void drawFreqLabels(juce::Graphics& g);
     void drawFreqLines(juce::Graphics& g);
 
-    AutoWah<float> leftWah, rightWah;
-
+    FilterCurveDisplay curveDisplay;
 };

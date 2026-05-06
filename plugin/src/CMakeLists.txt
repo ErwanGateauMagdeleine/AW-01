@@ -46,7 +46,9 @@ set(SourceFiles
     gui/EnvelopeComponent.cpp
     gui/colourScheme.h
     gui/ScreenComponent.cpp
-    gui/ScreenComponent.h)
+    gui/ScreenComponent.h
+    gui/FilterCurveDisplay.cpp
+    gui/FilterCurveDisplay.h)
 
 target_sources("${PROJECT_NAME}" PRIVATE ${SourceFiles})
 

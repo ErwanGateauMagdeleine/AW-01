@@ -151,6 +151,11 @@ public:
         return std::abs(numerator / denominator);
     }
 
+    double getSampleRate()
+    {
+        return sampleRate;
+    }
+
 private:
 
     void computeCoefficients()

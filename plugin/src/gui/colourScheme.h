@@ -13,6 +13,7 @@ namespace colourScheme
         screenBoundaryOuterColourId = 0x1200008,
         screenBackgroundColourId    = 0x1200009,
         screenLinesColourId         = 0x120000A,
-        screenLabelColourId         = 0x120000B
+        screenLabelColourId         = 0x120000B,
+        FilterCurveColourId         = 0x120000C,
     };
 }
