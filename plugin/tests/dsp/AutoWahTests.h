@@ -15,7 +15,7 @@ TEST_CASE("AutoWah tracks envelope of an increasing amplitude sine wave", "[Auto
     constexpr float frequency  = 440.0f; // Hz
 
     // Setup AutoWah
-    AutoWah<SampleType> autoWah;
+    AutoWah<SampleType> autoWah(50.0f, 15000.0f);
 
     constexpr SampleType baseFreq  = 500.0f;
     constexpr SampleType envAmount = 2.0f;
