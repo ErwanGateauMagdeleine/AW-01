@@ -2,3 +2,5 @@
 #include <catch2/catch_all.hpp>
 
 #include "ParameterStateTests.h"
+#include "KnobSizeTest.h"
+#include "AudioProcessingTest.h"

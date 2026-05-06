@@ -17,6 +17,7 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+    void getKnobSizes(int* filterCompKnobWidth, int* filterCompKnobHeight, int* EnvelopeKnobWidth, int* EnvelopeKnobHeight);
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

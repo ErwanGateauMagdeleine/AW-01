@@ -9,8 +9,9 @@
 customLookAndFeel::customLookAndFeel() :
         typeface(juce::Typeface::createSystemTypefaceFor(BinaryData::OrbitronRegular_ttf,
                                                          BinaryData::OrbitronRegular_ttfSize)),
-        titleFont(juce::Font(juce::FontOptions().withTypeface(typeface).withHeight(15.0f))),
-        labelFont(juce::Font(juce::FontOptions().withTypeface(typeface).withHeight(10.0f)))
+        titleFont(juce::FontOptions().withHeight(15.0f).withName("").withStyle("").withTypeface(typeface)),
+        labelFont(juce::FontOptions().withHeight(10.0f).withName("").withStyle("").withTypeface(typeface)),
+        screenLabelsFont(juce::FontOptions().withHeight(8.0f).withName("").withStyle("").withTypeface(typeface))
 {
     setColour(colourScheme::backgroundColourId, juce::Colour::fromString("ff1a1f13"));
     setColour(colourScheme::fontColourId, juce::Colour::fromString("ffe8a020"));
@@ -19,6 +20,12 @@ customLookAndFeel::customLookAndFeel() :
     setColour(colourScheme::knobOutlineColourId, juce::Colour::fromString("ffe8a020"));
     setColour(colourScheme::knobBodyInsidecolourId, juce::Colour::fromString("ff2e3820"));
     setColour(colourScheme::knowBodyOutsideColourId, juce::Colour::fromString("ff141a0c"));
+    setColour(colourScheme::screenBoundaryInnerColourId, juce::Colour::fromString("ff4a5c38"));
+    setColour(colourScheme::screenBoundaryOuterColourId, juce::Colour::fromString("ff0a0e07"));
+    setColour(colourScheme::screenBackgroundColourId, juce::Colour::fromString("ff060a04"));
+    setColour(colourScheme::screenLinesColourId, juce::Colour::fromString("18e8a020"));
+    setColour(colourScheme::screenLabelColourId, juce::Colour::fromString("66e8a020"));
+    setColour(colourScheme::FilterCurveColourId, juce::Colour::fromString("ffe8a020"));
 }
 
 void customLookAndFeel::drawTrackArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle)
@@ -118,6 +125,11 @@ juce::Font customLookAndFeel::getTitleFont()
 juce::Font customLookAndFeel::getLabelFont()
 {
     return labelFont;
+}
+
+juce::Font customLookAndFeel::getScreenLabelsFont()
+{
+    return screenLabelsFont;
 }
 
 void customLookAndFeel::drawGlowText(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font)

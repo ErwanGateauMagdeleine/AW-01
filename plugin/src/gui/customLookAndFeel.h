@@ -13,8 +13,9 @@ public:
 
     juce::Font getTitleFont();
     juce::Font getLabelFont();
+    juce::Font getScreenLabelsFont();
 
-    void drawGlowText (juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font);
+    void drawGlowText(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font);
 
     void drawComponentBoundaries(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification);
 
@@ -31,4 +32,5 @@ private:
     juce::Typeface::Ptr typeface;
     juce::Font titleFont;
     juce::Font labelFont;
+    juce::Font screenLabelsFont;
 };

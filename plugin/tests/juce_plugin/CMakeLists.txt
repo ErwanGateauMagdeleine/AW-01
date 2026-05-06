@@ -6,9 +6,11 @@ add_executable(juce_pluginTests
     ${CMAKE_CURRENT_SOURCE_DIR}/../../src/gui/CustomRotarySlider.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../src/gui/FilterComponent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/../../src/gui/EnvelopeComponent.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../src/gui/ScreenComponent.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../src/gui/FilterCurveDisplay.cpp
 )
 
-target_compile_features(juce_pluginTests PRIVATE cxx_std_17)
+target_compile_features(juce_pluginTests PRIVATE cxx_std_20)
 
 target_sources(juce_pluginTests PRIVATE ${SourceFiles})
 

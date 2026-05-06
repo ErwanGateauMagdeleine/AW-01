@@ -298,3 +298,13 @@ void AudioPluginAudioProcessor::parameterChanged(const juce::String& parameterID
         rightWah.updateFiltMorph(newValue);
     }
 }
+
+AutoWah<float>& AudioPluginAudioProcessor::getLeftWahFilter()
+{
+    return leftWah;
+}
+
+AutoWah<float>& AudioPluginAudioProcessor::getRightWahFilter()
+{
+    return rightWah;
+}

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "cmath"
+#include <complex>
+#include <numbers>
 
 /** Enumeration of the coefficient indexes. */
 enum filterCoefficients
@@ -87,7 +89,8 @@ public:
     void prepare(double newSampleRate)
     {
         sampleRate = newSampleRate;
-        omegaConst = static_cast<SampleType>(2.0) * PI / static_cast<SampleType>(sampleRate);
+        omegaConst = static_cast<SampleType>(2.0) * std::numbers::pi_v<SampleType> / static_cast<SampleType>(sampleRate);
+        computeCoefficients();
         reset();
     }
 
@@ -123,6 +126,36 @@ public:
         return yn;
     }
 
+    SampleType getMagnitudeFromFrequency(SampleType frequency)
+    {
+        constexpr std::complex<SampleType> j (0, 1);
+        std::complex<SampleType> numerator = 0.0;
+        std::complex<SampleType> denominator = 1.0;
+        std::complex <SampleType> jw = std::exp(-2 * std::numbers::pi_v<SampleType> * frequency * j / static_cast<SampleType>(sampleRate));
+
+        std::complex<SampleType> factor = jw;
+
+        for (int i = 0; i <= A2; i++)
+        {
+            denominator += static_cast<SampleType>(coeffs[i]) * factor;
+            factor *= jw;
+        }
+
+        factor = 1.0f;
+        for (int i = B0; i <= B2; i++)
+        {
+            numerator += static_cast<SampleType>(coeffs[i]) * factor;
+            factor *= jw;
+        }
+
+        return std::abs(numerator / denominator);
+    }
+
+    double getSampleRate()
+    {
+        return sampleRate;
+    }
+
 private:
 
     void computeCoefficients()
@@ -135,7 +168,7 @@ private:
         SampleType d = static_cast<SampleType>(1.0 / resonance);
         SampleType beta = static_cast<SampleType>(0.5 * (1.0 - d * sinOmega / 2.0) / (1.0 + d * sinOmega / 2.0));
         SampleType gamma = static_cast<SampleType>((0.5 + beta) * cosOmega);
-        SampleType k = static_cast<SampleType>(std::tan(PI * centerFrequency / sampleRate));
+        SampleType k = static_cast<SampleType>(std::tan(std::numbers::pi_v<SampleType> * centerFrequency / sampleRate));
         SampleType delta = k * k * resonance + k + resonance;
 
         /* Calculating LPF */
@@ -176,7 +209,6 @@ private:
     SampleType morphing;
 
     SampleType omegaConst;
-    const SampleType PI = static_cast<SampleType>(3.14159265359);
     SampleType coeffs[NUM_COEFFS];
     SampleType filterWeights[NUM_FILTERS];
     SampleType stateArray[NUM_STATES];

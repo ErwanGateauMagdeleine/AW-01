@@ -3,18 +3,21 @@
 #include "FilterComponent.h"
 #include "colourScheme.h"
 
-FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters) :
+FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters, AutoWah<float>& leftWah, AutoWah<float>& rightWah) :
     freqSlider(*parameters.getParameter("Filter Center Frequency"), "Cutoff"),
     resSlider(*parameters.getParameter("Filter Renonance"), "Res"),
     morphSlider(*parameters.getParameter("Filter Morph"), "Morph"),
     freqAttachment(parameters, "Filter Center Frequency", freqSlider),
     resAttachment(parameters, "Filter Renonance", resSlider),
-    morphAttachment(parameters, "Filter Morph", morphSlider)
+    morphAttachment(parameters, "Filter Morph", morphSlider),
+    screen(leftWah, rightWah)
 {
     for (auto* s : { &freqSlider, &resSlider, &morphSlider })
     {
         addAndMakeVisible(*s);
     }
+
+    addAndMakeVisible(screen);
 }
 
 void FilterComponent::paint(juce::Graphics& g)
@@ -29,10 +32,23 @@ void FilterComponent::paint(juce::Graphics& g)
 
 void FilterComponent::resized()
 {
-    auto knobsAreaBounds = getLocalBounds().reduced(20, 20).translated(0, 5);
-    auto knobWidth = knobsAreaBounds.getWidth() / 3;
+    auto bounds = getLocalBounds();
+    auto knobsAreaBounds = bounds.removeFromTop((int)(bounds.getHeight() / 3.0f)).reduced(20, 20).translated(0, 5);
+
+    bounds = bounds.reduced(20, 20);
+
+    knobWidth = knobsAreaBounds.getWidth() / 3;
+    knobHeight = knobsAreaBounds.getHeight();
 
     freqSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
     resSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
     morphSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
+
+    screen.setBounds(bounds);
+}
+
+void FilterComponent::getKnobSize(int* width, int* height)
+{
+    *width = knobWidth;
+    *height = knobHeight;
 }
