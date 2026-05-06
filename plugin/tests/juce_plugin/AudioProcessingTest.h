@@ -28,7 +28,7 @@ TEST_CASE("Matching outputs", "[process]")
     REQUIRE(numSamples % samplesPerBlock == 0);
 
     AudioPluginAudioProcessor processor;
-    AutoWah<float> autoWah;
+    AutoWah<float> autoWah(50.0f, 15000.0f);
 
     std::vector<float> input(numSamples);
     std::vector<float> autoWahOutput(numSamples);
@@ -47,7 +47,7 @@ TEST_CASE("Matching outputs", "[process]")
         100.0f, /* envAttack */
         500.0f, /* envDecay */
         5.0f,   /* envAmount */
-        500.0,  /* filtCutoff */
+        50.0,  /* filtCutoff */
         0.7f,   /* filtRes */
         0.5f    /* filtMorph */
     };

@@ -15,7 +15,11 @@ template <typename SampleType>
 class AutoWah
 {
 public:
-    AutoWah(){};
+    AutoWah(SampleType minFiltFreq, SampleType maxFiltFreq)
+    {
+        minFreq = minFiltFreq;
+        maxFreq = maxFiltFreq;
+    };
 
     void prepare(double newSampleRate)
     {
@@ -36,7 +40,7 @@ public:
 
         /* Use the envelope follower to update the filter center frequency.
            Cap the filter frequency to the audible range. */
-        filterFrequency = static_cast<SampleType>(std::clamp(settings.filtFreq * (1 + settings.envAmnt * envelope), 500.0f, 15000.0f));
+        filterFrequency = static_cast<SampleType>(std::clamp(settings.filtFreq * (1 + settings.envAmnt * envelope), minFreq, maxFreq));
         wahFilt.setCenterFrequency(filterFrequency);
 
         /* Process the sample with the filter */
@@ -114,4 +118,7 @@ private:
     /* Keep values internal to the object. */
     SampleType envelope;
     SampleType filterFrequency;
+
+    SampleType minFreq;
+    SampleType maxFreq;
 };

@@ -1,6 +1,9 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 
+#define FILTER_MIN_FREQ (50.0f)
+#define FILTER_MAX_FREQ (15000.0f)
+
 //==============================================================================
 AudioPluginAudioProcessor::AudioPluginAudioProcessor()
      : AudioProcessor (BusesProperties()
@@ -11,7 +14,9 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
                        .withOutput ("Output", juce::AudioChannelSet::stereo(), true)
                      #endif
                        ),
-       parameters(*this, nullptr, "parameters", createParameterLayout())
+       parameters(*this, nullptr, "parameters", createParameterLayout()),
+       leftWah(FILTER_MIN_FREQ, FILTER_MAX_FREQ),
+       rightWah(FILTER_MIN_FREQ, FILTER_MAX_FREQ)
 {
     /* Add parameter listeners */
     parameters.addParameterListener("Envelope Follower Attack", this);
@@ -230,8 +235,8 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
     /* Filter parameters */
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Center Frequency",
                                                            "Filter Center Frequency",
-                                                           juce::NormalisableRange<float>(500.0f, 15000.0f, 1.0f, 0.5f),
-                                                           500.0f
+                                                           juce::NormalisableRange<float>(FILTER_MIN_FREQ, FILTER_MAX_FREQ, 1.0f, 0.5f),
+                                                           50.0f
                                                           ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Renonance",
