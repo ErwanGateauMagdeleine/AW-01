@@ -241,7 +241,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Renonance",
                                                            "Filter Renonance",
-                                                           juce::NormalisableRange<float>(0.1f, 10.0f, 0.01f, 0.5f),
+                                                           juce::NormalisableRange<float>(0.1f, 5.0f, 0.01f, 0.5f),
                                                            0.7f
                                                           ));
 
