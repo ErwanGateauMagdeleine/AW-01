@@ -17,9 +17,9 @@ private:
     juce::Rectangle<float> screenArea;
     juce::Rectangle<float> frequencyLabelArea;
 
-    const float dBMin = -30.0f;
-    const float dBMax = 30.0f;
-    static constexpr int dBMarks[] = {-24, -18, -12, -6, 0, 6, 12, 18, 24};
+    const float dBMin = -16.0f;
+    const float dBMax = 16.0f;
+    static constexpr int dBMarks[] = {-12, -6, 0, 6, 12};
 
     const float dashLen = 4.0f;
     const float gapLen = 6.0f;
