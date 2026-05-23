@@ -3,6 +3,7 @@ import math
 import numpy as np
 import scipy.signal as signal
 import matplotlib.pyplot as plt
+import argparse
 
 
 class FilterType(Enum):
@@ -47,7 +48,8 @@ class WahFilter:
             filter_type (FilterType): The type of filter (LPF, BPF, HPF).
 
         Returns:
-            dict: A dictionary containing the filter coefficients (a0, a1, a2, b0, b1, b2).
+            tuple: A tuple containing the filter coefficients
+            (a0, a1, a2, b0, b1, b2).
         """
         # Normalize cutoff frequency
         omega = 2 * math.pi * self.fc / self.sample_rate
@@ -119,7 +121,8 @@ class WahFilter:
         Parameters:
             input_signal (numpy.ndarray): The input audio signal.
 
-            filter_frequency (numpy.ndarray): The filter frequency for each sample.
+            filter_frequency (numpy.ndarray): The filter frequency
+            for each sample.
         Returns:
             numpy.ndarray: The filtered output signal.
         """
@@ -128,8 +131,11 @@ class WahFilter:
         for idx, sample in enumerate(input_signal):
             self.fc = filter_frequency[idx]
             b, a = self.blend_coefficients()
-            output_signal[idx] = (b[0] * sample + b[1] * self.x_mem_tap[0] + b[2] * self.x_mem_tap[1] -
-                                  a[1] * self.y_mem_tap[0] - a[2] * self.y_mem_tap[1])
+            output_signal[idx] = (b[0] * sample +
+                                  b[1] * self.x_mem_tap[0] +
+                                  b[2] * self.x_mem_tap[1] -
+                                  a[1] * self.y_mem_tap[0] -
+                                  a[2] * self.y_mem_tap[1])
 
             # Update memory taps
             self.x_mem_tap[1] = self.x_mem_tap[0]
@@ -140,32 +146,57 @@ class WahFilter:
         return output_signal
 
 
-if __name__ == "__main__":
-    # Example usage
-    sample_rate = 44100
-    morph = np.linspace(0, 1, 5)
-    fc = 1000  # Cutoff frequency
-    res = [0.707, 1, 2]
+def parse_args():
+    """ Parses the arguments of the script. """
+    parser = argparse.ArgumentParser(
+        description="Generates plots of the frequecy response of the"
+                    " wah filter.")
 
+    parser.add_argument("--sample-rate",
+                        default=44100,
+                        type=float,
+                        help="Sample rate of the system")
+
+    parser.add_argument("--morph",
+                        default=0.5,
+                        type=float,
+                        help="Morphing value of the Wah filter")
+
+    parser.add_argument("--center-freq",
+                        default=1000,
+                        type=float,
+                        help="Center frequency value of the Wah filter")
+
+    parser.add_argument("--res",
+                        default=[0.707, 1, 5],
+                        type=float,
+                        nargs="*",
+                        help="Resonance value of the Wah filter")
+
+    return parser.parse_args()
+
+
+if __name__ == "__main__":
     legend = []
+
+    args = parse_args()
+
     plt.figure(figsize=(10, 6))
 
-    for idx, r in enumerate(res):
-        plt.subplot(1, len(res), idx + 1)
-        plt.title(f"Digital Filter Frequency Response res = {r:.2f}")
-        for m in morph:
-            wah_filter = WahFilter(sample_rate, m, fc, r)
-            b, a = wah_filter.blend_coefficients()
+    for res in args.res:
+        wah_filter = WahFilter(args.sample_rate,
+                               args.morph,
+                               args.center_freq,
+                               res)
+        b, a = wah_filter.blend_coefficients()
+        w, h = signal.freqz(b, a, fs=args.sample_rate, worN=1024)
+        plt.semilogx(w, 20 * np.log(np.abs(h)))
+        legend.append(f"res = {res:.2f}")
 
-            w, h = signal.freqz(b, a, fs=sample_rate, worN=1024)
-            plt.semilogx(w, 20 * np.log(np.abs(h)))
-            legend.append(f"morph = {m:.2f}")
-
-        plt.legend(legend)
-
-        plt.xlabel("Time (s)")
-        plt.ylabel("Amplitude")
-        plt.grid()
-        plt.ylim(-40, max(20 * np.log(np.abs(h))) + 5)
+    plt.legend(legend)
+    plt.xlabel("Time (s)")
+    plt.ylabel("Amplitude")
+    plt.grid()
+    plt.ylim(-40, max(20 * np.log(np.abs(h))) + 5)
 
     plt.show()
