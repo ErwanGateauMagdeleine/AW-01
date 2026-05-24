@@ -13,6 +13,26 @@ class FilterType(Enum):
     LPF = 0
     BPF = 1
     HPF = 2
+    PEQ = 3
+
+    @classmethod
+    def string_to_enum(cls, filter_type_str):
+        """
+        Converts the filter type as a string to the
+        enumeration value
+
+        parameters
+        ----------
+        filter_type_str (str): the filter type as a string
+        """
+        if filter_type_str == "LPF":
+            return cls.LPF
+        elif filter_type_str == "HPF":
+            return cls.HPF
+        elif filter_type_str == "BPF":
+            return cls.BPF
+        elif filter_type_str == "PEQ":
+            return cls.PEQ
 
 
 class WahFilter:
@@ -30,12 +50,25 @@ class WahFilter:
         fc: The cutoff frequency of the filter.
 
         res: The resonance factor of the filter.
+
+        mid_fiter_type: Type of the mid filter
+
+        gain: gain of the mid filter. Only use in case of mid filter
+        being a PEQ filter.
     """
-    def __init__(self, sample_rate, morph, fc, res):
+    def __init__(self,
+                 sample_rate,
+                 morph,
+                 fc,
+                 res,
+                 mid_fiter_type,
+                 gain):
         self.sample_rate = sample_rate
         self.morph = morph
         self.fc = fc
         self.res = res
+        self.mid_fiter_type = mid_fiter_type
+        self.gain = gain
 
         self.x_mem_tap = np.zeros(2)  # Memory for input samples
         self.y_mem_tap = np.zeros(2)  # Memory for output samples
@@ -84,7 +117,6 @@ class WahFilter:
             a[2] = 2 * beta
 
         elif filter_type == FilterType.BPF:
-            # Band-Pass Filter
             k = math.tan(math.pi * self.fc / self.sample_rate)
             delta = k * k * self.res + k + self.res
 
@@ -95,6 +127,26 @@ class WahFilter:
             a[1] = (2 * self.res * (k * k - 1)) / delta
             a[2] = (k * k * self.res - k + self.res) / delta
 
+        elif filter_type == FilterType.PEQ:
+            upsilon = pow(10, self.gain / 20)
+            zeta = 4 / (1 + upsilon)
+            beta = 0.5 * ((1 - zeta * math.tan(omega / (2 * self.res))) /
+                          (1 + zeta * math.tan(omega / (2 * self.res))))
+            gamma = (0.5 + beta) * math.cos(omega)
+            c0 = upsilon - 1
+            d0 = 1
+
+            a[0] = 1
+            a[1] = (-2 * gamma)
+            a[2] = (2 * beta)
+
+            b[0] = c0 * (0.5 - beta) + d0
+            b[1] = 0 + d0 * a[1]
+            b[2] = - c0 * ((0.5 - beta)) + d0 * a[2]
+
+        else:
+            raise ValueError("Unknown filter type.")
+
         return b, a
 
     def blend_coefficients(self):
@@ -102,15 +154,16 @@ class WahFilter:
         Blends the coefficients of the filters based on the morph value.
         """
         b_lpf, a_lpf = self.calculate_filter_coeff(FilterType.LPF)
-        b_bpf, a_bpf = self.calculate_filter_coeff(FilterType.BPF)
+        b_mf, a_mpf = self.calculate_filter_coeff(
+            FilterType.string_to_enum(self.mid_fiter_type))
         b_hpf, a_hpf = self.calculate_filter_coeff(FilterType.HPF)
 
         w_lpf = max(0.0, 1 - 2 * self.morph)
-        w_bpf = 1 - abs(2 * self.morph - 1)
+        w_mf = 1 - abs(2 * self.morph - 1)
         w_hpf = max(0.0, 2 * self.morph - 1)
 
-        b = w_lpf * b_lpf + w_bpf * b_bpf + w_hpf * b_hpf
-        a = w_lpf * a_lpf + w_bpf * a_bpf + w_hpf * a_hpf
+        b = w_lpf * b_lpf + w_mf * b_mf + w_hpf * b_hpf
+        a = w_lpf * a_lpf + w_mf * a_mpf + w_hpf * a_hpf
 
         return b, a
 
@@ -173,6 +226,19 @@ def parse_args():
                         nargs="*",
                         help="Resonance value of the Wah filter")
 
+    parser.add_argument("--mid-filter",
+                        default="PEQ",
+                        type=str,
+                        choices=["PEQ", "BPF"],
+                        help="Select the mid morph filter. Possible values"
+                        "are PEQ or BP")
+
+    parser.add_argument("--gain",
+                        default=3.0,
+                        type=float,
+                        help="Gain value of the Wah filter. Only valid"
+                        " when mid filter is PEQ.")
+
     return parser.parse_args()
 
 
@@ -187,7 +253,9 @@ if __name__ == "__main__":
         wah_filter = WahFilter(args.sample_rate,
                                args.morph,
                                args.center_freq,
-                               res)
+                               res,
+                               args.mid_filter,
+                               args.gain)
         b, a = wah_filter.blend_coefficients()
         w, h = signal.freqz(b, a, fs=args.sample_rate, worN=1024)
         plt.semilogx(w, 20 * np.log(np.abs(h)))
