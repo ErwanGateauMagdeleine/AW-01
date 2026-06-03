@@ -16,6 +16,8 @@ public:
 
     void getKnobSize(int* width, int* height);
 
+    void getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect);
+
 private:
     CustomRotarySlider freqSlider, resSlider, morphSlider;
 

@@ -52,3 +52,8 @@ void FilterComponent::getKnobSize(int* width, int* height)
     *width = knobWidth;
     *height = knobHeight;
 }
+
+void FilterComponent::getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect)
+{
+    screen.getScreenRects(screenRect, gainRect, freqRect);
+}

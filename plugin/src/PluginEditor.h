@@ -18,6 +18,9 @@ public:
     void resized() override;
 
     void getKnobSizes(int* filterCompKnobWidth, int* filterCompKnobHeight, int* EnvelopeKnobWidth, int* EnvelopeKnobHeight);
+
+    void getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect);
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
