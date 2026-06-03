@@ -21,6 +21,8 @@ public:
 
     void getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect);
 
+    void getPluginRect(juce::Rectangle<float>* plugin);
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

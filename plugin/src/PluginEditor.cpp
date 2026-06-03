@@ -49,3 +49,8 @@ void AudioPluginAudioProcessorEditor::getScreenRects(juce::Rectangle<float>* scr
 {
     filterComponent.getScreenRects(screenRect, gainRect, freqRect);
 }
+
+void AudioPluginAudioProcessorEditor::getPluginRect(juce::Rectangle<float>* plugin)
+{
+    *plugin = getBounds().toFloat();
+}
