@@ -33,7 +33,7 @@ void FilterComponent::paint(juce::Graphics& g)
 void FilterComponent::resized()
 {
     auto bounds = getLocalBounds();
-    auto knobsAreaBounds = bounds.removeFromTop((int)(bounds.getHeight() / 3.0f)).reduced(20, 20).translated(0, 5);
+    auto knobsAreaBounds = bounds.removeFromTop((int)(bounds.getHeight() / 3.0f)).reduced(20, 20).translated(0, 10);
 
     bounds = bounds.reduced(20, 20);
 
@@ -51,4 +51,15 @@ void FilterComponent::getKnobSize(int* width, int* height)
 {
     *width = knobWidth;
     *height = knobHeight;
+}
+
+void FilterComponent::getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect)
+{
+    screen.getScreenRects(screenRect, gainRect, freqRect);
+}
+
+void FilterComponent::getKnobRects(juce::Rectangle<float>* filterKnob)
+{
+    auto bounds = getLocalBounds();
+    *filterKnob = localAreaToGlobal(bounds.removeFromTop((int)(bounds.getHeight() / 3.0f)).reduced(20, 20).translated(0, 10)).toFloat();
 }

@@ -44,3 +44,18 @@ void AudioPluginAudioProcessorEditor::getKnobSizes(int* filterCompKnobWidth, int
     envelopeComponent.getKnobSize(EnvelopeKnobWidth, EnvelopeKnobHeight);
     filterComponent.getKnobSize(filterCompKnobWidth, filterCompKnobHeight);
 }
+
+void AudioPluginAudioProcessorEditor::getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect)
+{
+    filterComponent.getScreenRects(screenRect, gainRect, freqRect);
+}
+
+void AudioPluginAudioProcessorEditor::getPluginRect(juce::Rectangle<float>* plugin)
+{
+    *plugin = getBounds().toFloat();
+}
+
+void AudioPluginAudioProcessorEditor::getFilterCompKnobRect(juce::Rectangle<float>* filterKnob)
+{
+    filterComponent.getKnobRects(filterKnob);
+}

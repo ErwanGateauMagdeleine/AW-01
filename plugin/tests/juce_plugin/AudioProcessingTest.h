@@ -17,6 +17,8 @@ static juce::AudioBuffer<float> monoToStereo(const std::vector<float>& mono)
 
 TEST_CASE("Matching outputs", "[process]")
 {
+    juce::ScopedJuceInitialiser_GUI juceInit;
+
     /* This tests that processing audio using the plugin processor gives the same
        resut as using the AutoWah object directly. */
     constexpr int numSamples  = 512;

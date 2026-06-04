@@ -4,6 +4,8 @@
 
 TEST_CASE("Processor state saves and restores correctly", "[state]")
 {
+    juce::ScopedJuceInitialiser_GUI juceInit;
+
     AudioPluginAudioProcessor processor;
 
     /* Set params */

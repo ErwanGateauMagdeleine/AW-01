@@ -3,6 +3,8 @@
 
 TEST_CASE("Knob Size of all components are the same", "[knob]")
 {
+    juce::ScopedJuceInitialiser_GUI juceInit;
+
     int envKnobWidth;
     int envKnobHeigth;
     int filtKnobWidth;
