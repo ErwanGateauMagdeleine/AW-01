@@ -7,14 +7,19 @@ TEST_CASE("Screen Component Boundaries are as expected", "[screen]")
 
     AudioPluginAudioProcessor processor;
     AudioPluginAudioProcessorEditor editor(processor);
-    juce::Rectangle<float> screenRect, gainRect,  freqRect, pluginRect;
+    juce::Rectangle<float> screenRect, gainRect,  freqRect, pluginRect, filterKnobRect;
 
     editor.getPluginRect(&pluginRect);
-
     editor.getScreenRects(&screenRect, &gainRect, &freqRect);
+    editor.getFilterCompKnobRect(&filterKnobRect);
 
     float rigthOffset =  gainRect.getX() - pluginRect.getX();
     float LeftOffset = pluginRect.getRight() - screenRect.getRight();
 
     REQUIRE(rigthOffset == Catch::Approx(LeftOffset).margin(0.0001));
+
+    float bottomOffset = pluginRect.getBottom() - screenRect.getBottom();
+    float topOffset = screenRect.getTopLeft().getY() - filterKnobRect.getBottom() ;
+
+    REQUIRE(bottomOffset == Catch::Approx(topOffset).margin(0.0001));
 }
