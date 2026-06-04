@@ -54,3 +54,8 @@ void AudioPluginAudioProcessorEditor::getPluginRect(juce::Rectangle<float>* plug
 {
     *plugin = getBounds().toFloat();
 }
+
+void AudioPluginAudioProcessorEditor::getFilterCompKnobRect(juce::Rectangle<float>* filterKnob)
+{
+    filterComponent.getKnobRects(filterKnob);
+}

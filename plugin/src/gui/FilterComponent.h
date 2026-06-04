@@ -18,6 +18,8 @@ public:
 
     void getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect);
 
+    void getKnobRects(juce::Rectangle<float>* filterKnob);
+
 private:
     CustomRotarySlider freqSlider, resSlider, morphSlider;
 

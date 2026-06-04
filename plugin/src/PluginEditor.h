@@ -23,6 +23,8 @@ public:
 
     void getPluginRect(juce::Rectangle<float>* plugin);
 
+    void getFilterCompKnobRect(juce::Rectangle<float>* plugin);
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
