@@ -97,7 +97,12 @@ void customLookAndFeel::drawLabelValue(juce::Graphics& g, int x, int y, int widt
 
     g.setFont (getLabelsFont());
     g.setColour(findColour(colourScheme::fontColourId));
-    drawGlowText(g, slider.getName(), textArea.toFloat(), juce::Justification::centred, getLabelsFont());
+    drawGlowText(g,
+                 slider.getName(),
+                 textArea.toFloat(),
+                 juce::Justification::centred,
+                 getLabelsFont(),
+                 findColour(colourScheme::fontColourId));
 }
 
 //==============================================================================
@@ -130,11 +135,16 @@ juce::Font customLookAndFeel::getScreenLabelsFont()
     return screenLabelsFont;
 }
 
-void customLookAndFeel::drawGlowText(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font)
+void customLookAndFeel::drawGlowText(juce::Graphics& g,
+                                     const juce::String& text,
+                                     juce::Rectangle<float> bounds,
+                                     juce::Justification justification,
+                                     juce::Font font,
+                                     juce::Colour colour)
 {
     for (int i = 3; i >= 1; --i)
     {
-        g.setColour(findColour(colourScheme::fontColourId).withAlpha(0.05f));
+        g.setColour(colour.withAlpha(0.05f));
         g.setFont(font);
 
         g.drawText(text, bounds.translated((float)i,  0), justification);
@@ -147,7 +157,7 @@ void customLookAndFeel::drawGlowText(juce::Graphics& g, const juce::String& text
         g.drawText(text, bounds.translated((float)-i, (float)i), justification);
     }
 
-    g.setColour(findColour(colourScheme::fontColourId));
+    g.setColour(colour);
     g.drawText(text, bounds, justification);
 }
 
@@ -162,5 +172,10 @@ void customLookAndFeel::drawComponentBoundaries(juce::Graphics& g, const juce::S
     g.setColour(findColour(colourScheme::componentOutlineColourId));
     g.strokePath(borderPath, juce::PathStrokeType(1.0f));
 
-    drawGlowText(g, text, bounds.reduced(8, 6), justification, getTitleFont());
+    drawGlowText(g,
+                 text,
+                 bounds.reduced(8, 6),
+                 justification,
+                 getTitleFont(),
+                 findColour(colourScheme::fontColourId));
 }

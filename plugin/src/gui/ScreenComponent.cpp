@@ -86,7 +86,8 @@ void ScreenComponent::drawGainLabels(juce::Graphics& g)
             lnf->drawGlowText(g, label,
                               juce::Rectangle<float>(gainLabelArea.getX(), y - 6.0f, gainLabelArea.getWidth(), 12.0f),
                               juce::Justification::centred,
-                              lnf->getScreenLabelsFont());
+                              lnf->getScreenLabelsFont(),
+                              lnf->findColour(colourScheme::fontColourId));
         }
     }
 }
@@ -103,7 +104,8 @@ void ScreenComponent::drawFreqLabels(juce::Graphics& g)
             lnf->drawGlowText(g, label,
                               juce::Rectangle<float>(x - 12, frequencyLabelArea.getY(), 24, frequencyLabelArea.getHeight()),
                               juce::Justification::centred,
-                              lnf->getScreenLabelsFont());
+                              lnf->getScreenLabelsFont(),
+                              lnf->findColour(colourScheme::fontColourId));
         }
     }
 }

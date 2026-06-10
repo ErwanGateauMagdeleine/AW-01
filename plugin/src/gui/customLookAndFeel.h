@@ -15,7 +15,12 @@ public:
     juce::Font getLabelsFont();
     juce::Font getScreenLabelsFont();
 
-    void drawGlowText(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font);
+    void drawGlowText(juce::Graphics& g,
+                      const juce::String& text,
+                      juce::Rectangle<float> bounds,
+                      juce::Justification justification,
+                      juce::Font font,
+                      juce::Colour colour);
 
     void drawComponentBoundaries(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification);
 
