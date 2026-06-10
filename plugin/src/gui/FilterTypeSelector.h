@@ -17,6 +17,8 @@ public:
 
     void triggerPeakButtonClick();
 
+    void triggerBandButtonClick();
+
 private:
     juce::TextButton peakButton { "PEQ" };
     juce::TextButton bandButton { "BP" };

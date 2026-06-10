@@ -87,3 +87,8 @@ void FilterComponent::triggerPeakButtonClick()
 {
     filterSelector.triggerPeakButtonClick();
 }
+
+void FilterComponent::triggerBandButtonClick()
+{
+    filterSelector.triggerBandButtonClick();
+}

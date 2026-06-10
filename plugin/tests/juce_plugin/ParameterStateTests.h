@@ -91,10 +91,33 @@ TEST_CASE("Editor's Button state is in line with Processor's button state", "[st
     auto filterType = processor.parameters.getParameter("filter Type")->getValue();
     checkButtonStates(&editor, filterType);
 
-    /* Trigger a click on the */
     editor.triggerPeakButtonClick();
 
     auto newFilterType = processor.parameters.getParameter("filter Type")->getValue();
     REQUIRE(newFilterType != filterType);
     checkButtonStates(&editor, newFilterType);
+}
+
+TEST_CASE("Button state is saved properly", "[state]")
+{
+    juce::ScopedJuceInitialiser_GUI juceInit;
+
+    AudioPluginAudioProcessor processor;
+    AudioPluginAudioProcessorEditor editor(processor);
+
+    /* Trigger a click on the */
+    editor.triggerPeakButtonClick();
+    auto savedFilterType = processor.parameters.getParameter("filter Type")->getValue();
+
+    juce::MemoryBlock state;
+    processor.getStateInformation(state);
+    REQUIRE(state.getSize() > 0);
+
+    editor.triggerBandButtonClick();
+    REQUIRE(processor.parameters.getParameter("filter Type")->getValue() != savedFilterType);
+
+    processor.setStateInformation(state.getData(), static_cast<int>(state.getSize()));
+    auto RestoredState = processor.parameters.getParameter("filter Type")->getValue();
+    REQUIRE(RestoredState == savedFilterType);
+    checkButtonStates(&editor, RestoredState);
 }

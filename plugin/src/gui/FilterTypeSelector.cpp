@@ -57,3 +57,8 @@ void FilterTypeSelector::triggerPeakButtonClick()
 {
     peakButton.onClick();
 }
+
+void FilterTypeSelector::triggerBandButtonClick()
+{
+    bandButton.onClick();
+}

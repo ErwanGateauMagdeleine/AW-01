@@ -31,6 +31,8 @@ public:
 
     void triggerPeakButtonClick();
 
+    void triggerBandButtonClick();
+
 private:
     CustomRotarySlider freqSlider, resSlider, morphSlider;
 

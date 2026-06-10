@@ -83,3 +83,8 @@ void AudioPluginAudioProcessorEditor::triggerPeakButtonClick()
 {
     filterComponent.triggerPeakButtonClick();
 }
+
+void AudioPluginAudioProcessorEditor::triggerBandButtonClick()
+{
+    filterComponent.triggerBandButtonClick();
+}
