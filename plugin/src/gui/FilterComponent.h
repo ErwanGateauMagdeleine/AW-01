@@ -21,6 +21,8 @@ public:
 
     void getKnobRects(juce::Rectangle<float>* filterKnob);
 
+    void getButtonRect(juce::Rectangle<float>* button);
+
 private:
     CustomRotarySlider freqSlider, resSlider, morphSlider;
 

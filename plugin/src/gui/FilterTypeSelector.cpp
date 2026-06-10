@@ -28,3 +28,8 @@ void FilterTypeSelector::resized()
     peakButton.setBounds(bounds.removeFromLeft(bounds.getWidth() / 2));
     bandButton.setBounds(bounds);
 }
+
+void FilterTypeSelector::getButtonRect(juce::Rectangle<float>* button)
+{
+    *button = localAreaToGlobal(getLocalBounds().toFloat());
+}

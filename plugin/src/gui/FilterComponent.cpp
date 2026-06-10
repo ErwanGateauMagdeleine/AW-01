@@ -62,3 +62,8 @@ void FilterComponent::getKnobRects(juce::Rectangle<float>* filterKnob)
     auto bounds = getLocalBounds();
     *filterKnob = localAreaToGlobal(bounds.removeFromTop((int)(bounds.getHeight() / 3.0f)).reduced(20, 20).translated(0, 10)).toFloat();
 }
+
+void FilterComponent::getButtonRect(juce::Rectangle<float>* button)
+{
+    filterSelector.getButtonRect(button);
+}

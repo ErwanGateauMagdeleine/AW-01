@@ -7,6 +7,8 @@ public:
 
     void resized() override;
 
+    void getButtonRect(juce::Rectangle<float>* button);
+
 private:
     juce::TextButton peakButton { "PEQ" };
     juce::TextButton bandButton { "BP" };
