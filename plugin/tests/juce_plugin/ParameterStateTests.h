@@ -1,6 +1,6 @@
 #include <catch2/catch_all.hpp>
-#include "PluginProcessor.h"
 #include <catch2/catch_approx.hpp>
+#include "PluginEditor.h"
 
 TEST_CASE("Processor state saves and restores correctly", "[state]")
 {
@@ -61,4 +61,40 @@ TEST_CASE("Processor state saves and restores correctly", "[state]")
     REQUIRE(processor.parameters.getParameter("Envelope Follower Amount")->getValue() == Catch::Approx(0.8).margin(0.05f));
     REQUIRE(processor.parameters.getParameter("Filter Center Frequency")->getValue() == Catch::Approx(0.8).margin(0.05f));
     REQUIRE(processor.parameters.getParameter("Filter Renonance")->getValue() == Catch::Approx(0.8).margin(0.05f));
+}
+
+static void checkButtonStates(AudioPluginAudioProcessorEditor* editor, float filterType)
+{
+    bool peakState, bandState;
+
+    editor->getFilterButtonStates(&peakState, &bandState);
+
+    if (filterType > 0.5f)
+    {
+        REQUIRE(peakState);
+        REQUIRE(!bandState);
+    }
+    else
+    {
+        REQUIRE(!peakState);
+        REQUIRE(bandState);
+    }
+}
+
+TEST_CASE("Editor's Button state is in line with Processor's button state", "[state]")
+{
+    juce::ScopedJuceInitialiser_GUI juceInit;
+
+    AudioPluginAudioProcessor processor;
+    AudioPluginAudioProcessorEditor editor(processor);
+
+    auto filterType = processor.parameters.getParameter("filter Type")->getValue();
+    checkButtonStates(&editor, filterType);
+
+    /* Trigger a click on the */
+    editor.triggerPeakButtonClick();
+
+    auto newFilterType = processor.parameters.getParameter("filter Type")->getValue();
+    REQUIRE(newFilterType != filterType);
+    checkButtonStates(&editor, newFilterType);
 }

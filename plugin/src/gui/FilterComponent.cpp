@@ -16,6 +16,11 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters,
     }
     addAndMakeVisible(screen);
     addAndMakeVisible(filterSelector);
+
+    filterSelector.onChange = [this] (bool isPeak)
+    {
+        if (onChange) onChange(isPeak);
+    };
 }
 
 void FilterComponent::paint(juce::Graphics& g)
@@ -66,4 +71,19 @@ void FilterComponent::getKnobRects(juce::Rectangle<float>* filterKnob)
 void FilterComponent::getButtonRect(juce::Rectangle<float>* button)
 {
     filterSelector.getButtonRect(button);
+}
+
+void FilterComponent::setFilterType(bool isPeak)
+{
+    filterSelector.setFilterType(isPeak);
+}
+
+void FilterComponent::getButtonsStates(bool* peakState, bool* bandState)
+{
+    filterSelector.getButtonsStates(peakState, bandState);
+}
+
+void FilterComponent::triggerPeakButtonClick()
+{
+    filterSelector.triggerPeakButtonClick();
 }

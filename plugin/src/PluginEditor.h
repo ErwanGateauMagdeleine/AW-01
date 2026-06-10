@@ -27,6 +27,10 @@ public:
 
     void getFilterCompButtonRect(juce::Rectangle<float>* button);
 
+    void getFilterButtonStates(bool* peakState, bool* bandState);
+
+    void triggerPeakButtonClick();
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

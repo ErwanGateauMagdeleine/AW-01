@@ -25,6 +25,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
     parameters.addParameterListener("Filter Center Frequency", this);
     parameters.addParameterListener("Filter Renonance", this);
     parameters.addParameterListener("Filter Morph", this);
+    parameters.addParameterListener("filter Type", this);
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -251,6 +252,11 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
                                                            0.5f
                                                           ));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>("filter Type",
+                                                           "filter Type",
+                                                           juce::NormalisableRange<float>(0.0f, 1.0f),
+                                                           0.0f
+                                                          ));
     return layout;
 }
 
@@ -301,6 +307,11 @@ void AudioPluginAudioProcessor::parameterChanged(const juce::String& parameterID
     {
         leftWah.updateFiltMorph(newValue);
         rightWah.updateFiltMorph(newValue);
+    }
+    if (parameterID == "filter Type")
+    {
+        DBG("filter type val");
+        DBG(newValue);
     }
 }
 

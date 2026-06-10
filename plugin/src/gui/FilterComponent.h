@@ -23,6 +23,14 @@ public:
 
     void getButtonRect(juce::Rectangle<float>* button);
 
+    std::function<void(bool)> onChange;
+
+    void setFilterType(bool isPeak);
+
+    void getButtonsStates(bool* peakState, bool* bandState);
+
+    void triggerPeakButtonClick();
+
 private:
     CustomRotarySlider freqSlider, resSlider, morphSlider;
 
