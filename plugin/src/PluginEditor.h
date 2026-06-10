@@ -25,6 +25,8 @@ public:
 
     void getFilterCompKnobRect(juce::Rectangle<float>* plugin);
 
+    void getFilterCompButtonRect(juce::Rectangle<float>* button);
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.

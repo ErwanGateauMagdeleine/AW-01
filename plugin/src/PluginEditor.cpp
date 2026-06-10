@@ -15,7 +15,7 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     addAndMakeVisible(filterComponent);
 
     /* Set size is the last thing to do. */
-    setSize (250, 405);
+    setSize (250, 455);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -36,7 +36,7 @@ void AudioPluginAudioProcessorEditor::resized()
     envelopeComponent.setBounds(0, 0, 250, 100);
 
     /* Draw filter component */
-    filterComponent.setBounds(0, 105, 250, 300);
+    filterComponent.setBounds(0, 105, 250, 350);
 }
 
 void AudioPluginAudioProcessorEditor::getKnobSizes(int* filterCompKnobWidth, int* filterCompKnobHeight, int* EnvelopeKnobWidth, int* EnvelopeKnobHeight)
@@ -58,4 +58,9 @@ void AudioPluginAudioProcessorEditor::getPluginRect(juce::Rectangle<float>* plug
 void AudioPluginAudioProcessorEditor::getFilterCompKnobRect(juce::Rectangle<float>* filterKnob)
 {
     filterComponent.getKnobRects(filterKnob);
+}
+
+void AudioPluginAudioProcessorEditor::getFilterCompButtonRect(juce::Rectangle<float>* button)
+{
+    filterComponent.getButtonRect(button);
 }
