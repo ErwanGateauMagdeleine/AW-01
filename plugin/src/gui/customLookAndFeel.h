@@ -11,6 +11,9 @@ public:
                                          float sliderPos, float rotaryStartAngle, float rotaryEndAngle,
                                          juce::Slider& slider) override;
 
+    void drawButtonBackground(juce::Graphics& g, juce::Button& button, const juce::Colour&, bool, bool) override;
+    void drawButtonText(juce::Graphics& g, juce::TextButton& button, bool, bool) override;
+
     juce::Font getTitleFont();
     juce::Font getLabelsFont();
     juce::Font getScreenLabelsFont();

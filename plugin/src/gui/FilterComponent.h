@@ -4,6 +4,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "customRotarySlider.h"
 #include "ScreenComponent.h"
+#include "FilterTypeSelector.h"
 
 class FilterComponent : public juce::Component
 {
@@ -22,6 +23,8 @@ public:
 
 private:
     CustomRotarySlider freqSlider, resSlider, morphSlider;
+
+    FilterTypeSelector filterSelector;
 
     using APVTS = juce::AudioProcessorValueTreeState;
     using attachment = APVTS::SliderAttachment;

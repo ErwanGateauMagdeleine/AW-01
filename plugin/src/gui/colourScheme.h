@@ -15,5 +15,9 @@ namespace colourScheme
         screenLinesColourId         = 0x120000A,
         screenLabelColourId         = 0x120000B,
         FilterCurveColourId         = 0x120000C,
+        buttonInactiveFillCoulourId = 0x120000D,
+        buttonActiveFillColourId    = 0x120000E,
+        ledInactiveFillColourId     = 0x120000F,
+        ledActiveFillColourId       = 0x1200010,
     };
 }
