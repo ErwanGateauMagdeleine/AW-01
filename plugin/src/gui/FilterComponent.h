@@ -23,17 +23,30 @@ public:
 
     void getButtonRect(juce::Rectangle<float>* button);
 
+    std::function<void(bool)> onChange;
+
+    void setFilterType(bool isPeak);
+
+    void getButtonsStates(bool* peakState, bool* bandState);
+
+    void triggerPeakButtonClick();
+
+    void triggerBandButtonClick();
+
 private:
     CustomRotarySlider freqSlider, resSlider, morphSlider;
 
     FilterTypeSelector filterSelector;
 
     using APVTS = juce::AudioProcessorValueTreeState;
-    using attachment = APVTS::SliderAttachment;
+    using SliderAttachment = APVTS::SliderAttachment;
+    using ButtonAttachment = APVTS::ButtonAttachment;
 
-    attachment freqAttachment;
-    attachment resAttachment;
-    attachment morphAttachment;
+    SliderAttachment freqAttachment;
+    SliderAttachment resAttachment;
+    SliderAttachment morphAttachment;
+
+    ButtonAttachment typeAttachment;
 
     ScreenComponent screen;
 
