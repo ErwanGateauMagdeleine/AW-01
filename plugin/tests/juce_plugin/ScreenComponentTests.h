@@ -12,7 +12,7 @@ TEST_CASE("Screen Component Boundaries are as expected", "[screen]")
     editor.getPluginRect(&pluginRect);
     editor.getScreenRects(&screenRect, &gainRect, &freqRect);
     editor.getFilterCompKnobRect(&filterKnobRect);
-    editor.getFilterCompButtonRect(&buttonRect);
+    buttonRect = editor.getFilterCompButtonRect();
 
     float rigthOffset =  gainRect.getX() - pluginRect.getX();
     float LeftOffset = pluginRect.getRight() - screenRect.getRight();

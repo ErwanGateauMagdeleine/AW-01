@@ -21,7 +21,7 @@ public:
 
     void getKnobRects(juce::Rectangle<float>* filterKnob);
 
-    void getButtonRect(juce::Rectangle<float>* button);
+    juce::Rectangle<float> getButtonRect();
 
     std::function<void(bool)> onChange;
 
@@ -34,7 +34,7 @@ public:
     void triggerBandButtonClick();
 
 private:
-    CustomRotarySlider freqSlider, resSlider, morphSlider;
+    CustomRotarySlider freqSlider, resSlider, morphSlider, gainSlider;
 
     FilterTypeSelector filterSelector;
 
@@ -42,10 +42,7 @@ private:
     using SliderAttachment = APVTS::SliderAttachment;
     using ButtonAttachment = APVTS::ButtonAttachment;
 
-    SliderAttachment freqAttachment;
-    SliderAttachment resAttachment;
-    SliderAttachment morphAttachment;
-
+    SliderAttachment freqAttachment, resAttachment, morphAttachment, gainAttachement;
     ButtonAttachment typeAttachment;
 
     ScreenComponent screen;

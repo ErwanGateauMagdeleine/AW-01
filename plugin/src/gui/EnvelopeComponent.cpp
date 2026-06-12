@@ -27,7 +27,7 @@ void EnvelopeComponent::paint(juce::Graphics& g)
 
 void EnvelopeComponent::resized()
 {
-    auto knobsAreaBounds = getLocalBounds().reduced(20, 20).translated(0, 10);
+    auto knobsAreaBounds = getLocalBounds().reduced(15, 15).translated(0, 10);
     knobWidth = knobsAreaBounds.getWidth() / 3;
     knobHeight = knobsAreaBounds.getHeight();
 

@@ -25,7 +25,7 @@ public:
 
     void getFilterCompKnobRect(juce::Rectangle<float>* plugin);
 
-    void getFilterCompButtonRect(juce::Rectangle<float>* button);
+    juce::Rectangle<float> getFilterCompButtonRect(void);
 
     void getFilterButtonStates(bool* peakState, bool* bandState);
 

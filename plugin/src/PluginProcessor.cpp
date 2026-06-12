@@ -261,7 +261,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Gain",
                                                            "Filter Gain",
-                                                           juce::NormalisableRange<float>(0.1f, 6.0f, 0.01f, 0.5f),
+                                                           juce::NormalisableRange<float>(-6.0f, 6.0f, 0.1f),
                                                            3.0f
                                                           ));
 
