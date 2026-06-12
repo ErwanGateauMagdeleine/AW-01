@@ -19,11 +19,11 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
 
     filterComponent.onChange = [this](bool isPeak)
     {
-        auto* param = processorRef.parameters.getParameter("filter Type");
+        auto* param = processorRef.parameters.getParameter("Filter Type");
         param->setValueNotifyingHost(isPeak ? 1.0f : 0.0f);
     };
 
-    float val = processorRef.parameters.getRawParameterValue("filter Type")->load();
+    float val = processorRef.parameters.getRawParameterValue("Filter Type")->load();
     filterComponent.setFilterType(val > 0.5f);
 }
 

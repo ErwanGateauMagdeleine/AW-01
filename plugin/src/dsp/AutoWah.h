@@ -9,6 +9,8 @@ struct autoWahSettings
 {
     SampleType envAttack{ 0 }, envDecay{ 0 }, envAmnt{ 0 };
     SampleType filtFreq{ 0 }, filtRes{ 0 }, filtMorph{ 0 };
+    SampleType filtGain{ 0 };
+    bool isPeak;
 };
 
 template <typename SampleType>
@@ -56,7 +58,11 @@ public:
         envFollower.setAttackTime(settings.envAttack);
         envFollower.setDecayTime(settings.envDecay);
 
-        wahFilt.setFilterParameters(settings.filtFreq, settings.filtRes, settings.filtMorph);
+        wahFilt.setFilterParameters(settings.filtFreq,
+                                    settings.filtRes,
+                                    settings.filtMorph,
+                                    settings.isPeak,
+                                    settings.filtGain);
     }
 
     void updateEnvAttack(SampleType newAttack)
@@ -94,6 +100,12 @@ public:
         wahFilt.setResonance(settings.filtRes);
     }
 
+    void updateFilterGain(SampleType newGain)
+    {
+        settings.filtGain = newGain;
+        wahFilt.setGain(settings.filtRes);
+    }
+
     SampleType getFilterFrequency()
     {
         return filterFrequency;
@@ -109,13 +121,18 @@ public:
         return wahFilt.getSampleRate();
     }
 
+    void updateFilterType(bool isPeak)
+    {
+        settings.isPeak = isPeak;
+        wahFilt.setIsPeak(isPeak);
+    }
+
 private:
     EnvelopeFollower<SampleType> envFollower;
     WahFilter<SampleType> wahFilt;
 
     autoWahSettings<SampleType> settings;
 
-    /* Keep values internal to the object. */
     SampleType envelope;
     SampleType filterFrequency;
 
