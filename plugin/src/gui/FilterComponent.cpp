@@ -8,7 +8,7 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters,
     freqAttachment(parameters, "Filter Center Frequency", freqSlider),
     resAttachment(parameters, "Filter Renonance", resSlider),
     morphAttachment(parameters, "Filter Morph", morphSlider),
-    typeAttachment(parameters, "filter Type", filterSelector.getPeakButton()),
+    typeAttachment(parameters, "Filter Type", filterSelector.getPeakButton()),
     screen(wah)
 {
     for (auto* s : { &freqSlider, &resSlider, &morphSlider })

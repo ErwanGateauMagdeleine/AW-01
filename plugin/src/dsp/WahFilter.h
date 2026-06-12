@@ -3,6 +3,7 @@
 #include "cmath"
 #include <complex>
 #include <numbers>
+#include <cmath>
 
 /** Enumeration of the coefficient indexes. */
 enum filterCoefficients
@@ -19,7 +20,7 @@ enum filterCoefficients
 enum filters
 {
     LPF,
-    BPF,
+    MIF,
     HPF,
     NUM_FILTERS
 };
@@ -68,20 +69,37 @@ public:
 
         /* Recalculate filter weights */
         filterWeights[LPF] = static_cast<SampleType>(std::max(0.0, 1.0 - 2.0 * morphing));
-        filterWeights[BPF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
+        filterWeights[MIF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
         filterWeights[HPF] = static_cast<SampleType>(std::max(0.0, 2.0 * morphing - 1.0));
     }
 
-    void setFilterParameters(SampleType newCenterFrequency, SampleType newResonance, SampleType newMorphing)
+    void setIsPeak(bool newIsPeak)
+    {
+        isPeak = newIsPeak;
+    }
+
+    void setGain(SampleType newGain)
+    {
+        gain = newGain;
+    }
+
+    void setFilterParameters(SampleType newCenterFrequency,
+                             SampleType newResonance,
+                             SampleType newMorphing,
+                             bool newIsPeak,
+                             SampleType newGain)
     {
         centerFrequency = newCenterFrequency;
         resonance = newResonance;
         morphing = newMorphing;
+        gain = newGain;
 
         /* Recalculate filter weights */
         filterWeights[LPF] = static_cast<SampleType>(std::max(0.0, 1.0 - 2.0 * morphing));
-        filterWeights[BPF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
+        filterWeights[MIF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
         filterWeights[HPF] = static_cast<SampleType>(std::max(0.0, 2.0 * morphing - 1.0));
+
+        isPeak = newIsPeak;
     }
 
     //==============================================================================
@@ -178,27 +196,44 @@ private:
         filtersCoefficients[LPF][B1] = static_cast<SampleType>(0.5 + beta - gamma);
         filtersCoefficients[LPF][B2] = filtersCoefficients[LPF][B0];
 
-        /* Calculating BPF */
-        // filtersCoefficients[BPF][A0] = filtersCoefficients[LPF][A0];
-        filtersCoefficients[BPF][A1] = static_cast<SampleType>((2.0 * resonance * (k * k - 1.0)) / delta);
-        filtersCoefficients[BPF][A2] = (k * k * resonance - k + resonance) / delta;
-        filtersCoefficients[BPF][B0] = k / delta;
-        filtersCoefficients[BPF][B1] = static_cast<SampleType>(0.0);
-        filtersCoefficients[BPF][B2] = -filtersCoefficients[BPF][B0];
-
         /* Calculating HPF */
-        // filtersCoefficients[HPF][A0] = filtersCoefficients[LPF][A0];
         filtersCoefficients[HPF][A1] = filtersCoefficients[LPF][A1];
         filtersCoefficients[HPF][A2] = filtersCoefficients[LPF][A2];
         filtersCoefficients[HPF][B0] = static_cast<SampleType>((0.5 + beta + gamma) / 2.0);
         filtersCoefficients[HPF][B1] = static_cast<SampleType>(-(0.5 + beta + gamma));
         filtersCoefficients[HPF][B2] = filtersCoefficients[HPF][B0];
 
+        /* Calculating Mid FIlter */
+        if (isPeak)
+        {
+            SampleType upsilon = static_cast<SampleType>(std::pow(10.0, gain / 20.0));
+            SampleType zeta = static_cast<SampleType>(4.0 / (1.0 + upsilon));
+            SampleType zetan = static_cast<SampleType>(zeta * std::tan(omega / (2.0 * resonance)));
+            beta = static_cast<SampleType>(0.5 * ((1.0 - zetan) / (1.0 + zetan)));
+            gamma = static_cast<SampleType>((0.5 + beta) * cosOmega);
+            SampleType c0 = upsilon - 1;
+            SampleType d0 = 1;
+
+            filtersCoefficients[MIF][A1] = static_cast<SampleType>((-2.0 * gamma));
+            filtersCoefficients[MIF][A2] = static_cast<SampleType>((2.0 * beta));
+            filtersCoefficients[MIF][B0] = static_cast<SampleType>(c0 * (0.5 - beta) + d0);
+            filtersCoefficients[MIF][B1] = static_cast<SampleType>(d0 * filtersCoefficients[MIF][A1]);
+            filtersCoefficients[MIF][B2] = static_cast<SampleType>(-c0 * ((0.5 - beta)) + d0 * filtersCoefficients[MIF][A2]);
+        }
+        else
+        {
+            filtersCoefficients[MIF][A1] = static_cast<SampleType>((2.0 * resonance * (k * k - 1.0)) / delta);
+            filtersCoefficients[MIF][A2] = (k * k * resonance - k + resonance) / delta;
+            filtersCoefficients[MIF][B0] = k / delta;
+            filtersCoefficients[MIF][B1] = static_cast<SampleType>(0.0);
+            filtersCoefficients[MIF][B2] = -filtersCoefficients[MIF][B0];
+        }
+
         /* Update filter coefficients */
         for (int i = 0; i < NUM_COEFFS; i++)
         {
             coeffs[i] = filterWeights[LPF] * filtersCoefficients[LPF][i] +
-                        filterWeights[BPF] * filtersCoefficients[BPF][i] +
+                        filterWeights[MIF] * filtersCoefficients[MIF][i] +
                         filterWeights[HPF] * filtersCoefficients[HPF][i];
         }
     }
@@ -207,9 +242,12 @@ private:
     SampleType centerFrequency;
     SampleType resonance;
     SampleType morphing;
+    SampleType gain;
 
     SampleType omegaConst;
     SampleType coeffs[NUM_COEFFS];
     SampleType filterWeights[NUM_FILTERS];
     SampleType stateArray[NUM_STATES];
+
+    bool isPeak;
 };
