@@ -103,7 +103,7 @@ public:
     void updateFilterGain(SampleType newGain)
     {
         settings.filtGain = newGain;
-        wahFilt.setGain(settings.filtRes);
+        wahFilt.setGain(settings.filtGain);
     }
 
     SampleType getFilterFrequency()

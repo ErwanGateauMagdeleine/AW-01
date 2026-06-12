@@ -34,16 +34,14 @@ public:
     void triggerBandButtonClick();
 
 private:
-    CustomRotarySlider freqSlider, resSlider, morphSlider;
+    CustomRotarySlider freqSlider, resSlider, morphSlider, gainSlider;
 
     FilterTypeSelector filterSelector;
 
     using APVTS = juce::AudioProcessorValueTreeState;
     using attachment = APVTS::SliderAttachment;
 
-    attachment freqAttachment;
-    attachment resAttachment;
-    attachment morphAttachment;
+    attachment freqAttachment, resAttachment, morphAttachment, gainAttachement;
 
     ScreenComponent screen;
 
