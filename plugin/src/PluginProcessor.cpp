@@ -238,7 +238,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Center Frequency",
                                                            "Filter Center Frequency",
                                                            juce::NormalisableRange<float>(FILTER_MIN_FREQ, FILTER_MAX_FREQ, 1.0f, 0.5f),
-                                                           50.0f
+                                                           1000.0f
                                                           ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Renonance",
@@ -261,7 +261,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Gain",
                                                            "Filter Gain",
-                                                           juce::NormalisableRange<float>(-6.0f, 6.0f, 0.1f),
+                                                           juce::NormalisableRange<float>(-8.0f, 8.0f, 0.1f),
                                                            3.0f
                                                           ));
 
