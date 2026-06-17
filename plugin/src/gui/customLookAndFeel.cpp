@@ -1,7 +1,7 @@
 #include "customLookAndFeel.h"
 #include "customRotarySlider.h"
 #include "colourScheme.h"
-#include "binaryData.h"
+#include "BinaryData.h"
 
 //==============================================================================
 customLookAndFeel::customLookAndFeel() :

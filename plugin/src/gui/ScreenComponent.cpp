@@ -1,4 +1,4 @@
-#include "screenComponent.h"
+#include "ScreenComponent.h"
 #include "colourScheme.h"
 #include "customLookAndFeel.h"
 
