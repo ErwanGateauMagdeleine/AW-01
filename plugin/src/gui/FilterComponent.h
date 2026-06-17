@@ -8,7 +8,7 @@
 class FilterComponent : public juce::Component
 {
 public:
-    FilterComponent(juce::AudioProcessorValueTreeState& state, AutoWah<float>& leftWah, AutoWah<float>& rightWah);
+    FilterComponent(juce::AudioProcessorValueTreeState& state, AutoWah<float>& wah);
 
     void paint(juce::Graphics& g) override;
 
@@ -23,13 +23,14 @@ public:
 private:
     CustomRotarySlider freqSlider, resSlider, morphSlider;
 
-    ScreenComponent screen;
     using APVTS = juce::AudioProcessorValueTreeState;
     using attachment = APVTS::SliderAttachment;
 
     attachment freqAttachment;
     attachment resAttachment;
     attachment morphAttachment;
+
+    ScreenComponent screen;
 
     int knobWidth;
     int knobHeight;

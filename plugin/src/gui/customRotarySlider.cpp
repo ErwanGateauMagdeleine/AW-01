@@ -3,8 +3,7 @@
 #include "customRotarySlider.h"
 
 //==============================================================================
-CustomRotarySlider::CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel) :
-        param(&rap)
+CustomRotarySlider::CustomRotarySlider(juce::RangedAudioParameter& rap, juce::String knobLabel)
 {
     setSliderStyle(juce::Slider::RotaryHorizontalVerticalDrag);
     setTextBoxStyle(juce::Slider::NoTextBox, false, 0, 0);

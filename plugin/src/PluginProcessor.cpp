@@ -304,12 +304,7 @@ void AudioPluginAudioProcessor::parameterChanged(const juce::String& parameterID
     }
 }
 
-AutoWah<float>& AudioPluginAudioProcessor::getLeftWahFilter()
+AutoWah<float>& AudioPluginAudioProcessor::getWahFilter()
 {
     return leftWah;
-}
-
-AutoWah<float>& AudioPluginAudioProcessor::getRightWahFilter()
-{
-    return rightWah;
 }

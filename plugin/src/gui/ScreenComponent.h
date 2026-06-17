@@ -6,7 +6,7 @@
 class ScreenComponent : public juce::Component
 {
 public:
-    ScreenComponent(AutoWah<float>& leftWah, AutoWah<float>& rightWah);
+    ScreenComponent(AutoWah<float>& leftWah);
 
     void paint(juce::Graphics& g) override;
 

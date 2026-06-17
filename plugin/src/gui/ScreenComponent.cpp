@@ -2,8 +2,8 @@
 #include "colourScheme.h"
 #include "customLookAndFeel.h"
 
-ScreenComponent::ScreenComponent(AutoWah<float>& leftWah, AutoWah<float>& rightWah)
-    : curveDisplay(leftWah, rightWah, dBMin, dBMax, freqMin, freqMax, cornerSize)
+ScreenComponent::ScreenComponent(AutoWah<float>& leftWah)
+    : curveDisplay(leftWah, dBMin, dBMax, freqMin, freqMax, cornerSize)
 {
     addAndMakeVisible(curveDisplay);
 }
