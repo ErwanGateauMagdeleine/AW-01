@@ -12,7 +12,7 @@ public:
                                          juce::Slider& slider) override;
 
     juce::Font getTitleFont();
-    juce::Font getLabelFont();
+    juce::Font getLabelsFont();
     juce::Font getScreenLabelsFont();
 
     void drawGlowText(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font);
@@ -24,7 +24,7 @@ private:
     void drawTrackArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle);
     void drawValueArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle, float sliderPos);
     void drawKnobBody(juce::Graphics& g, juce::Point<float> center, float radius);
-    void drawLabel(juce::Graphics& g, int x, int y, int width,  int height, juce::Slider& slider);
+    void drawLabelValue(juce::Graphics& g, int x, int y, int width,  int height, juce::Slider& slider);
     void drawPointerLine(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle, float sliderPos);
 
     float compBorderCornerRadius = 10.0f;
