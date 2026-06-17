@@ -1,3 +1,5 @@
+#pragma once
+
 #include <juce_gui_basics/juce_gui_basics.h>
 #include "../dsp/AutoWah.h"
 
@@ -5,8 +7,7 @@ class FilterCurveDisplay : public juce::Component,
                            public juce::Timer
 {
 public:
-    FilterCurveDisplay(AutoWah<float>& leftWah,
-                       AutoWah<float>& rightWah,
+    FilterCurveDisplay(AutoWah<float>& initWah,
                        float dbMin,
                        float dbMax,
                        float freqMin,
@@ -16,8 +17,7 @@ public:
     void timerCallback() override;
     void paint(juce::Graphics& g) override;
 private:
-    AutoWah<float>& leftWah;
-    AutoWah<float>& rightWah;
+    AutoWah<float>& wah;
 
     float dbMin, dbMax, freqMin, freqMax;
 

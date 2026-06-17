@@ -19,7 +19,7 @@ public:
     {
         minFreq = minFiltFreq;
         maxFreq = maxFiltFreq;
-    };
+    }
 
     void prepare(double newSampleRate)
     {

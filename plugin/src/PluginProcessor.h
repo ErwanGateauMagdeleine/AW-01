@@ -41,8 +41,7 @@ public:
     juce::AudioProcessorValueTreeState::ParameterLayout createParameterLayout();
     juce::AudioProcessorValueTreeState parameters;
 
-    AutoWah<float>& getLeftWahFilter();
-    AutoWah<float>& getRightWahFilter();
+    AutoWah<float>& getWahFilter();
 
 private:
 

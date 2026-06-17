@@ -1,16 +1,14 @@
-#pragma once
-
 #include "FilterComponent.h"
 #include "colourScheme.h"
 
-FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters, AutoWah<float>& leftWah, AutoWah<float>& rightWah) :
+FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters, AutoWah<float>& wah) :
     freqSlider(*parameters.getParameter("Filter Center Frequency"), "Cutoff"),
     resSlider(*parameters.getParameter("Filter Renonance"), "Res"),
     morphSlider(*parameters.getParameter("Filter Morph"), "Morph"),
     freqAttachment(parameters, "Filter Center Frequency", freqSlider),
     resAttachment(parameters, "Filter Renonance", resSlider),
     morphAttachment(parameters, "Filter Morph", morphSlider),
-    screen(leftWah, rightWah)
+    screen(wah)
 {
     for (auto* s : { &freqSlider, &resSlider, &morphSlider })
     {

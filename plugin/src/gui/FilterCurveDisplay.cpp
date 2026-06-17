@@ -3,15 +3,13 @@
 #include "customLookAndFeel.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 
-FilterCurveDisplay::FilterCurveDisplay(AutoWah<float>& leftWah,
-                                       AutoWah<float>& rightWah,
+FilterCurveDisplay::FilterCurveDisplay(AutoWah<float>& initWah,
                                        float nDbMin,
                                        float nDbMax,
                                        float nFreqMin,
                                        float nFreqMax,
                                        float cSize)
-    : leftWah(leftWah),
-      rightWah(rightWah)
+    : wah(initWah)
 {
     dbMin = nDbMin;
     dbMax = nDbMax;
@@ -41,7 +39,7 @@ void FilterCurveDisplay::paint(juce::Graphics& g)
         float normalized = static_cast<float>(x) / static_cast<float>(width);
         float freq = freqMin * std::pow(freqMax / freqMin, normalized);
 
-        float magnitude = leftWah.getMagnitudeFromFrequency(freq);
+        float magnitude = wah.getMagnitudeFromFrequency(freq);
 
         float dB = 20.0f * std::log10(std::max(magnitude, 1e-6f));
 

@@ -6,7 +6,7 @@
 AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAudioProcessor& p)
     : AudioProcessorEditor (&p), processorRef (p),
       envelopeComponent(processorRef.parameters),
-      filterComponent(processorRef.parameters, processorRef.getLeftWahFilter(), processorRef.getRightWahFilter())
+      filterComponent(processorRef.parameters, processorRef.getWahFilter())
 {
     setLookAndFeel(&lnf);
 

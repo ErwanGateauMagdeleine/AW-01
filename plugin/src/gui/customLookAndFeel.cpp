@@ -1,9 +1,7 @@
-#pragma once
-
 #include "customLookAndFeel.h"
 #include "customRotarySlider.h"
 #include "colourScheme.h"
-#include "binaryData.h"
+#include "BinaryData.h"
 
 //==============================================================================
 customLookAndFeel::customLookAndFeel() :
@@ -92,14 +90,14 @@ void customLookAndFeel::drawPointerLine(juce::Graphics& g, juce::Point<float> ce
     g.strokePath(pointerLine, juce::PathStrokeType(1.5f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
 }
 
-void customLookAndFeel::drawLabel(juce::Graphics& g, int x, int y, int width,  int height, juce::Slider& slider)
+void customLookAndFeel::drawLabelValue(juce::Graphics& g, int x, int y, int width,  int height, juce::Slider& slider)
 {
     juce::Rectangle localArea(x, y, width, height);
     auto textArea = localArea.removeFromBottom(11);
 
-    g.setFont (getLabelFont());
+    g.setFont (getLabelsFont());
     g.setColour(findColour(colourScheme::fontColourId));
-    drawGlowText(g, slider.getName(), textArea.toFloat(), juce::Justification::centred, getLabelFont());
+    drawGlowText(g, slider.getName(), textArea.toFloat(), juce::Justification::centred, getLabelsFont());
 }
 
 //==============================================================================
@@ -114,7 +112,7 @@ void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
     drawValueArk(g, center, radius, rotaryStartAngle, rotaryEndAngle, sliderPos);
     drawKnobBody(g, center, radius);
     drawPointerLine(g, center, radius, rotaryStartAngle, rotaryEndAngle, sliderPos);
-    drawLabel(g, x, y, width, height, slider);
+    drawLabelValue(g, x, y, width, height, slider);
 }
 
 juce::Font customLookAndFeel::getTitleFont()
@@ -122,7 +120,7 @@ juce::Font customLookAndFeel::getTitleFont()
     return titleFont;
 }
 
-juce::Font customLookAndFeel::getLabelFont()
+juce::Font customLookAndFeel::getLabelsFont()
 {
     return labelFont;
 }
