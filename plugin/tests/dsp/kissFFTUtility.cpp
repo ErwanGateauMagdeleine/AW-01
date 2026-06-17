@@ -1,4 +1,4 @@
-#include "kissfftUtility.h"
+#include "kissFFTUtility.h"
 #include "kiss_fft.h"
 #include "kiss_fftr.h"
 #include "cmath"

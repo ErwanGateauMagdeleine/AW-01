@@ -38,8 +38,8 @@ set(SourceFiles
     PluginProcessor.cpp
     gui/customLookAndFeel.h
     gui/customLookAndFeel.cpp
-    gui/CustomRotarySlider.h
-    gui/CustomRotarySlider.cpp
+    gui/customRotarySlider.h
+    gui/customRotarySlider.cpp
     gui/FilterComponent.h
     gui/FilterComponent.cpp
     gui/EnvelopeComponent.h
