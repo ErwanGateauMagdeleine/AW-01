@@ -3,15 +3,15 @@
 #include "customLookAndFeel.h"
 #include <juce_gui_basics/juce_gui_basics.h>
 
-FilterCurveDisplay::FilterCurveDisplay(AutoWah<float>& leftWah,
-                                       AutoWah<float>& rightWah,
+FilterCurveDisplay::FilterCurveDisplay(AutoWah<float>& initLeftWah,
+                                       AutoWah<float>& initRightWah,
                                        float nDbMin,
                                        float nDbMax,
                                        float nFreqMin,
                                        float nFreqMax,
                                        float cSize)
-    : leftWah(leftWah),
-      rightWah(rightWah)
+    : leftWah(initLeftWah),
+      rightWah(initRightWah)
 {
     dbMin = nDbMin;
     dbMax = nDbMax;

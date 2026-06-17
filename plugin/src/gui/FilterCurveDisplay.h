@@ -7,8 +7,8 @@ class FilterCurveDisplay : public juce::Component,
                            public juce::Timer
 {
 public:
-    FilterCurveDisplay(AutoWah<float>& leftWah,
-                       AutoWah<float>& rightWah,
+    FilterCurveDisplay(AutoWah<float>& initLeftWah,
+                       AutoWah<float>& initRightWah,
                        float dbMin,
                        float dbMax,
                        float freqMin,
