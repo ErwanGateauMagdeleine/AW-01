@@ -1,5 +1,3 @@
-#pragma once
-
 #include "FilterComponent.h"
 #include "colourScheme.h"
 

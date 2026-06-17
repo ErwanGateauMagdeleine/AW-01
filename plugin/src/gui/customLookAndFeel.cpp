@@ -1,5 +1,3 @@
-#pragma once
-
 #include "customLookAndFeel.h"
 #include "customRotarySlider.h"
 #include "colourScheme.h"

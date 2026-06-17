@@ -1,5 +1,3 @@
-#pragma once
-
 #include "EnvelopeComponent.h"
 #include "colourScheme.h"
 
