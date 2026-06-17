@@ -10,8 +10,7 @@ FilterCurveDisplay::FilterCurveDisplay(AutoWah<float>& initLeftWah,
                                        float nFreqMin,
                                        float nFreqMax,
                                        float cSize)
-    : leftWah(initLeftWah),
-      rightWah(initRightWah)
+    : wah(initLeftWah),
 {
     dbMin = nDbMin;
     dbMax = nDbMax;

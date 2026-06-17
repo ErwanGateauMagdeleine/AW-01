@@ -18,8 +18,7 @@ public:
     void timerCallback() override;
     void paint(juce::Graphics& g) override;
 private:
-    AutoWah<float>& leftWah;
-    AutoWah<float>& rightWah;
+    AutoWah<float>& wah;
 
     float dbMin, dbMax, freqMin, freqMax;
 
