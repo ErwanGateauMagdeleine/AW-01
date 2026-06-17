@@ -23,6 +23,4 @@ target_include_directories(dspTests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/external/kissfft
 )
 
-enable_testing()
-
-add_test(NAME CATCH2_TESTS COMMAND dspTests)
+add_test(NAME DSP_TESTS COMMAND dspTests)

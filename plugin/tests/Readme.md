@@ -1,13 +1,7 @@
 # Unit Tests
 
-The plugin is using unit tests based on the JUCE framework unit tests. One can run all tests as follow:
+The plugin is using unit tests based on Catch2. In order to run the tests, one can run the following command from the root of the repo:
 
-1- Build the project by running the following command:
 ```
-cmake --build Builds --target UnitTestRunner --config Release
-```
-
-2- Run the unit tests using the following command
-```
-.\Builds\UnitTestRunner_artefacts\Release\UnitTestRunner.exe
+ctest --test-dir build -C <your_build_config> --output-on-failure
 ```

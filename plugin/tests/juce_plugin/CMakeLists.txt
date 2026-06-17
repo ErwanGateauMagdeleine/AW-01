@@ -29,4 +29,4 @@ target_compile_definitions(juce_pluginTests PRIVATE
     JucePlugin_Name="TEST"
 )
 
-add_test(NAME CATCH2_TESTS COMMAND juce_pluginTests)
+add_test(NAME JUCE_PLUGIN_TESTS COMMAND juce_pluginTests)
