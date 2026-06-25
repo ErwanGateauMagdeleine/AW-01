@@ -19,6 +19,10 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install NSIS (Windows only)
+        if: runner.os == 'Windows'
+        run: choco install nsis -y
+
       - name: Configure CMake
         run: cmake -B build -S plugin/ -DCMAKE_BUILD_TYPE=Release
 
@@ -27,3 +31,6 @@ jobs:
 
       - name: Unit tests
         run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Generate Package
+        run: cd build && cpack -C Release
