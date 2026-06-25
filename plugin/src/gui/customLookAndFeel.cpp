@@ -24,6 +24,10 @@ customLookAndFeel::customLookAndFeel() :
     setColour(colourScheme::screenLinesColourId, juce::Colour::fromString("18e8a020"));
     setColour(colourScheme::screenLabelColourId, juce::Colour::fromString("66e8a020"));
     setColour(colourScheme::FilterCurveColourId, juce::Colour::fromString("ffe8a020"));
+    setColour(colourScheme::buttonInactiveFillCoulourId, juce::Colour::fromString("0xff001a0e"));
+    setColour(colourScheme::buttonActiveFillColourId, juce::Colour::fromString("ff1a1f13"));
+    setColour(colourScheme::ledInactiveFillColourId, juce::Colour::fromString("ffa0711e"));
+    setColour(colourScheme::ledActiveFillColourId, juce::Colour::fromString("ffe8a020"));
 }
 
 void customLookAndFeel::drawTrackArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle)
@@ -97,7 +101,12 @@ void customLookAndFeel::drawLabelValue(juce::Graphics& g, int x, int y, int widt
 
     g.setFont (getLabelsFont());
     g.setColour(findColour(colourScheme::fontColourId));
-    drawGlowText(g, slider.getName(), textArea.toFloat(), juce::Justification::centred, getLabelsFont());
+    drawGlowText(g,
+                 slider.getName(),
+                 textArea.toFloat(),
+                 juce::Justification::centred,
+                 getLabelsFont(),
+                 findColour(colourScheme::fontColourId));
 }
 
 //==============================================================================
@@ -130,11 +139,16 @@ juce::Font customLookAndFeel::getScreenLabelsFont()
     return screenLabelsFont;
 }
 
-void customLookAndFeel::drawGlowText(juce::Graphics& g, const juce::String& text, juce::Rectangle<float> bounds, juce::Justification justification, juce::Font font)
+void customLookAndFeel::drawGlowText(juce::Graphics& g,
+                                     const juce::String& text,
+                                     juce::Rectangle<float> bounds,
+                                     juce::Justification justification,
+                                     juce::Font font,
+                                     juce::Colour colour)
 {
     for (int i = 3; i >= 1; --i)
     {
-        g.setColour(findColour(colourScheme::fontColourId).withAlpha(0.05f));
+        g.setColour(colour.withAlpha(0.05f));
         g.setFont(font);
 
         g.drawText(text, bounds.translated((float)i,  0), justification);
@@ -147,7 +161,7 @@ void customLookAndFeel::drawGlowText(juce::Graphics& g, const juce::String& text
         g.drawText(text, bounds.translated((float)-i, (float)i), justification);
     }
 
-    g.setColour(findColour(colourScheme::fontColourId));
+    g.setColour(colour);
     g.drawText(text, bounds, justification);
 }
 
@@ -162,5 +176,78 @@ void customLookAndFeel::drawComponentBoundaries(juce::Graphics& g, const juce::S
     g.setColour(findColour(colourScheme::componentOutlineColourId));
     g.strokePath(borderPath, juce::PathStrokeType(1.0f));
 
-    drawGlowText(g, text, bounds.reduced(8, 6), justification, getTitleFont());
+    drawGlowText(g,
+                 text,
+                 bounds.reduced(8, 6),
+                 justification,
+                 getTitleFont(),
+                 findColour(colourScheme::fontColourId));
+}
+
+void customLookAndFeel::drawButtonBackground(juce::Graphics& g, juce::Button& button, const juce::Colour&, bool, bool)
+{
+    auto bounds = button.getLocalBounds().toFloat();
+    bool active = button.getToggleState();
+    juce::Colour backgroundColor;
+
+    if (active)
+    {
+        backgroundColor = findColour(colourScheme::buttonActiveFillColourId);
+    }
+    else
+    {
+        backgroundColor = findColour(colourScheme::buttonInactiveFillCoulourId);
+    }
+
+    g.setColour(backgroundColor);
+    g.fillRoundedRectangle(bounds.reduced(1), compBorderCornerRadius);
+
+    g.setColour(findColour(colourScheme::screenBoundaryInnerColourId));
+    g.drawRoundedRectangle(bounds.reduced(1), compBorderCornerRadius, 1.0);
+
+    g.setColour(findColour(colourScheme::screenBoundaryOuterColourId));
+    g.drawRoundedRectangle(bounds, compBorderCornerRadius, 1.0);
+
+    float ledRadius = 2.5f;
+    float ledX = bounds.getX() + 10.0f;
+    float ledY = bounds.getCentreY();
+
+    if (active)
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            g.setColour(findColour(colourScheme::buttonActiveFillColourId).withAlpha(0.05f));
+            g.fillEllipse(ledX - ledRadius * i, ledY - ledRadius * i, 2.0f * ledRadius * i, 2.0f * ledRadius * i);
+        }
+        g.setColour(findColour(colourScheme::ledActiveFillColourId));
+    }
+    else
+    {
+        g.setColour(findColour(colourScheme::ledInactiveFillColourId));
+    }
+    g.fillEllipse(ledX - ledRadius, ledY - ledRadius, 2.0f * ledRadius, 2.0f * ledRadius);
+}
+
+void customLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& button, bool, bool)
+{
+    bool active = button.getToggleState();
+    auto bounds = button.getLocalBounds();
+    bounds.removeFromLeft(20);
+    juce::Colour colour;
+
+    if (active)
+    {
+        drawGlowText(g,
+                     button.getName(),
+                     bounds.toFloat(),
+                     juce::Justification::centredLeft,
+                     getLabelsFont(),
+                     findColour(colourScheme::fontColourId));
+    }
+    else
+    {
+        g.setFont(getLabelsFont());
+        g.setColour(findColour(colourScheme::ledInactiveFillColourId));
+        g.drawText(button.getName(), bounds, juce::Justification::centredLeft);
+    }
 }

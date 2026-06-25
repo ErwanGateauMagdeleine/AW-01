@@ -25,6 +25,8 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
     parameters.addParameterListener("Filter Center Frequency", this);
     parameters.addParameterListener("Filter Renonance", this);
     parameters.addParameterListener("Filter Morph", this);
+    parameters.addParameterListener("Filter Type", this);
+    parameters.addParameterListener("Filter Gain", this);
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -236,7 +238,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Center Frequency",
                                                            "Filter Center Frequency",
                                                            juce::NormalisableRange<float>(FILTER_MIN_FREQ, FILTER_MAX_FREQ, 1.0f, 0.5f),
-                                                           50.0f
+                                                           1000.0f
                                                           ));
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Renonance",
@@ -251,6 +253,18 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
                                                            0.5f
                                                           ));
 
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Type",
+                                                           "Filter Type",
+                                                           juce::NormalisableRange<float>(0.0f, 1.0f),
+                                                           0.0f
+                                                          ));
+
+    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Gain",
+                                                           "Filter Gain",
+                                                           juce::NormalisableRange<float>(-8.0f, 8.0f, 0.1f),
+                                                           3.0f
+                                                          ));
+
     return layout;
 }
 
@@ -263,6 +277,8 @@ void AudioPluginAudioProcessor::updateAllWahSettings()
     wahSettings.filtFreq = parameters.getRawParameterValue("Filter Center Frequency")->load();
     wahSettings.filtRes = parameters.getRawParameterValue("Filter Renonance")->load();
     wahSettings.filtMorph = parameters.getRawParameterValue("Filter Morph")->load();
+    wahSettings.isPeak = (bool) parameters.getRawParameterValue("Filter Type")->load();
+    wahSettings.filtGain = parameters.getRawParameterValue("Filter Gain")->load();
 
     leftWah.updateSettings(wahSettings);
     rightWah.updateSettings(wahSettings);
@@ -301,6 +317,16 @@ void AudioPluginAudioProcessor::parameterChanged(const juce::String& parameterID
     {
         leftWah.updateFiltMorph(newValue);
         rightWah.updateFiltMorph(newValue);
+    }
+    if (parameterID == "Filter Type")
+    {
+        leftWah.updateFilterType((bool)newValue);
+        rightWah.updateFilterType((bool)newValue);
+    }
+    if (parameterID == "Filter Gain")
+    {
+        leftWah.updateFilterGain(newValue);
+        rightWah.updateFilterGain(newValue);
     }
 }
 

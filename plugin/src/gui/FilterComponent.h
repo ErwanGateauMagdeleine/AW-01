@@ -4,6 +4,7 @@
 #include <juce_audio_processors/juce_audio_processors.h>
 #include "customRotarySlider.h"
 #include "ScreenComponent.h"
+#include "FilterTypeSelector.h"
 
 class FilterComponent : public juce::Component
 {
@@ -20,15 +21,29 @@ public:
 
     void getKnobRects(juce::Rectangle<float>* filterKnob);
 
+    juce::Rectangle<float> getButtonRect();
+
+    std::function<void(bool)> onChange;
+
+    void setFilterType(bool isPeak);
+
+    void getButtonsStates(bool* peakState, bool* bandState);
+
+    void triggerPeakButtonClick();
+
+    void triggerBandButtonClick();
+
 private:
-    CustomRotarySlider freqSlider, resSlider, morphSlider;
+    CustomRotarySlider freqSlider, resSlider, morphSlider, gainSlider;
+
+    FilterTypeSelector filterSelector;
 
     using APVTS = juce::AudioProcessorValueTreeState;
-    using attachment = APVTS::SliderAttachment;
+    using SliderAttachment = APVTS::SliderAttachment;
+    using ButtonAttachment = APVTS::ButtonAttachment;
 
-    attachment freqAttachment;
-    attachment resAttachment;
-    attachment morphAttachment;
+    SliderAttachment freqAttachment, resAttachment, morphAttachment, gainAttachement;
+    ButtonAttachment typeAttachment;
 
     ScreenComponent screen;
 

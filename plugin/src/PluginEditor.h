@@ -25,6 +25,14 @@ public:
 
     void getFilterCompKnobRect(juce::Rectangle<float>* plugin);
 
+    juce::Rectangle<float> getFilterCompButtonRect(void);
+
+    void getFilterButtonStates(bool* peakState, bool* bandState);
+
+    void triggerPeakButtonClick();
+
+    void triggerBandButtonClick();
+
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
@@ -32,9 +40,6 @@ private:
 
     //==============================================================================
     customLookAndFeel lnf;
-
-    using APVTS = juce::AudioProcessorValueTreeState;
-    using attachment = APVTS::SliderAttachment;
 
     EnvelopeComponent envelopeComponent;
 

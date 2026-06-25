@@ -49,7 +49,7 @@ TEST_CASE("Matching outputs", "[process]")
         100.0f, /* envAttack */
         500.0f, /* envDecay */
         5.0f,   /* envAmount */
-        50.0,  /* filtCutoff */
+        1000.0,  /* filtCutoff */
         0.7f,   /* filtRes */
         0.5f    /* filtMorph */
     };

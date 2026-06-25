@@ -15,7 +15,16 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     addAndMakeVisible(filterComponent);
 
     /* Set size is the last thing to do. */
-    setSize (250, 405);
+    setSize (250, 505);
+
+    filterComponent.onChange = [this](bool isPeak)
+    {
+        auto* param = processorRef.parameters.getParameter("Filter Type");
+        param->setValueNotifyingHost(isPeak ? 1.0f : 0.0f);
+    };
+
+    float val = processorRef.parameters.getRawParameterValue("Filter Type")->load();
+    filterComponent.setFilterType(val > 0.5f);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -36,7 +45,7 @@ void AudioPluginAudioProcessorEditor::resized()
     envelopeComponent.setBounds(0, 0, 250, 100);
 
     /* Draw filter component */
-    filterComponent.setBounds(0, 105, 250, 300);
+    filterComponent.setBounds(0, 105, 250, 400);
 }
 
 void AudioPluginAudioProcessorEditor::getKnobSizes(int* filterCompKnobWidth, int* filterCompKnobHeight, int* EnvelopeKnobWidth, int* EnvelopeKnobHeight)
@@ -58,4 +67,24 @@ void AudioPluginAudioProcessorEditor::getPluginRect(juce::Rectangle<float>* plug
 void AudioPluginAudioProcessorEditor::getFilterCompKnobRect(juce::Rectangle<float>* filterKnob)
 {
     filterComponent.getKnobRects(filterKnob);
+}
+
+juce::Rectangle<float> AudioPluginAudioProcessorEditor::getFilterCompButtonRect(void)
+{
+    return filterComponent.getButtonRect();
+}
+
+void AudioPluginAudioProcessorEditor::getFilterButtonStates(bool* peakState, bool* bandState)
+{
+    filterComponent.getButtonsStates(peakState, bandState);
+}
+
+void AudioPluginAudioProcessorEditor::triggerPeakButtonClick()
+{
+    filterComponent.triggerPeakButtonClick();
+}
+
+void AudioPluginAudioProcessorEditor::triggerBandButtonClick()
+{
+    filterComponent.triggerBandButtonClick();
 }
