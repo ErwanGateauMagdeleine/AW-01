@@ -34,3 +34,6 @@ jobs:
 
       - name: Generate Package
         run: cd build && cpack -C Release
+
+      - name: Test Package
+        run: pytest

@@ -88,9 +88,11 @@ target_link_libraries("${PROJECT_NAME}"
     BINARY_DATA)
 
 if (WIN32)
-    install(DIRECTORY "$<TARGET_FILE_DIR:AW-01_VST3>/../../"
-            DESTINATION "VST3"
-            COMPONENT VST3)
+    install(FILES
+        "${CMAKE_BINARY_DIR}/src/AW-01_artefacts/$<CONFIG>/VST3/AW-01.vst3/Contents/x86_64-win/AW-01.vst3"
+        DESTINATION "."
+        COMPONENT VST3
+    )
 elseif (APPLE)
     install(DIRECTORY "$<TARGET_BUNDLE_DIR:AW-01_VST3>"
             DESTINATION "Library/Audio/Plug-Ins/VST3"
@@ -107,7 +109,7 @@ if (WIN32)
     set(CPACK_GENERATOR "NSIS")
     set(CPACK_NSIS_DISPLAY_NAME "AW-01")
     set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64\\\\Common Files")
-    set(CPACK_COMPONENTS_ALL VST3 Standalone)
+    set(CPACK_COMPONENTS_ALL VST3)
 elseif (APPLE)
     set(CPACK_GENERATOR "productbuild")
     set(CPACK_COMPONENTS_ALL VST3)
