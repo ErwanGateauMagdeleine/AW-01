@@ -2,15 +2,15 @@
 #include "colourScheme.h"
 
 FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters, AutoWah<float>& wah) :
-    freqSlider(*parameters.getParameter("Filter Center Frequency"), "Cutoff"),
-    resSlider(*parameters.getParameter("Filter Renonance"), "Res"),
-    morphSlider(*parameters.getParameter("Filter Morph"), "Morph"),
-    gainSlider(*parameters.getParameter("Filter Gain"), "Gain"),
+    freqSlider("Cutoff"),
+    resSlider("Res"),
+    morphSlider("Morph"),
+    gainSlider("Gain"),
     freqAttachment(parameters, "Filter Center Frequency", freqSlider),
     resAttachment(parameters, "Filter Renonance", resSlider),
     morphAttachment(parameters, "Filter Morph", morphSlider),
-    typeAttachment(parameters, "Filter Type", filterSelector.getPeakButton()),
     gainAttachement(parameters, "Filter Gain", gainSlider),
+    typeAttachment(parameters, "Filter Type", filterSelector.getPeakButton()),
     screen(wah)
 {
     for (auto* s : { &freqSlider, &resSlider, &morphSlider, &gainSlider })

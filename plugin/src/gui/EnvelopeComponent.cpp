@@ -2,9 +2,9 @@
 #include "colourScheme.h"
 
 EnvelopeComponent::EnvelopeComponent(juce::AudioProcessorValueTreeState& parameters) :
-    attackSlider(*parameters.getParameter("Envelope Follower Attack"), "Attack"),
-    decaySlider(*parameters.getParameter("Envelope Follower Decay"), "Decay"),
-    amountSlider(*parameters.getParameter("Envelope Follower Amount"), "Amount"),
+    attackSlider("Attack"),
+    decaySlider("Decay"),
+    amountSlider("Amount"),
     attackAttachment(parameters, "Envelope Follower Attack", attackSlider),
     decayAttachment(parameters, "Envelope Follower Decay", decaySlider),
     amountAttachment(parameters, "Envelope Follower Amount", amountSlider)
