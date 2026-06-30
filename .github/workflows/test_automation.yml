@@ -36,4 +36,6 @@ jobs:
         run: cd build && cpack -C Release
 
       - name: Test Package
-        run: pytest
+        run: |
+          pip install -r ./plugin/tests/installer/requirement.txt
+          pytest
