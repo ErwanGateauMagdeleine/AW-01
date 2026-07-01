@@ -29,11 +29,29 @@ jobs:
       - name: Build
         run: cmake --build build --config Release --parallel
 
+      - name: Show artefacts folder
+        if: runner.os == 'macOS'
+        run: find build/src/AW-01_artefacts -type f
+
+      - name: Show cmake_install.cmake VST3 section
+        if: runner.os == 'macOS'
+        run: grep -r "VST3\|AW-01.vst3\|DIRECTORY" build/src/cmake_install.cmake || echo "Nothing found"
+
+      - name: Show full cmake_install.cmake
+        if: runner.os == 'macOS'
+        run: cat build/src/cmake_install.cmake
+
       - name: Unit tests
         run: ctest --test-dir build -C Release --output-on-failure
 
       - name: Generate Package
         run: cd build && cpack -C Release
+
+      - name: Inspect pkg contents
+        if: runner.os == 'macOS'
+        run: |
+          pkgutil --expand build/AW-01.pkg /tmp/aw01_expanded
+          find /tmp/aw01_expanded -type f
 
       - name: Test Package
         run: |
