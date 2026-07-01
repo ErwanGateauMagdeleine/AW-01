@@ -53,6 +53,12 @@ jobs:
           pkgutil --expand build/AW-01.pkg /tmp/aw01_expanded
           find /tmp/aw01_expanded -type f
 
+      - name: Inspect pkg Payload contents
+        if: runner.os == 'macOS'
+        run: |
+          cd /tmp/aw01_expanded/AW-01-VST3.pkg
+          lsbom Bom
+
       - name: Test Package
         run: |
           pip install -r ./plugin/tests/installer/requirement.txt
