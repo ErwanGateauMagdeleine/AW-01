@@ -112,6 +112,7 @@ if (WIN32)
     set(CPACK_COMPONENTS_ALL VST3)
 elseif (APPLE)
     set(CPACK_GENERATOR "productbuild")
+    set(CPACK_PACKAGING_INSTALL_PREFIX "/")
     set(CPACK_COMPONENTS_ALL VST3)
 endif()
 
