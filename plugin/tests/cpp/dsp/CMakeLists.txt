@@ -19,7 +19,7 @@ target_link_libraries(dspTests
 )
 
 target_include_directories(dspTests PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../src/dsp/
+    ${CMAKE_CURRENT_SOURCE_DIR}/../../../src/dsp/
     ${CMAKE_CURRENT_SOURCE_DIR}/external/kissfft
 )
 

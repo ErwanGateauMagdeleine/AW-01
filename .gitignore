@@ -7,3 +7,5 @@
 
 build
 OUT
+
+__pycache__
