@@ -55,10 +55,15 @@ def install_vst3(get_plugin_installer_path, tmp_path_factory):
         assert result.returncode == 0, f"Silent install failed:\n{result.stderr}"
         vst3 = install_dir / "AW-01.vst3"
 
-    else:  # macOS — no temp-path override exists, installs to the real system path
-        result = subprocess.run(["sudo", "installer", "-pkg", str(get_plugin_installer_path), "-target", "/"], capture_output=True, text=True)
+    else:
+        result = subprocess.run(["sudo", "installer", "-pkg", str(get_plugin_installer_path), "-target", "/"], capture_output=False, text=True)
         assert result.returncode == 0, f"Silent install failed:\n{result.stderr}"
         vst3 = Path("/Library/Audio/Plug-Ins/VST3/AW-01.vst3")
+
+    if not vst3.exists():
+        listing = subprocess.run(["ls", "-la", "/Library/Audio/Plug-Ins/VST3/"], capture_output=True, text=True)
+        pytest.fail(f"Bundle missing after install\n"
+                    f"VST3 folder contents:\n{listing.stdout or listing.stderr}")
 
     yield vst3
 
