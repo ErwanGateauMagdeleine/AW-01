@@ -70,4 +70,4 @@ def install_vst3(get_plugin_installer_path, tmp_path_factory):
     if IS_WINDOWS:
         _force_rmtree(install_dir)
     if IS_MAC and vst3.exists():
-        subprocess.run(["sudo", "rm", "-rf", str(install_dir)])
+        subprocess.run(["sudo", "rm", "-rf", str(vst3)])
