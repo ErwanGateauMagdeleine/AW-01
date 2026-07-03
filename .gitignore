@@ -9,3 +9,5 @@ build
 OUT
 
 __pycache__
+
+pluginval.*
