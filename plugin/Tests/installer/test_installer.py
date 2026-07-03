@@ -1,5 +1,6 @@
 import pytest
 from conftest import windows_only, mac_only
+import subprocess
 
 
 @windows_only
@@ -30,3 +31,24 @@ def test_vst3_binary_exists(install_vst3):
     binaries = list((bundle / "Contents" / "MacOS").glob("*"))
     assert len(binaries) == 1 and binaries[0].is_file(), \
         f"Expected exactly one binary in Contents/MacOS/, found: {binaries}"
+
+def test_plugin_passes_pluginval(install_vst3, pluginval_binary):
+    bundle = install_vst3
+    pluginval_bin = pluginval_binary
+
+    res = subprocess.run(
+        [
+            str(pluginval_bin),
+            "--strictness-level", "5",
+            "--skip-gui-tests",
+            "--validate-in-process",
+            "--verbose",
+            str(bundle)
+        ],
+        capture_output=True,
+        text = True)
+
+    print(f"stdout::\n{res.stdout}\n")
+    assert res.returncode == 0, \
+        (f"pluginval failed with strictness level 5\n"
+         f"stderr:\n{res.stderr}")

@@ -66,3 +66,13 @@ def install_vst3(get_plugin_installer_path, tmp_path_factory):
         _force_rmtree(install_dir)
     if IS_MAC and vst3.exists():
         subprocess.run(["sudo", "rm", "-rf", str(vst3)])
+
+
+@pytest.fixture
+def pluginval_binary():
+    path = Path("pluginval.exe" if IS_WINDOWS else "pluginval.app/Contents/MacOS/pluginval").resolve()
+
+    if not path.exists():
+        pytest.error("pluginval not found, download it before runing tests")
+
+    return path

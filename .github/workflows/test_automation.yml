@@ -35,6 +35,12 @@ jobs:
       - name: Generate Package
         run: cd build && cpack -C Release
 
+      - name: Download pluginVal
+        shell: bash
+        run: |
+          curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_${{ runner.os }}.zip" -o pluginval.zip
+          unzip pluginval.zip
+
       - name: Test Package
         run: |
           pip install -r ./plugin/tests/installer/requirement.txt
