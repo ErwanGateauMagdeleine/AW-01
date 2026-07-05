@@ -17,13 +17,20 @@
 name: Build and Test
 
 on:
-    pull_request:
-        branches: [develop]
+  workflow_call:
+    outputs:
+      installer-windows:
+        description: "Windows installer"
+        value: installer-windows
+      installer-macos:
+        description: "MacOs installer"
+        value: installer-macos
 
 jobs:
   build:
     name: Build & Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -61,3 +68,11 @@ jobs:
         run: |
           pip install -r ./plugin/tests/installer/requirement.txt
           pytest
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-${{ runner.os }}
+          path: |
+            build/*.exe
+            build/*pkg
