@@ -14,11 +14,4 @@
 #  You should have received a copy of the GNU General Public License
 #  along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-cmake_minimum_required(VERSION 3.15)
-
-project("AW-01")
-enable_testing()
-
-add_subdirectory(JUCE)
-add_subdirectory(src)
-add_subdirectory(tests)
+add_subdirectory(cpp)

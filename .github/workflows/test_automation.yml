@@ -1,13 +1,36 @@
+# AW-01 - AutoWah JUCE based audio plugin
+# Copyright (C) 2026 Erwan Gateau-Magdeleine
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <https://www.gnu.org/licenses/>.
+
 name: Build and Test
 
 on:
-    pull_request:
-        branches: [develop]
+  workflow_call:
+    outputs:
+      installer-windows:
+        description: "Windows installer"
+        value: installer-windows
+      installer-macos:
+        description: "MacOs installer"
+        value: installer-macos
 
 jobs:
   build:
     name: Build & Test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
+
     strategy:
       fail-fast: false
       matrix:
@@ -19,6 +42,10 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install NSIS (Windows only)
+        if: runner.os == 'Windows'
+        run: choco install nsis -y
+
       - name: Configure CMake
         run: cmake -B build -S plugin/ -DCMAKE_BUILD_TYPE=Release
 
@@ -27,3 +54,25 @@ jobs:
 
       - name: Unit tests
         run: ctest --test-dir build -C Release --output-on-failure
+
+      - name: Generate Package
+        run: cd build && cpack -C Release
+
+      - name: Download pluginVal
+        shell: bash
+        run: |
+          curl -L "https://github.com/Tracktion/pluginval/releases/latest/download/pluginval_${{ runner.os }}.zip" -o pluginval.zip
+          unzip pluginval.zip
+
+      - name: Test Package
+        run: |
+          pip install -r ./plugin/tests/installer/requirement.txt
+          pytest
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-${{ runner.os }}
+          path: |
+            build/*.exe
+            build/*pkg

@@ -1,3 +1,19 @@
+# AW-01 - AutoWah JUCE based audio plugin
+# Copyright (C) 2026 Erwan Gateau-Magdeleine
+#
+#  This program is free software: you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation, either version 3 of the License, or
+#  (at your option) any later version.
+#
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+#  GNU General Public License for more details.
+#
+#  You should have received a copy of the GNU General Public License
+#  along with this program. If not, see <https://www.gnu.org/licenses/>.
+
 # Sets the format the plugin will be built
 set(FORMATS VST3)
 
@@ -86,3 +102,35 @@ target_link_libraries("${PROJECT_NAME}"
     juce::juce_recommended_lto_flags
     juce::juce_recommended_warning_flags
     BINARY_DATA)
+
+if (WIN32)
+    install(FILES
+        "${CMAKE_BINARY_DIR}/src/AW-01_artefacts/$<CONFIG>/VST3/AW-01.vst3/Contents/x86_64-win/AW-01.vst3"
+        DESTINATION "."
+        COMPONENT VST3
+    )
+elseif (APPLE)
+    install(DIRECTORY "$<TARGET_BUNDLE_DIR:AW-01_VST3>"
+            DESTINATION "Library/Audio/Plug-Ins/VST3"
+            COMPONENT VST3)
+endif()
+
+# --- CPack config ---
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/../LICENSE.txt")
+set(CPACK_PACKAGE_FILE_NAME "AW-01")
+set(CPACK_PACKAGE_NAME "AW-01")
+set(CPACK_PACKAGE_VENDOR "R1")
+set(CPACK_PACKAGE_VERSION "${CMAKE_PROJECT_VERSION}")
+
+if (WIN32)
+    set(CPACK_GENERATOR "NSIS")
+    set(CPACK_NSIS_DISPLAY_NAME "AW-01")
+    set(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64\\\\Common Files")
+    set(CPACK_COMPONENTS_ALL VST3)
+elseif (APPLE)
+    set(CPACK_GENERATOR "productbuild")
+    set(CPACK_PACKAGING_INSTALL_PREFIX "/")
+    set(CPACK_COMPONENTS_ALL VST3)
+endif()
+
+include(CPack)

@@ -15,16 +15,10 @@
    along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#define CATCH_CONFIG_MAIN
+#include <catch2/catch_all.hpp>
 
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_audio_processors/juce_audio_processors.h>
-#include "customLookAndFeel.h"
-
-class CustomRotarySlider : public juce::Slider
-{
-public:
-    CustomRotarySlider(juce::String knobLabel);
-    ~CustomRotarySlider();
-
-};
+#include "ParameterStateTests.h"
+#include "KnobSizeTest.h"
+#include "AudioProcessingTest.h"
+#include "ScreenComponentTests.h"

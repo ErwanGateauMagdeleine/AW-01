@@ -15,16 +15,22 @@
    along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include <catch2/catch_all.hpp>
+#include "PluginEditor.h"
 
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_audio_processors/juce_audio_processors.h>
-#include "customLookAndFeel.h"
-
-class CustomRotarySlider : public juce::Slider
+TEST_CASE("Knob Size of all components are the same", "[knob]")
 {
-public:
-    CustomRotarySlider(juce::String knobLabel);
-    ~CustomRotarySlider();
+    juce::ScopedJuceInitialiser_GUI juceInit;
 
-};
+    int envKnobWidth;
+    int envKnobHeigth;
+    int filtKnobWidth;
+    int filtKnobHeight;
+    AudioPluginAudioProcessor processor;
+    AudioPluginAudioProcessorEditor editor(processor);
+
+    editor.getKnobSizes(&filtKnobWidth, &filtKnobHeight, &envKnobWidth, &envKnobHeigth);
+
+    REQUIRE(filtKnobWidth == envKnobWidth);
+    REQUIRE(filtKnobHeight == envKnobHeigth);
+}

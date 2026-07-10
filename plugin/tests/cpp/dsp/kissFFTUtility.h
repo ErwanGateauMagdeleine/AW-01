@@ -15,16 +15,8 @@
    along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
-#pragma once
+#include <vector>
 
-#include <juce_gui_basics/juce_gui_basics.h>
-#include <juce_audio_processors/juce_audio_processors.h>
-#include "customLookAndFeel.h"
+float getMagnitudeAtFrequency(const std::vector<float>& magnitude, float targetFreq, float sampleRate, int fftSize);
 
-class CustomRotarySlider : public juce::Slider
-{
-public:
-    CustomRotarySlider(juce::String knobLabel);
-    ~CustomRotarySlider();
-
-};
+void getFFTResponseFromSignal(const std::vector<float>& signal, std::vector<float>& magnitude);

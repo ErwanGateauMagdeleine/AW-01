@@ -5,5 +5,5 @@
 	path = plugin/tests/Catch2
 	url = https://github.com/catchorg/Catch2.git
 [submodule "plugin/tests/dsp/external/kissfft"]
-	path = plugin/tests/dsp/external/kissfft
+	path = plugin/tests/cpp/dsp/external/kissfft
 	url = https://github.com/mborgerding/kissfft.git
