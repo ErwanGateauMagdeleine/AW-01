@@ -30,14 +30,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Download all installers
         uses: actions/download-artifact@v4
         with:
           path: installers/
           merge-multiple: true
+      
+      - name: Generate PDF file
+        uses: xu-cheng/latex-action@v3
+        with:
+          working_directory: doc
+          root_file: AW-01-manual.tex
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2
         with:
-          files: installers/*
+          files: | 
+            installers/*
+            doc/AW-01-manual.pdf
           generate_release_notes: true
