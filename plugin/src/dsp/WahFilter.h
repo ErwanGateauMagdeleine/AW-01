@@ -223,9 +223,22 @@ private:
         /* Calculating Mid FIlter */
         if (isPeak)
         {
+            constexpr SampleType epsilon = static_cast<SampleType>(1e-3);
+
+            SampleType tanArg = static_cast<SampleType>(omega / (2.0 * resonance));
+            constexpr SampleType maxTanArg = static_cast<SampleType>(std::numbers::pi_v<SampleType> / 2.0 * 0.99);
+            tanArg = std::clamp(tanArg, - maxTanArg, maxTanArg);
+
             SampleType upsilon = static_cast<SampleType>(std::pow(10.0, gain / 20.0));
             SampleType zeta = static_cast<SampleType>(4.0 / (1.0 + upsilon));
-            SampleType zetan = static_cast<SampleType>(zeta * std::tan(omega / (2.0 * resonance)));
+            SampleType zetan = static_cast<SampleType>(zeta * std::tan(tanArg));
+            if (std::abs(1.0 + zetan) < epsilon)
+            {
+                zetan = (zetan < static_cast<SampleType>(-1.0))
+                    ? static_cast<SampleType>(-1.0 - epsilon)
+                    : static_cast<SampleType>(-1.0 + epsilon);
+            }
+
             beta = static_cast<SampleType>(0.5 * ((1.0 - zetan) / (1.0 + zetan)));
             gamma = static_cast<SampleType>((0.5 + beta) * cosOmega);
             SampleType c0 = upsilon - 1;
