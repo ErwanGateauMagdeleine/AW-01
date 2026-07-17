@@ -15,7 +15,7 @@
 #  along with this program. If not, see <https://www.gnu.org/licenses/>.
 
 # Sets the format the plugin will be built
-set(FORMATS VST3)
+set(FORMATS VST3 AU)
 
 project(${PROJECT_NAME} VERSION 0.0.1)
 
@@ -39,8 +39,8 @@ juce_add_plugin("${PROJECT_NAME}"
                 VST3_COPY_DIR "../OUT/"
                 COPY_PLUGIN_AFTER_BUILD TRUE
                 PLUGIN_MANUFACTURER_CODE GAIO
-                PLUGIN_CODE PIDE
-                FORMATS "${FORMATS}"
+                PLUGIN_CODE AW01
+                FORMATS ${FORMATS}
                 PRODUCT_NAME "${PROJECT_NAME}")
 
 target_compile_features("${PROJECT_NAME}" PRIVATE cxx_std_20)
@@ -113,6 +113,10 @@ elseif (APPLE)
     install(DIRECTORY "$<TARGET_BUNDLE_DIR:AW-01_VST3>"
             DESTINATION "Library/Audio/Plug-Ins/VST3"
             COMPONENT VST3)
+
+    install(DIRECTORY "$<TARGET_BUNDLE_DIR:AW-01_AU>"
+            DESTINATION "Library/Audio/Plug-Ins/Components"
+            COMPONENT AU)
 endif()
 
 # --- CPack config ---
@@ -130,7 +134,15 @@ if (WIN32)
 elseif (APPLE)
     set(CPACK_GENERATOR "productbuild")
     set(CPACK_PACKAGING_INSTALL_PREFIX "/")
-    set(CPACK_COMPONENTS_ALL VST3)
+    set(CPACK_COMPONENTS_ALL VST3 AU)
 endif()
 
 include(CPack)
+
+cpack_add_component(VST3
+    DISPLAY_NAME "VST3 Plugin"
+    DESCRIPTION "Installs the VST3 plugin to /Library/Audio/Plug-Ins/VST3")
+
+cpack_add_component(AU
+    DISPLAY_NAME "Audio Unit Plugin"
+    DESCRIPTION "Installs the Audio Unit (AU) plugin to /Library/Audio/Plug-Ins/Components")

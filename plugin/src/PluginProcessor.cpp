@@ -174,14 +174,19 @@ void AudioPluginAudioProcessor::processBlock (juce::AudioBuffer<float>& buffer,
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
-    /* Obtain The Left And Right Audio Data Pointers */
+    /* Obtain The Left And Right Audio Data Pointers. In the case of mono, only the
+       left channel is going to be playing. It is expected that the host is calling
+       the prepareToPlay function when changing the bus layout. */
     float* leftChannel = buffer.getWritePointer(0);
-    float* rightChannel = buffer.getWritePointer(1);
+    float* rightChannel = (buffer.getNumChannels() > 1) ? buffer.getWritePointer(1) : nullptr;
 
     for (int i = 0;i < buffer.getNumSamples();i++)
     {
         buffer.setSample(0, i, leftWah.process(leftChannel[i]));
-        buffer.setSample(1, i, rightWah.process(rightChannel[i]));
+        if (rightChannel != nullptr)
+        {
+            buffer.setSample(1, i, rightWah.process(rightChannel[i]));
+        }
     }
 }
 

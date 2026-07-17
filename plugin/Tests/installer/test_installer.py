@@ -19,6 +19,11 @@ from conftest import windows_only, mac_only
 import subprocess
 
 
+MANUFACTURER_CODE = "GAIO"
+PLUGIN_CODE = "AW01"
+COMPONENT_TYPE = "aufx"  # aufx = effect, aumu = music effect/instrument
+
+
 @windows_only
 def test_vst3_is_flat_dll(install_vst3):
     """
@@ -68,3 +73,23 @@ def test_plugin_passes_pluginval(install_vst3, pluginval_binary):
     assert res.returncode == 0, \
         (f"pluginval failed with strictness level 5\n"
          f"stderr:\n{res.stderr}")
+
+
+@mac_only
+def test_plugin_passes_auval(install_au):
+    result = subprocess.run(
+        ["auval", "-v", COMPONENT_TYPE, PLUGIN_CODE, MANUFACTURER_CODE],
+        capture_output=True,
+        text=True,
+    )
+
+    print(f"stdout:\n{result.stdout}\n")
+
+    assert result.returncode == 0, (
+        f"auval failed for component {COMPONENT_TYPE} {PLUGIN_CODE} {MANUFACTURER_CODE}\n"
+        f"stderr:\n{result.stderr}"
+    )
+    assert "AU VALIDATION SUCCEEDED" in result.stdout, (
+        f"auval did not report success\n"
+        f"stdout:\n{result.stdout}"
+    )

@@ -63,4 +63,35 @@ Graphical readout of the filter's current frequency response. The curve updates 
 
 \end{enumerate}
 
+\section*{Code Signing Notice}
+
+AW-01 is currently distributed \textbf{without code signing or notarization}. This is expected, and does not indicate a corrupted or malicious download.
+
+\subsection*{Why isn't it signed?}
+
+Code signing certificates (Apple Developer Program, Windows EV/OV certificates) require an ongoing paid subscription and, in Apple's case, notarization submission for every release. As an independently developed project, AW-01 does not currently carry these certificates. This does not affect the plugin's functionality, only the OS-level trust warnings shown on first launch.
+
+\subsection*{macOS}
+
+Since the installer and plugin binaries are not signed with an Apple Developer ID or notarized by Apple, macOS Gatekeeper will likely block the installer or plugin from opening on first launch, showing a warning
+such as \textit{"AW-01 cannot be opened because the developer cannot be verified"} or \textit{"macOS cannot verify that this app is free from malware."}
+
+To allow it to run, either:
+
+\begin{enumerate}
+    \item Right-click (or Control-click) the installer/plugin file, select \textbf{Open}, then confirm \textbf{Open} again in the dialog that appears; or
+
+    \item Go to \textbf{System Settings} $\rightarrow$ \textbf{Privacy \& Security}, scroll to the Security section, and click \textbf{Open Anyway} next to the blocked item.
+\end{enumerate}
+
+This only needs to be done once per installed version.
+
+\subsection*{Windows}
+
+Similarly, since the installer is not signed with a Microsoft-trusted
+code-signing certificate, Windows SmartScreen may display a
+\textit{"Windows protected your PC"} warning when running the installer.
+
+To proceed, click \textbf{More info}, then \textbf{Run anyway}.
+
 \end{document}

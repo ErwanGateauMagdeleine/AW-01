@@ -52,6 +52,12 @@ jobs:
       - name: Build
         run: cmake --build build --config Release --parallel
 
+      - name: Ad-hoc sign plugin bundles (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          codesign --force --deep --sign - "build/src/AW-01_artefacts/Release/VST3/AW-01.vst3"
+          codesign --force --deep --sign - "build/src/AW-01_artefacts/Release/AU/AW-01.component"
+
       - name: Unit tests
         run: ctest --test-dir build -C Release --output-on-failure
 
