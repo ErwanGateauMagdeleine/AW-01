@@ -25,7 +25,7 @@ customLookAndFeel::customLookAndFeel() :
         typeface(juce::Typeface::createSystemTypefaceFor(BinaryData::OrbitronRegular_ttf,
                                                          BinaryData::OrbitronRegular_ttfSize)),
         titleFont(juce::FontOptions().withHeight(15.0f).withName("").withStyle("").withTypeface(typeface)),
-        labelFont(juce::FontOptions().withHeight(10.0f).withName("").withStyle("").withTypeface(typeface)),
+        labelFont(juce::FontOptions().withHeight(14.0f).withName("").withStyle("").withTypeface(typeface)),
         screenLabelsFont(juce::FontOptions().withHeight(8.0f).withName("").withStyle("").withTypeface(typeface))
 {
     setColour(colourScheme::backgroundColourId, juce::Colour::fromString("ff1a1f13"));
@@ -51,12 +51,15 @@ void customLookAndFeel::drawTrackArk(juce::Graphics& g, juce::Point<float> cente
 {
     juce::Path trackArk;
 
-    trackArk.addArc(center.getX() - radius, center.getY() - radius,
-                    radius * 2, radius * 2,
-                    rotaryStartAngle, rotaryEndAngle, true);
+    trackArk.addCentredArc(center.getX(), center.getY(),
+                           radius, radius,
+                           0.0f,
+                           rotaryStartAngle, rotaryEndAngle, true);
 
     g.setColour(findColour(colourScheme::sliderTrackColourId));
-    g.strokePath(trackArk, juce::PathStrokeType(4.0f));
+    g.strokePath(trackArk, juce::PathStrokeType(8.0f,
+                                                juce::PathStrokeType::curved,
+                                                juce::PathStrokeType::rounded));
 }
 
 void customLookAndFeel::drawValueArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle, float sliderPos, float arcOriginPos)
@@ -65,15 +68,20 @@ void customLookAndFeel::drawValueArk(juce::Graphics& g, juce::Point<float> cente
     float originAngle = rotaryStartAngle + arcOriginPos * (rotaryEndAngle - rotaryStartAngle);
 
     juce::Path valueArk;
-    valueArk.addArc(center.getX() - radius, center.getY() - radius,
-                    radius * 2, radius * 2,
-                    originAngle, valueAngle, true);
+    valueArk.addCentredArc(center.getX(), center.getY(),
+                           radius, radius,
+                           0.0f,
+                           originAngle, valueAngle, true);
 
     g.setColour(findColour(colourScheme::knobOutlineColourId).withAlpha(0.35f));
-    g.strokePath(valueArk, juce::PathStrokeType(6.0f));
+    g.strokePath(valueArk, juce::PathStrokeType(10.0f,
+                                                juce::PathStrokeType::curved,
+                                                juce::PathStrokeType::rounded));
 
     g.setColour(findColour(colourScheme::knobOutlineColourId));
-    g.strokePath(valueArk, juce::PathStrokeType(2.5f));
+    g.strokePath(valueArk, juce::PathStrokeType(5.0f,
+                                                juce::PathStrokeType::curved,
+                                                juce::PathStrokeType::rounded));
 }
 
 void customLookAndFeel::drawKnobBody(juce::Graphics& g, juce::Point<float> center, float radius)
@@ -103,25 +111,26 @@ void customLookAndFeel::drawPointerLine(juce::Graphics& g, juce::Point<float> ce
                               center.getY() - std::cos(valueAngle) * radius * 0.5f);
     juce::Path pointerLine;
 
-    pointerLine.addLineSegment(pointer, 1.5f);
+    pointerLine.startNewSubPath(pointer.getStart());
+    pointerLine.lineTo(pointer.getEnd());
 
     g.setColour(findColour(colourScheme::knobOutlineColourId).withAlpha(0.35f));
-    g.strokePath(pointerLine,juce::PathStrokeType(3.0f));
-
+    g.strokePath(pointerLine, juce::PathStrokeType(8.0f,
+                                                   juce::PathStrokeType::curved,
+                                                   juce::PathStrokeType::rounded));
     g.setColour(findColour(colourScheme::knobOutlineColourId));
-    g.strokePath(pointerLine, juce::PathStrokeType(1.5f, juce::PathStrokeType::curved, juce::PathStrokeType::rounded));
+    g.strokePath(pointerLine, juce::PathStrokeType(4.0f,
+                                                   juce::PathStrokeType::curved,
+                                                   juce::PathStrokeType::rounded));
 }
 
-void customLookAndFeel::drawLabelValue(juce::Graphics& g, int x, int y, int width,  int height, juce::Slider& slider)
+void customLookAndFeel::drawLabelValue(juce::Graphics& g, juce::Rectangle<float>textArea, juce::Slider& slider)
 {
-    juce::Rectangle localArea(x, y, width, height);
-    auto textArea = localArea.removeFromBottom(11);
-
     g.setFont (getLabelsFont());
     g.setColour(findColour(colourScheme::fontColourId));
     drawGlowText(g,
                  slider.getName(),
-                 textArea.toFloat(),
+                 textArea,
                  juce::Justification::centred,
                  getLabelsFont(),
                  findColour(colourScheme::fontColourId));
@@ -132,18 +141,21 @@ void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
                                          float sliderPos, float rotaryStartAngle, float rotaryEndAngle,
                                          juce::Slider& slider)
 {
-    juce::Point center(x + width  / 2.0f, y + height / 2.0f);
-    float radius = juce::jmin(width, height) / 4.0f;
+    juce::Rectangle knobArea(x, y, width, height);
+    auto textArea = knobArea.removeFromBottom(15);
+
+    juce::Point center(knobArea.getX() + knobArea.getWidth()  / 2.0f, knobArea.getY() + knobArea.getHeight() / 2.0f);
+    float knobRadius = juce::jmin(knobArea.getWidth(), knobArea.getHeight()) / 2.5f;
 
     double minVal = slider.getMinimum();
     double maxVal = slider.getMaximum();
     float arcOriginPos = (minVal < 0.0 && maxVal > 0.0) ? (float) ((0.0 - minVal) / (maxVal - minVal)) : 0.0f;
 
-    drawTrackArk(g, center, radius, rotaryStartAngle, rotaryEndAngle);
-    drawValueArk(g, center, radius, rotaryStartAngle, rotaryEndAngle, sliderPos, arcOriginPos);
-    drawKnobBody(g, center, radius);
-    drawPointerLine(g, center, radius, rotaryStartAngle, rotaryEndAngle, sliderPos);
-    drawLabelValue(g, x, y, width, height, slider);
+    drawTrackArk(g, center, knobRadius, rotaryStartAngle, rotaryEndAngle);
+    drawValueArk(g, center, knobRadius, rotaryStartAngle, rotaryEndAngle, sliderPos, arcOriginPos);
+    drawKnobBody(g, center, knobRadius);
+    drawPointerLine(g, center, knobRadius, rotaryStartAngle, rotaryEndAngle, sliderPos);
+    drawLabelValue(g, textArea.toFloat(), slider);
 }
 
 juce::Font customLookAndFeel::getTitleFont()
