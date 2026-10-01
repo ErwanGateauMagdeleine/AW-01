@@ -70,8 +70,13 @@ void FilterCurveDisplay::paint(juce::Graphics& g)
         {
             curve.lineTo(static_cast<float>(x), y);
         }
-
-        g.setColour(findColour(colourScheme::FilterCurveColourId));
-        g.strokePath(curve, juce::PathStrokeType(1.0f));
     }
+    g.setColour(findColour(colourScheme::FilterCurveColourId).withAlpha(0.35f));
+    g.strokePath(curve, juce::PathStrokeType(8.0f,
+                                             juce::PathStrokeType::curved,
+                                             juce::PathStrokeType::rounded));
+    g.setColour(findColour(colourScheme::FilterCurveColourId));
+    g.strokePath(curve, juce::PathStrokeType(2.0f,
+                                             juce::PathStrokeType::curved,
+                                             juce::PathStrokeType::rounded));
 }

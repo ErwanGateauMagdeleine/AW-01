@@ -26,7 +26,7 @@ customLookAndFeel::customLookAndFeel() :
                                                          BinaryData::OrbitronRegular_ttfSize)),
         titleFont(juce::FontOptions().withHeight(15.0f).withName("").withStyle("").withTypeface(typeface)),
         labelFont(juce::FontOptions().withHeight(14.0f).withName("").withStyle("").withTypeface(typeface)),
-        screenLabelsFont(juce::FontOptions().withHeight(8.0f).withName("").withStyle("").withTypeface(typeface))
+        screenLabelsFont(juce::FontOptions().withHeight(13.0f).withName("").withStyle("").withTypeface(typeface))
 {
     setColour(colourScheme::backgroundColourId, juce::Colour::fromString("ff1a1f13"));
     setColour(colourScheme::fontColourId, juce::Colour::fromString("ffe8a020"));
