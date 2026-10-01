@@ -59,14 +59,15 @@ void customLookAndFeel::drawTrackArk(juce::Graphics& g, juce::Point<float> cente
     g.strokePath(trackArk, juce::PathStrokeType(4.0f));
 }
 
-void customLookAndFeel::drawValueArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle, float sliderPos)
+void customLookAndFeel::drawValueArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle, float sliderPos, float arcOriginPos)
 {
     float valueAngle = rotaryStartAngle + sliderPos * (rotaryEndAngle - rotaryStartAngle);
+    float originAngle = rotaryStartAngle + arcOriginPos * (rotaryEndAngle - rotaryStartAngle);
 
     juce::Path valueArk;
     valueArk.addArc(center.getX() - radius, center.getY() - radius,
                     radius * 2, radius * 2,
-                    rotaryStartAngle, valueAngle, true);
+                    originAngle, valueAngle, true);
 
     g.setColour(findColour(colourScheme::knobOutlineColourId).withAlpha(0.35f));
     g.strokePath(valueArk, juce::PathStrokeType(6.0f));
@@ -134,8 +135,12 @@ void customLookAndFeel::drawRotarySlider(juce::Graphics& g, int x, int y, int wi
     juce::Point center(x + width  / 2.0f, y + height / 2.0f);
     float radius = juce::jmin(width, height) / 4.0f;
 
+    double minVal = slider.getMinimum();
+    double maxVal = slider.getMaximum();
+    float arcOriginPos = (minVal < 0.0 && maxVal > 0.0) ? (float) ((0.0 - minVal) / (maxVal - minVal)) : 0.0f;
+
     drawTrackArk(g, center, radius, rotaryStartAngle, rotaryEndAngle);
-    drawValueArk(g, center, radius, rotaryStartAngle, rotaryEndAngle, sliderPos);
+    drawValueArk(g, center, radius, rotaryStartAngle, rotaryEndAngle, sliderPos, arcOriginPos);
     drawKnobBody(g, center, radius);
     drawPointerLine(g, center, radius, rotaryStartAngle, rotaryEndAngle, sliderPos);
     drawLabelValue(g, x, y, width, height, slider);

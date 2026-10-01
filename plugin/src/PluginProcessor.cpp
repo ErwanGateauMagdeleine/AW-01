@@ -253,7 +253,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
                                                                r.setSkewForCentre(0.0f);
                                                                return r;
                                                            }(),
-                                                           1.0f
+                                                           0.0f
                                                           ));
 
     /* Filter parameters */

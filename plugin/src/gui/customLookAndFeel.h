@@ -47,7 +47,7 @@ public:
 private:
 
     void drawTrackArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle);
-    void drawValueArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle, float sliderPos);
+    void drawValueArk(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle, float sliderPos, float arcOriginPos);
     void drawKnobBody(juce::Graphics& g, juce::Point<float> center, float radius);
     void drawLabelValue(juce::Graphics& g, int x, int y, int width,  int height, juce::Slider& slider);
     void drawPointerLine(juce::Graphics& g, juce::Point<float> center, float radius, float rotaryStartAngle, float rotaryEndAngle, float sliderPos);
