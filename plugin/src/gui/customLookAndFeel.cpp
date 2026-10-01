@@ -24,7 +24,7 @@
 customLookAndFeel::customLookAndFeel() :
         typeface(juce::Typeface::createSystemTypefaceFor(BinaryData::OrbitronRegular_ttf,
                                                          BinaryData::OrbitronRegular_ttfSize)),
-        titleFont(juce::FontOptions().withHeight(15.0f).withName("").withStyle("").withTypeface(typeface)),
+        titleFont(juce::FontOptions().withHeight(20.0f).withName("").withStyle("").withTypeface(typeface)),
         labelFont(juce::FontOptions().withHeight(14.0f).withName("").withStyle("").withTypeface(typeface)),
         screenLabelsFont(juce::FontOptions().withHeight(13.0f).withName("").withStyle("").withTypeface(typeface))
 {
