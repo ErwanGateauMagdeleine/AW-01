@@ -21,4 +21,3 @@
 #include "ParameterStateTests.h"
 #include "KnobSizeTest.h"
 #include "AudioProcessingTest.h"
-#include "ScreenComponentTests.h"

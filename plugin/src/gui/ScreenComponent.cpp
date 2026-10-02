@@ -40,10 +40,10 @@ void ScreenComponent::drawScreenBoundaries(juce::Graphics& g)
     juce::Path ScreenBoundsPath;
 
     g.setColour(findColour(colourScheme::screenBoundaryOuterColourId));
-    g.drawRoundedRectangle(screenArea.expanded(1), cornerSize, strokeWidth);
+    g.drawRoundedRectangle(screenArea, cornerSize, strokeWidth);
 
     g.setColour(findColour(colourScheme::screenBoundaryInnerColourId));
-    g.drawRoundedRectangle(screenArea, cornerSize, strokeWidth);
+    g.drawRoundedRectangle(screenArea.reduced(1), cornerSize, strokeWidth);
 }
 
 void ScreenComponent::drawScreenBackground(juce::Graphics& g)
@@ -120,7 +120,7 @@ void ScreenComponent::drawFreqLabels(juce::Graphics& g)
         {
             lnf->drawGlowText(g, label,
                               juce::Rectangle<float>(x - 12, frequencyLabelArea.getY(), 24, frequencyLabelArea.getHeight()),
-                              juce::Justification::centred,
+                              juce::Justification::centredBottom,
                               lnf->getScreenLabelsFont(),
                               lnf->findColour(colourScheme::fontColourId));
         }
@@ -165,7 +165,7 @@ void ScreenComponent::resized()
     auto bounds = getLocalBounds().toFloat();
 
     gainLabelArea = bounds.removeFromLeft(24.0f);
-    frequencyLabelArea = bounds.removeFromBottom(10.0f);
+    frequencyLabelArea = bounds.removeFromBottom(15.0f);
     screenArea = bounds;
 
     curveDisplay.setBounds(screenArea.toNearestInt().reduced(1));
