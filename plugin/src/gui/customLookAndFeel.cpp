@@ -272,7 +272,7 @@ void customLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
     if (active)
     {
         drawGlowText(g,
-                     button.getName(),
+                     button.getButtonText(),
                      bounds.toFloat(),
                      juce::Justification::centredLeft,
                      getLabelsFont(),
@@ -282,6 +282,6 @@ void customLookAndFeel::drawButtonText(juce::Graphics& g, juce::TextButton& butt
     {
         g.setFont(getLabelsFont());
         g.setColour(findColour(colourScheme::ledInactiveFillColourId));
-        g.drawText(button.getName(), bounds, juce::Justification::centredLeft);
+        g.drawText(button.getButtonText(), bounds, juce::Justification::centredLeft);
     }
 }

@@ -23,8 +23,8 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters,
     resSlider("Res"),
     freqAttachment(parameters, "Filter Center Frequency", freqSlider),
     resAttachment(parameters, "Filter Renonance", resSlider),
-    typeAttachment(parameters, "Filter Type", filterSelector.getPeakButton()),
-    screen(wah)
+    screen(wah),
+    filterSelector(*parameters.getParameter("Filter Type"))
 {
     for (auto* s : { &freqSlider, &resSlider })
     {
@@ -32,11 +32,6 @@ FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters,
     }
     addAndMakeVisible(screen);
     addAndMakeVisible(filterSelector);
-
-    filterSelector.onChange = [this] (bool isPeak)
-    {
-        if (onChange) onChange(isPeak);
-    };
 }
 
 void FilterComponent::paint(juce::Graphics& g)
@@ -61,12 +56,7 @@ void FilterComponent::resized()
 
     freqSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
     resSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
-
-     auto freqResArea = freqSlider.getBounds().withRight(resSlider.getBounds().getRight())
-                                  .withY(buttonBounds.getY())
-                                  .withHeight(buttonBounds.getHeight());
-
-    filterSelector.setBounds(freqResArea.withSizeKeepingCentre(100, buttonBounds.getHeight() / 2));
+    filterSelector.setBounds(knobsAreaBounds);
 
     screen.setBounds(screenBounds);
 }
@@ -77,33 +67,9 @@ void FilterComponent::getKnobSize(int* width, int* height)
     *height = knobHeight;
 }
 
-void FilterComponent::getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect)
+void FilterComponent::getFilterButtonStates(bool* lpfState, bool* bpfState, bool* hpfState)
 {
-    screen.getScreenRects(screenRect, gainRect, freqRect);
-}
-
-void FilterComponent::getKnobRects(juce::Rectangle<float>* filterKnob)
-{
-    auto bounds = getLocalBounds();
-    *filterKnob = localAreaToGlobal(bounds.removeFromTop((int)(bounds.getHeight() / 3.0f)).reduced(15, 15).translated(0, 10)).toFloat();
-}
-
-void FilterComponent::setFilterType(bool isPeak)
-{
-    filterSelector.setFilterType(isPeak);
-}
-
-void FilterComponent::getButtonsStates(bool* peakState, bool* bandState)
-{
-    filterSelector.getButtonsStates(peakState, bandState);
-}
-
-void FilterComponent::triggerPeakButtonClick()
-{
-    filterSelector.triggerPeakButtonClick();
-}
-
-void FilterComponent::triggerBandButtonClick()
-{
-    filterSelector.triggerBandButtonClick();
+    filterSelector.getLpfButtonState(lpfState);
+    filterSelector.getBpfButtonState(bpfState);
+    filterSelector.getHpfButtonState(hpfState);
 }

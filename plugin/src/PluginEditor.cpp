@@ -39,9 +39,6 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
         auto* param = processorRef.parameters.getParameter("Filter Type");
         param->setValueNotifyingHost(isPeak ? 1.0f : 0.0f);
     };
-
-    float val = processorRef.parameters.getRawParameterValue("Filter Type")->load();
-    filterComponent.setFilterType(val > 0.5f);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -71,32 +68,7 @@ void AudioPluginAudioProcessorEditor::getKnobSizes(int* filterCompKnobWidth, int
     filterComponent.getKnobSize(filterCompKnobWidth, filterCompKnobHeight);
 }
 
-void AudioPluginAudioProcessorEditor::getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect)
+void AudioPluginAudioProcessorEditor::getFilterButtonStates(bool* lpfState, bool* bpfState, bool* hpfState)
 {
-    filterComponent.getScreenRects(screenRect, gainRect, freqRect);
-}
-
-void AudioPluginAudioProcessorEditor::getPluginRect(juce::Rectangle<float>* plugin)
-{
-    *plugin = getBounds().toFloat();
-}
-
-void AudioPluginAudioProcessorEditor::getFilterCompKnobRect(juce::Rectangle<float>* filterKnob)
-{
-    filterComponent.getKnobRects(filterKnob);
-}
-
-void AudioPluginAudioProcessorEditor::getFilterButtonStates(bool* peakState, bool* bandState)
-{
-    filterComponent.getButtonsStates(peakState, bandState);
-}
-
-void AudioPluginAudioProcessorEditor::triggerPeakButtonClick()
-{
-    filterComponent.triggerPeakButtonClick();
-}
-
-void AudioPluginAudioProcessorEditor::triggerBandButtonClick()
-{
-    filterComponent.triggerBandButtonClick();
+    filterComponent.getFilterButtonStates(lpfState, bpfState, hpfState);
 }

@@ -15,28 +15,25 @@
    along with this program. If not, see <https://www.gnu.org/licenses/>.
 */
 
+#pragma once
+
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_audio_processors/juce_audio_processors.h>
 
 class FilterTypeSelector : public juce::Component
 {
 public:
-    FilterTypeSelector();
+    FilterTypeSelector(juce::RangedAudioParameter& filterTypeParam);
 
     void resized() override;
 
-    std::function<void(bool)> onChange;
-
-    void setFilterType(bool isPeak);
-
-    void getButtonsStates(bool* peakState, bool* bandState);
-
-    void triggerPeakButtonClick();
-
-    void triggerBandButtonClick();
-
-    juce::TextButton& getPeakButton();
+    void getLpfButtonState(bool* lpfState);
+    void getBpfButtonState(bool* bpfState);
+    void getHpfButtonState(bool* hpfState);
 
 private:
-    juce::TextButton peakButton { "PEQ" };
-    juce::TextButton bandButton { "BP" };
+    static constexpr int numButtons = 3;
+
+    std::array<juce::TextButton, numButtons> buttons;
+    juce::ParameterAttachment attachment;
 };

@@ -34,19 +34,9 @@ public:
 
     void getKnobSize(int* width, int* height);
 
-    void getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect);
-
-    void getKnobRects(juce::Rectangle<float>* filterKnob);
+    void getFilterButtonStates(bool* lpfState, bool* bpfState, bool* hpfState);
 
     std::function<void(bool)> onChange;
-
-    void setFilterType(bool isPeak);
-
-    void getButtonsStates(bool* peakState, bool* bandState);
-
-    void triggerPeakButtonClick();
-
-    void triggerBandButtonClick();
 
 private:
     CustomRotarySlider freqSlider, resSlider;
@@ -58,7 +48,6 @@ private:
     using ButtonAttachment = APVTS::ButtonAttachment;
 
     SliderAttachment freqAttachment, resAttachment;
-    ButtonAttachment typeAttachment;
 
     ScreenComponent screen;
 

@@ -40,7 +40,6 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
     parameters.addParameterListener("Envelope Follower Decay", this);
     parameters.addParameterListener("Envelope Follower Amount", this);
     parameters.addParameterListener("Filter Center Frequency", this);
-    parameters.addParameterListener("Filter Morph", this);
     parameters.addParameterListener("Filter Type", this);
 }
 
@@ -269,7 +268,7 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
 
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Type",
                                                            "Filter Type",
-                                                           juce::NormalisableRange<float>(0.0f, 1.0f),
+                                                           juce::NormalisableRange<float>(0.0f, 2.0f),
                                                            0.0f
                                                           ));
 

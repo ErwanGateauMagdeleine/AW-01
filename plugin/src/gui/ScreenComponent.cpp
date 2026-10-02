@@ -170,10 +170,3 @@ void ScreenComponent::resized()
 
     curveDisplay.setBounds(screenArea.toNearestInt().reduced(1));
 }
-
-void ScreenComponent::getScreenRects(juce::Rectangle<float>* screen, juce::Rectangle<float>* gain, juce::Rectangle<float>* freq)
-{
-    *gain = localAreaToGlobal(gainLabelArea);
-    *screen = localAreaToGlobal(screenArea);
-    *freq = localAreaToGlobal(frequencyLabelArea);
-}

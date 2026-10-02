@@ -36,19 +36,13 @@ public:
 
     void getKnobSizes(int* filterCompKnobWidth, int* filterCompKnobHeight, int* EnvelopeKnobWidth, int* EnvelopeKnobHeight);
 
-    void getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect);
-
-    void getPluginRect(juce::Rectangle<float>* plugin);
-
-    void getFilterCompKnobRect(juce::Rectangle<float>* plugin);
-
     juce::Rectangle<float> getFilterCompButtonRect(void);
 
-    void getFilterButtonStates(bool* peakState, bool* bandState);
+    void getFilterButtonStates(bool* lpfState, bool* bpfState, bool* hpfState);
 
-    void triggerPeakButtonClick();
+    // void triggerPeakButtonClick();
 
-    void triggerBandButtonClick();
+    // void triggerBandButtonClick();
 
 private:
     // This reference is provided as a quick way for your editor to

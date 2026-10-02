@@ -17,65 +17,69 @@
 
 #include "FilterTypeSelector.h"
 
-FilterTypeSelector::FilterTypeSelector()
+enum filterIndexes
 {
-    addAndMakeVisible(peakButton);
-    addAndMakeVisible(bandButton);
+    LPF = 0,
+    BPF = 1,
+    HPF = 2,
+};
 
-    peakButton.onClick = [this] ()
+FilterTypeSelector::FilterTypeSelector(juce::RangedAudioParameter& filterTypeParam)
+    : attachment (filterTypeParam,
+                  [this] (float newValue)
+                  {
+                    const int index = juce::roundToInt(newValue);
+                    if (juce::isPositiveAndBelow (index, numButtons))
+                    {
+                        buttons[(size_t)index].setToggleState(true, juce::dontSendNotification);
+                    }
+                  })
+{
+    const char* names[numButtons] = { "LP", "BP", "HP" };
+
+    for (int i = 0; i < numButtons; i++)
     {
-        peakButton.setToggleState(true, juce::dontSendNotification);
-        bandButton.setToggleState(false, juce::dontSendNotification);
+        auto& b = buttons[(size_t)i];
+        b.setButtonText(names[i]);
+        b.setClickingTogglesState(true);
+        b.setRadioGroupId(1001);
 
-        if (onChange)
+        b.onClick = [this, i]
         {
-            onChange(true);
-        }
-    };
+            if (buttons[(size_t)i].getToggleState())
+            {
+                attachment.setValueAsCompleteGesture((float) i);
+            }
+        };
 
-    bandButton.onClick = [this] ()
-    {
-        peakButton.setToggleState(false, juce::dontSendNotification);
-        bandButton.setToggleState(true, juce::dontSendNotification);
+        addAndMakeVisible(b);
+    }
 
-        if (onChange)
-        {
-            onChange(false);
-        }
-    };
+    attachment.sendInitialUpdate();
 }
 
 void FilterTypeSelector::resized()
 {
-    auto bounds = getLocalBounds();
+    auto area = getLocalBounds();
+    const int width = area.getHeight() / numButtons;
 
-    peakButton.setBounds(bounds.removeFromLeft(bounds.getWidth() / 2));
-    bandButton.setBounds(bounds);
+    for (auto& b : buttons)
+    {
+        b.setBounds (area.removeFromTop(width));
+    }
 }
 
-void FilterTypeSelector::setFilterType(bool isPeak)
+void FilterTypeSelector::getLpfButtonState(bool* lpfState)
 {
-    peakButton.setToggleState(isPeak, juce::dontSendNotification);
-    bandButton.setToggleState(!isPeak, juce::dontSendNotification);
+    *lpfState = buttons[LPF].getToggleState();
 }
 
-void FilterTypeSelector::getButtonsStates(bool* peakState, bool* bandState)
+void FilterTypeSelector::getBpfButtonState(bool* bpfState)
 {
-    *peakState = peakButton.getToggleState();
-    *bandState = bandButton.getToggleState();
+    *bpfState = buttons[BPF].getToggleState();
 }
 
-void FilterTypeSelector::triggerPeakButtonClick()
+void FilterTypeSelector::getHpfButtonState(bool* hpfState)
 {
-    peakButton.onClick();
-}
-
-void FilterTypeSelector::triggerBandButtonClick()
-{
-    bandButton.onClick();
-}
-
-juce::TextButton& FilterTypeSelector::getPeakButton()
-{
-    return peakButton;
+    *hpfState = buttons[HPF].getToggleState();
 }
