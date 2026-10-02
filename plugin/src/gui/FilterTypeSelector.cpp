@@ -53,11 +53,6 @@ void FilterTypeSelector::resized()
     bandButton.setBounds(bounds);
 }
 
-void FilterTypeSelector::getButtonRect(juce::Rectangle<float>* button)
-{
-    *button = localAreaToGlobal(getLocalBounds().toFloat());
-}
-
 void FilterTypeSelector::setFilterType(bool isPeak)
 {
     peakButton.setToggleState(isPeak, juce::dontSendNotification);

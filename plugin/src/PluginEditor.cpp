@@ -86,11 +86,6 @@ void AudioPluginAudioProcessorEditor::getFilterCompKnobRect(juce::Rectangle<floa
     filterComponent.getKnobRects(filterKnob);
 }
 
-juce::Rectangle<float> AudioPluginAudioProcessorEditor::getFilterCompButtonRect(void)
-{
-    return filterComponent.getButtonRect();
-}
-
 void AudioPluginAudioProcessorEditor::getFilterButtonStates(bool* peakState, bool* bandState)
 {
     filterComponent.getButtonsStates(peakState, bandState);

@@ -21,16 +21,12 @@
 FilterComponent::FilterComponent(juce::AudioProcessorValueTreeState& parameters, AutoWah<float>& wah) :
     freqSlider("Cutoff"),
     resSlider("Res"),
-    morphSlider("Morph"),
-    gainSlider("Gain"),
     freqAttachment(parameters, "Filter Center Frequency", freqSlider),
     resAttachment(parameters, "Filter Renonance", resSlider),
-    morphAttachment(parameters, "Filter Morph", morphSlider),
-    gainAttachement(parameters, "Filter Gain", gainSlider),
     typeAttachment(parameters, "Filter Type", filterSelector.getPeakButton()),
     screen(wah)
 {
-    for (auto* s : { &freqSlider, &resSlider, &morphSlider, &gainSlider })
+    for (auto* s : { &freqSlider, &resSlider })
     {
         addAndMakeVisible(*s);
     }
@@ -65,15 +61,13 @@ void FilterComponent::resized()
 
     freqSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
     resSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
-    morphSlider.setBounds(knobsAreaBounds.removeFromLeft(knobWidth));
 
      auto freqResArea = freqSlider.getBounds().withRight(resSlider.getBounds().getRight())
                                   .withY(buttonBounds.getY())
                                   .withHeight(buttonBounds.getHeight());
 
     filterSelector.setBounds(freqResArea.withSizeKeepingCentre(100, buttonBounds.getHeight() / 2));
-    gainSlider.setBounds(morphSlider.getBounds().withY(buttonBounds.getY())
-                                    .withHeight(buttonBounds.getHeight()));
+
     screen.setBounds(screenBounds);
 }
 
@@ -92,11 +86,6 @@ void FilterComponent::getKnobRects(juce::Rectangle<float>* filterKnob)
 {
     auto bounds = getLocalBounds();
     *filterKnob = localAreaToGlobal(bounds.removeFromTop((int)(bounds.getHeight() / 3.0f)).reduced(15, 15).translated(0, 10)).toFloat();
-}
-
-juce::Rectangle<float> FilterComponent::getButtonRect(void)
-{
-    return localAreaToGlobal(gainSlider.getBounds().toFloat());
 }
 
 void FilterComponent::setFilterType(bool isPeak)

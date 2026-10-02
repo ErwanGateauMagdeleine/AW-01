@@ -24,8 +24,6 @@ public:
 
     void resized() override;
 
-    void getButtonRect(juce::Rectangle<float>* button);
-
     std::function<void(bool)> onChange;
 
     void setFilterType(bool isPeak);
