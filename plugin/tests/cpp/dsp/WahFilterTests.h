@@ -44,7 +44,6 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
     SECTION("Low-pass filter functions properly")
     {
         WahFilter<float> lpf;
-        lpf.setMorphing(0.0f);
         lpf.setCenterFrequency(FREQ_CUTOFF);
         lpf.setResonance(Q);
         lpf.prepare(SAMPLE_RATE);
@@ -69,7 +68,6 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
     SECTION("Band-Pass filter functions properly")
     {
         WahFilter<float> bpf;
-        bpf.setMorphing(0.5f);
         bpf.setCenterFrequency(FREQ_CUTOFF);
         bpf.setResonance(Q);
         bpf.setIsPeak(false);
@@ -96,7 +94,6 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
     {
         WahFilter<float> pqf;
         float gain = 6.0f;
-        pqf.setMorphing(0.5f);
         pqf.setCenterFrequency(FREQ_CUTOFF);
         pqf.setResonance(Q);
         pqf.setIsPeak(true);
@@ -123,7 +120,6 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
     SECTION("High-Pass filter functions properly")
     {
         WahFilter<float> hpf;
-        hpf.setMorphing(1.0f);
         hpf.setCenterFrequency(FREQ_CUTOFF);
         hpf.setResonance(Q);
         hpf.prepare(SAMPLE_RATE);
@@ -149,7 +145,6 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
 TEST_CASE("Band Pass Magnitude", "[wahfilter]")
 {
     WahFilter<float> filter;
-    filter.setMorphing(0.5f);
     filter.setCenterFrequency(FREQ_CUTOFF);
     filter.setResonance(Q);
     filter.setIsPeak(false);
@@ -172,7 +167,6 @@ TEST_CASE("Band Pass Magnitude", "[wahfilter]")
 TEST_CASE("Low Pass Magnitude", "[wahfilter]")
 {
     WahFilter<float> filter;
-    filter.setMorphing(0.0f);
     filter.setCenterFrequency(FREQ_CUTOFF);
     filter.setResonance(Q);
     filter.prepare(SAMPLE_RATE);
@@ -205,7 +199,6 @@ TEST_CASE("Low Pass Magnitude", "[wahfilter]")
 TEST_CASE("High Pass Magnitude", "[wahfilter]")
 {
     WahFilter<float> filter;
-    filter.setMorphing(1.0f);
     filter.setCenterFrequency(FREQ_CUTOFF);
     filter.setResonance(Q);
     filter.prepare(SAMPLE_RATE);
@@ -238,7 +231,6 @@ TEST_CASE("High Pass Magnitude", "[wahfilter]")
 TEST_CASE("Peak filter Magnitude", "[wahfilter]")
 {
     WahFilter<float> filter;
-    filter.setMorphing(0.5f);
     filter.setGain(6.0f);
     filter.setCenterFrequency(FREQ_CUTOFF);
     filter.setResonance(Q);

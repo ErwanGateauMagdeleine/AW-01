@@ -25,7 +25,7 @@ template <typename SampleType>
 struct autoWahSettings
 {
     SampleType envAttack{ 0 }, envDecay{ 0 }, envAmnt{ 0 };
-    SampleType filtFreq{ 0 }, filtRes{ 0 }, filtMorph{ 0 };
+    SampleType filtFreq{ 0 }, filtRes{ 0 };
     SampleType filtGain{ 0 };
     bool isPeak;
 };
@@ -77,7 +77,6 @@ public:
 
         wahFilt.setFilterParameters(settings.filtFreq,
                                     settings.filtRes,
-                                    settings.filtMorph,
                                     settings.isPeak,
                                     settings.filtGain);
     }
@@ -103,12 +102,6 @@ public:
     {
         settings.filtFreq = newFreq;
         wahFilt.setCenterFrequency(settings.filtFreq);
-    }
-
-    void updateFiltMorph(SampleType newMorph)
-    {
-        settings.filtMorph = newMorph;
-        wahFilt.setMorphing(settings.filtMorph);
     }
 
     void updateFiltRes(SampleType newRes)

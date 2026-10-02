@@ -60,7 +60,6 @@ public:
     /** Constructor */
     WahFilter()
     {
-        morphing = static_cast<float>(0.0);
         centerFrequency = static_cast<float>(1000.0);
         resonance = static_cast<float>(0.707);
     }
@@ -80,16 +79,6 @@ public:
         resonance = newResonance;
     }
 
-    void setMorphing(SampleType newMorphing)
-    {
-        morphing = newMorphing;
-
-        /* Recalculate filter weights */
-        filterWeights[LPF] = static_cast<SampleType>(std::max(0.0, 1.0 - 2.0 * morphing));
-        filterWeights[MIF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
-        filterWeights[HPF] = static_cast<SampleType>(std::max(0.0, 2.0 * morphing - 1.0));
-    }
-
     void setIsPeak(bool newIsPeak)
     {
         isPeak = newIsPeak;
@@ -102,19 +91,12 @@ public:
 
     void setFilterParameters(SampleType newCenterFrequency,
                              SampleType newResonance,
-                             SampleType newMorphing,
                              bool newIsPeak,
                              SampleType newGain)
     {
         centerFrequency = newCenterFrequency;
         resonance = newResonance;
-        morphing = newMorphing;
         gain = newGain;
-
-        /* Recalculate filter weights */
-        filterWeights[LPF] = static_cast<SampleType>(std::max(0.0, 1.0 - 2.0 * morphing));
-        filterWeights[MIF] = static_cast<SampleType>(1 - std::abs(2.0 * morphing - 1.0));
-        filterWeights[HPF] = static_cast<SampleType>(std::max(0.0, 2.0 * morphing - 1.0));
 
         isPeak = newIsPeak;
     }
@@ -259,24 +241,20 @@ private:
             filtersCoefficients[MIF][B2] = -filtersCoefficients[MIF][B0];
         }
 
-        /* Update filter coefficients */
+        /* Fix the filter as LPF for now */
         for (int i = 0; i < NUM_COEFFS; i++)
         {
-            coeffs[i] = filterWeights[LPF] * filtersCoefficients[LPF][i] +
-                        filterWeights[MIF] * filtersCoefficients[MIF][i] +
-                        filterWeights[HPF] * filtersCoefficients[HPF][i];
+            coeffs[i] = filtersCoefficients[LPF][i];
         }
     }
 
     double sampleRate;
     SampleType centerFrequency;
     SampleType resonance;
-    SampleType morphing;
     SampleType gain;
 
     SampleType omegaConst;
     SampleType coeffs[NUM_COEFFS];
-    SampleType filterWeights[NUM_FILTERS];
     SampleType stateArray[NUM_STATES];
 
     bool isPeak;
