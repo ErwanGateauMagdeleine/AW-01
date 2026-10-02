@@ -25,9 +25,8 @@ template <typename SampleType>
 struct autoWahSettings
 {
     SampleType envAttack{ 0 }, envDecay{ 0 }, envAmnt{ 0 };
+    filters_t filterType;
     SampleType filtFreq{ 0 }, filtRes{ 0 };
-    SampleType filtGain{ 0 };
-    bool isPeak;
 };
 
 template <typename SampleType>
@@ -77,8 +76,7 @@ public:
 
         wahFilt.setFilterParameters(settings.filtFreq,
                                     settings.filtRes,
-                                    settings.isPeak,
-                                    settings.filtGain);
+                                    settings.filterType);
     }
 
     void updateEnvAttack(SampleType newAttack)
@@ -110,12 +108,6 @@ public:
         wahFilt.setResonance(settings.filtRes);
     }
 
-    void updateFilterGain(SampleType newGain)
-    {
-        settings.filtGain = newGain;
-        wahFilt.setGain(settings.filtGain);
-    }
-
     SampleType getFilterFrequency()
     {
         return filterFrequency;
@@ -131,10 +123,10 @@ public:
         return wahFilt.getSampleRate();
     }
 
-    void updateFilterType(bool isPeak)
+    void updateFilterType(filters_t filterType)
     {
-        settings.isPeak = isPeak;
-        wahFilt.setIsPeak(isPeak);
+        settings.filterType = filterType;
+        wahFilt.setFilterType(filterType);
     }
 
 private:

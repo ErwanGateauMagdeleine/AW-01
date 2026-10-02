@@ -66,9 +66,9 @@ TEST_CASE("Matching outputs", "[process]")
         100.0f, /* envAttack */
         500.0f, /* envDecay */
         5.0f,   /* envAmount */
+        BPF,
         1000.0,  /* filtCutoff */
         0.7f,   /* filtRes */
-        0.5f    /* filtMorph */
     };
     autoWah.prepare(sampleRate);
     autoWah.updateSettings(settings);

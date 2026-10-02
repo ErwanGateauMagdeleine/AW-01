@@ -41,9 +41,9 @@ TEST_CASE("AutoWah tracks envelope of an increasing amplitude sine wave", "[Auto
         0.01f,  /* envAttack */
         2.0f,   /* envDecay */
         envAmount,
+        LPF,
         baseFreq,
         0.8f,   /* filtRes */
-        0.5f    /* filtMorph */
     };
 
     autoWah.prepare(sampleRate);

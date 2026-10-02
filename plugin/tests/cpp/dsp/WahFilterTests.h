@@ -46,6 +46,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
         WahFilter<float> lpf;
         lpf.setCenterFrequency(FREQ_CUTOFF);
         lpf.setResonance(Q);
+        lpf.setFilterType(LPF);
         lpf.prepare(SAMPLE_RATE);
 
         /* Process the signal using temp as the process is in place */
@@ -70,7 +71,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
         WahFilter<float> bpf;
         bpf.setCenterFrequency(FREQ_CUTOFF);
         bpf.setResonance(Q);
-        bpf.setIsPeak(false);
+        bpf.setFilterType(BPF);
         bpf.prepare(SAMPLE_RATE);
 
         /* Process the signal using temp as the process is in place */
@@ -87,34 +88,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
 
         REQUIRE(magCutOff > magDC);
         REQUIRE(magCutOff > magNyquist);
-        REQUIRE(magCutOff > 0.3);
-    }
-
-    SECTION("peak filter functions properly")
-    {
-        WahFilter<float> pqf;
-        float gain = 6.0f;
-        pqf.setCenterFrequency(FREQ_CUTOFF);
-        pqf.setResonance(Q);
-        pqf.setIsPeak(true);
-        pqf.setGain(gain);
-        pqf.prepare(SAMPLE_RATE);
-
-        /* Process the signal using temp as the process is in place */
-        for (int i = 0; i < IR_LENGTH; i++)
-        {
-            response[i] = pqf.process(impulse[i]);
-        }
-
-        getFFTResponseFromSignal(response, magnitude);
-
-        float magDC = magnitude[0];
-        float magCutOff = getMagnitudeAtFrequency(magnitude, FREQ_CUTOFF, SAMPLE_RATE, IR_LENGTH);
-        float magNyquist = magnitude[IR_LENGTH / 2];
-
-        REQUIRE(magCutOff > magDC);
-        REQUIRE(magCutOff > magNyquist);
-        REQUIRE(magCutOff == Approx(2.0).margin(0.01));
+        REQUIRE(magCutOff > 0.9);
     }
 
     SECTION("High-Pass filter functions properly")
@@ -123,6 +97,7 @@ TEST_CASE("Test WahFilter", "[wahFilter]")
         hpf.setCenterFrequency(FREQ_CUTOFF);
         hpf.setResonance(Q);
         hpf.prepare(SAMPLE_RATE);
+        hpf.setFilterType(HPF);
 
         /* Process the signal using temp as the process is in place */
         for (int i = 0; i < IR_LENGTH; i++)
@@ -147,7 +122,7 @@ TEST_CASE("Band Pass Magnitude", "[wahfilter]")
     WahFilter<float> filter;
     filter.setCenterFrequency(FREQ_CUTOFF);
     filter.setResonance(Q);
-    filter.setIsPeak(false);
+    filter.setFilterType(BPF);
     filter.prepare(SAMPLE_RATE);
 
     SECTION("DC blocked")
@@ -169,6 +144,7 @@ TEST_CASE("Low Pass Magnitude", "[wahfilter]")
     WahFilter<float> filter;
     filter.setCenterFrequency(FREQ_CUTOFF);
     filter.setResonance(Q);
+    filter.setFilterType(LPF);
     filter.prepare(SAMPLE_RATE);
 
     SECTION("DC is fully passed")
@@ -201,6 +177,7 @@ TEST_CASE("High Pass Magnitude", "[wahfilter]")
     WahFilter<float> filter;
     filter.setCenterFrequency(FREQ_CUTOFF);
     filter.setResonance(Q);
+    filter.setFilterType(HPF);
     filter.prepare(SAMPLE_RATE);
 
     SECTION("DC is fully blocked")
@@ -219,34 +196,6 @@ TEST_CASE("High Pass Magnitude", "[wahfilter]")
     {
         auto mag = filter.getMagnitudeFromFrequency(FREQ_CUTOFF / 2.0f);
         REQUIRE(mag == Approx(0.25f).margin(0.01f));
-    }
-
-    SECTION("Nyquist is fully passed")
-    {
-        auto mag = filter.getMagnitudeFromFrequency(SAMPLE_RATE / 2);
-        REQUIRE(mag == Approx(1.0f).margin(0.001f));
-    }
-}
-
-TEST_CASE("Peak filter Magnitude", "[wahfilter]")
-{
-    WahFilter<float> filter;
-    filter.setGain(6.0f);
-    filter.setCenterFrequency(FREQ_CUTOFF);
-    filter.setResonance(Q);
-    filter.setIsPeak(true);
-    filter.prepare(SAMPLE_RATE);
-
-    SECTION("DC is fully passing")
-    {
-        auto mag = filter.getMagnitudeFromFrequency(0.0f);
-        REQUIRE(mag == Approx(1.0f).margin(0.001f));
-    }
-
-    SECTION("Cutoff is amplified")
-    {
-        auto mag = filter.getMagnitudeFromFrequency(FREQ_CUTOFF);
-        REQUIRE(mag == Approx(2.0f).margin(0.01f));
     }
 
     SECTION("Nyquist is fully passed")
