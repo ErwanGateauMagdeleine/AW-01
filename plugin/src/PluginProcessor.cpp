@@ -39,6 +39,7 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
     parameters.addParameterListener("Envelope Follower Attack", this);
     parameters.addParameterListener("Envelope Follower Decay", this);
     parameters.addParameterListener("Envelope Follower Amount", this);
+    parameters.addParameterListener("Filter Renonance", this);
     parameters.addParameterListener("Filter Center Frequency", this);
     parameters.addParameterListener("Filter Type", this);
 }
@@ -283,6 +284,7 @@ void AudioPluginAudioProcessor::updateAllWahSettings()
     wahSettings.envAmnt = parameters.getRawParameterValue("Envelope Follower Amount")->load();
     wahSettings.filtFreq = parameters.getRawParameterValue("Filter Center Frequency")->load();
     wahSettings.filtRes = parameters.getRawParameterValue("Filter Renonance")->load();
+    wahSettings.filterType = static_cast<filters_t>(parameters.getRawParameterValue("Filter Renonance")->load());
 
     leftWah.updateSettings(wahSettings);
     rightWah.updateSettings(wahSettings);
