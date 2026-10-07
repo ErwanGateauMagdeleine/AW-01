@@ -125,6 +125,9 @@ TEST_CASE("Band Pass Magnitude", "[wahfilter]")
     filter.setFilterType(BPF);
     filter.prepare(SAMPLE_RATE);
 
+    /* Call process once so coefficients are updated */
+    filter.process(0.0f);
+
     SECTION("DC blocked")
     {
         auto mag = filter.getMagnitudeFromFrequency(0.0f);
@@ -146,6 +149,9 @@ TEST_CASE("Low Pass Magnitude", "[wahfilter]")
     filter.setResonance(Q);
     filter.setFilterType(LPF);
     filter.prepare(SAMPLE_RATE);
+
+    /* Call process once so coefficients are updated */
+    filter.process(0.0f);
 
     SECTION("DC is fully passed")
     {
@@ -179,6 +185,9 @@ TEST_CASE("High Pass Magnitude", "[wahfilter]")
     filter.setResonance(Q);
     filter.setFilterType(HPF);
     filter.prepare(SAMPLE_RATE);
+
+    /* Call process once so coefficients are updated */
+    filter.process(0.0f);
 
     SECTION("DC is fully blocked")
     {
