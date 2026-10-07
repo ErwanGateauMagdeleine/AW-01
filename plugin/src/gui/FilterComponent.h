@@ -32,9 +32,17 @@ public:
 
     void resized() override;
 
+#if defined(JUCE_UNIT_TESTS)
     void getKnobSize(int* width, int* height);
 
     void getFilterButtonStates(bool* lpfState, bool* bpfState, bool* hpfState);
+
+    void lpfButtonTriggerClick();
+
+    void hpfButtonTriggerClick();
+
+    void bpfButtonTriggerClick();
+#endif
 
     std::function<void(bool)> onChange;
 

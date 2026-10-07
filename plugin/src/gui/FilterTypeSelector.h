@@ -27,10 +27,16 @@ public:
 
     void resized() override;
 
+#if defined(JUCE_UNIT_TESTS)
     void getLpfButtonState(bool* lpfState);
     void getBpfButtonState(bool* bpfState);
     void getHpfButtonState(bool* hpfState);
 
+    void lpfButtonTriggerClick();
+    void hpfButtonTriggerClick();
+    void bpfButtonTriggerClick();
+
+#endif /* #if defined(JUCE_UNIT_TESTS) */
 private:
     static constexpr int numButtons = 3;
 

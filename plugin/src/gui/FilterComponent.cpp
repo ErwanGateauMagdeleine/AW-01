@@ -61,6 +61,7 @@ void FilterComponent::resized()
     screen.setBounds(screenBounds);
 }
 
+#if defined(JUCE_UNIT_TESTS)
 void FilterComponent::getKnobSize(int* width, int* height)
 {
     *width = knobWidth;
@@ -73,3 +74,19 @@ void FilterComponent::getFilterButtonStates(bool* lpfState, bool* bpfState, bool
     filterSelector.getBpfButtonState(bpfState);
     filterSelector.getHpfButtonState(hpfState);
 }
+
+void FilterComponent::lpfButtonTriggerClick()
+{
+    filterSelector.lpfButtonTriggerClick();
+}
+
+void FilterComponent::hpfButtonTriggerClick()
+{
+    filterSelector.hpfButtonTriggerClick();
+}
+
+void FilterComponent::bpfButtonTriggerClick()
+{
+    filterSelector.bpfButtonTriggerClick();
+}
+#endif /* JUCE_UNIT_TESTS */

@@ -99,7 +99,7 @@ public:
     {
         sampleRate = newSampleRate;
         omegaConst = static_cast<SampleType>(2.0) * std::numbers::pi_v<SampleType> / static_cast<SampleType>(sampleRate);
-        computeCoefficients();
+
         reset();
     }
 

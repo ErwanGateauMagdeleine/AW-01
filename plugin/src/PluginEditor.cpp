@@ -62,6 +62,7 @@ void AudioPluginAudioProcessorEditor::resized()
     filterComponent.setBounds(0, 105, 250, 400);
 }
 
+#if defined(JUCE_UNIT_TESTS)
 void AudioPluginAudioProcessorEditor::getKnobSizes(int* filterCompKnobWidth, int* filterCompKnobHeight, int* EnvelopeKnobWidth, int* EnvelopeKnobHeight)
 {
     envelopeComponent.getKnobSize(EnvelopeKnobWidth, EnvelopeKnobHeight);
@@ -72,3 +73,19 @@ void AudioPluginAudioProcessorEditor::getFilterButtonStates(bool* lpfState, bool
 {
     filterComponent.getFilterButtonStates(lpfState, bpfState, hpfState);
 }
+
+void AudioPluginAudioProcessorEditor::lpfButtonTriggerClick()
+{
+    filterComponent.lpfButtonTriggerClick();
+}
+
+void AudioPluginAudioProcessorEditor::hpfButtonTriggerClick()
+{
+    filterComponent.hpfButtonTriggerClick();
+}
+
+void AudioPluginAudioProcessorEditor::bpfButtonTriggerClick()
+{
+    filterComponent.bpfButtonTriggerClick();
+}
+#endif /* JUCE_UNIT_TESTS */

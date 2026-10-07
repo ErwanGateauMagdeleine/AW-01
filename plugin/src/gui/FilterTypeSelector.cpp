@@ -69,6 +69,8 @@ void FilterTypeSelector::resized()
     }
 }
 
+#if defined(JUCE_UNIT_TESTS)
+
 void FilterTypeSelector::getLpfButtonState(bool* lpfState)
 {
     *lpfState = buttons[LPF].getToggleState();
@@ -83,3 +85,23 @@ void FilterTypeSelector::getHpfButtonState(bool* hpfState)
 {
     *hpfState = buttons[HPF].getToggleState();
 }
+
+void FilterTypeSelector::lpfButtonTriggerClick()
+{
+    buttons[LPF].setToggleState(true, juce::dontSendNotification);
+    buttons[LPF].onClick();
+}
+
+void FilterTypeSelector::hpfButtonTriggerClick()
+{
+    buttons[HPF].setToggleState(true, juce::dontSendNotification);
+    buttons[HPF].onClick();
+}
+
+void FilterTypeSelector::bpfButtonTriggerClick()
+{
+    buttons[BPF].setToggleState(true, juce::dontSendNotification);
+    buttons[BPF].onClick();
+}
+
+#endif /* JUCE_UNIT_TESTS */

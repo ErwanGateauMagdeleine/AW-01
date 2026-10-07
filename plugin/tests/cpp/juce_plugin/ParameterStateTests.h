@@ -104,3 +104,34 @@ TEST_CASE("Filter Selection Buttons are mutually exclusive at startup", "[params
     unsigned state = (unsigned)lpfState + (unsigned)bpfState + (unsigned)hpfState;
     REQUIRE(state == 1);
 }
+
+TEST_CASE("Button state is mutually exclusive at runtime", "[params]")
+{
+    bool lpfState, bpfState, hpfState;
+
+    juce::ScopedJuceInitialiser_GUI juceInit;
+
+    AudioPluginAudioProcessor processor;
+    AudioPluginAudioProcessorEditor editor(processor);
+
+    editor.lpfButtonTriggerClick();
+    editor.getFilterButtonStates(&lpfState, &bpfState, &hpfState);
+
+    REQUIRE(lpfState == true);
+    REQUIRE(bpfState == false);
+    REQUIRE(hpfState == false);
+
+    editor.hpfButtonTriggerClick();
+    editor.getFilterButtonStates(&lpfState, &bpfState, &hpfState);
+
+    REQUIRE(hpfState == true);
+    REQUIRE(lpfState == false);
+    REQUIRE(bpfState == false);
+
+    editor.bpfButtonTriggerClick();
+    editor.getFilterButtonStates(&lpfState, &bpfState, &hpfState);
+
+    REQUIRE(bpfState == true);
+    REQUIRE(lpfState == false);
+    REQUIRE(hpfState == false);
+}
