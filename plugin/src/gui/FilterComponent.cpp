@@ -48,7 +48,6 @@ void FilterComponent::resized()
 {
     auto bounds = getLocalBounds();
     auto knobsAreaBounds = bounds.removeFromTop(100).reduced(15, 20).translated(0, 15);
-    auto buttonBounds = bounds.removeFromTop(100).reduced(10, 10);
     auto screenBounds = bounds.reduced(10, 10);
 
     knobWidth = knobsAreaBounds.getWidth() / 3;
