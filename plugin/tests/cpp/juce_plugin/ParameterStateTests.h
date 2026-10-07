@@ -135,3 +135,40 @@ TEST_CASE("Button state is mutually exclusive at runtime", "[params]")
     REQUIRE(lpfState == false);
     REQUIRE(hpfState == false);
 }
+
+TEST_CASE("Check the state of the filter selector is saved properly", "[state]")
+{
+    bool lpfState, bpfState, hpfState;
+
+    juce::ScopedJuceInitialiser_GUI juceInit;
+
+    AudioPluginAudioProcessor processor;
+    AudioPluginAudioProcessorEditor editor(processor);
+
+    editor.hpfButtonTriggerClick();
+    editor.getFilterButtonStates(&lpfState, &bpfState, &hpfState);
+
+    REQUIRE(hpfState == true);
+    REQUIRE(lpfState == false);
+    REQUIRE(bpfState == false);
+
+    juce::MemoryBlock state;
+    processor.getStateInformation(state);
+    REQUIRE(state.getSize() > 0);
+
+    editor.bpfButtonTriggerClick();
+    editor.getFilterButtonStates(&lpfState, &bpfState, &hpfState);
+
+    REQUIRE(bpfState == true);
+    REQUIRE(lpfState == false);
+    REQUIRE(hpfState == false);
+
+    /* Restore state */
+    processor.setStateInformation(state.getData(), static_cast<int>(state.getSize()));
+
+    /* Verify that the state is restored properly */
+    editor.getFilterButtonStates(&lpfState, &bpfState, &hpfState);
+    REQUIRE(hpfState == true);
+    REQUIRE(lpfState == false);
+    REQUIRE(bpfState == false);
+}
