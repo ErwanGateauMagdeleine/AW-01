@@ -44,8 +44,6 @@ public:
     void bpfButtonTriggerClick();
 #endif
 
-    std::function<void(bool)> onChange;
-
 private:
     CustomRotarySlider freqSlider, resSlider;
 

@@ -34,11 +34,6 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     /* Set size is the last thing to do. */
     setSize (250, 505);
 
-    filterComponent.onChange = [this](bool isPeak)
-    {
-        auto* param = processorRef.parameters.getParameter("Filter Type");
-        param->setValueNotifyingHost(isPeak ? 1.0f : 0.0f);
-    };
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
