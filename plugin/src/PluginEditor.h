@@ -34,21 +34,17 @@ public:
     void paint (juce::Graphics&) override;
     void resized() override;
 
+#if defined(JUCE_UNIT_TESTS)
     void getKnobSizes(int* filterCompKnobWidth, int* filterCompKnobHeight, int* EnvelopeKnobWidth, int* EnvelopeKnobHeight);
 
-    void getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect);
+    void getFilterButtonStates(bool* lpfState, bool* bpfState, bool* hpfState);
 
-    void getPluginRect(juce::Rectangle<float>* plugin);
+    void lpfButtonTriggerClick();
 
-    void getFilterCompKnobRect(juce::Rectangle<float>* plugin);
+    void hpfButtonTriggerClick();
 
-    juce::Rectangle<float> getFilterCompButtonRect(void);
-
-    void getFilterButtonStates(bool* peakState, bool* bandState);
-
-    void triggerPeakButtonClick();
-
-    void triggerBandButtonClick();
+    void bpfButtonTriggerClick();
+#endif /* JUCE_UNIT_TESTS */
 
 private:
     // This reference is provided as a quick way for your editor to

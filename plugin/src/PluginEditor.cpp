@@ -32,16 +32,8 @@ AudioPluginAudioProcessorEditor::AudioPluginAudioProcessorEditor (AudioPluginAud
     addAndMakeVisible(filterComponent);
 
     /* Set size is the last thing to do. */
-    setSize (250, 505);
+    setSize (250, 405);
 
-    filterComponent.onChange = [this](bool isPeak)
-    {
-        auto* param = processorRef.parameters.getParameter("Filter Type");
-        param->setValueNotifyingHost(isPeak ? 1.0f : 0.0f);
-    };
-
-    float val = processorRef.parameters.getRawParameterValue("Filter Type")->load();
-    filterComponent.setFilterType(val > 0.5f);
 }
 
 AudioPluginAudioProcessorEditor::~AudioPluginAudioProcessorEditor()
@@ -62,46 +54,33 @@ void AudioPluginAudioProcessorEditor::resized()
     envelopeComponent.setBounds(0, 0, 250, 100);
 
     /* Draw filter component */
-    filterComponent.setBounds(0, 105, 250, 400);
+    filterComponent.setBounds(0, 105, 250, 300);
 }
 
+#if defined(JUCE_UNIT_TESTS)
 void AudioPluginAudioProcessorEditor::getKnobSizes(int* filterCompKnobWidth, int* filterCompKnobHeight, int* EnvelopeKnobWidth, int* EnvelopeKnobHeight)
 {
     envelopeComponent.getKnobSize(EnvelopeKnobWidth, EnvelopeKnobHeight);
     filterComponent.getKnobSize(filterCompKnobWidth, filterCompKnobHeight);
 }
 
-void AudioPluginAudioProcessorEditor::getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect)
+void AudioPluginAudioProcessorEditor::getFilterButtonStates(bool* lpfState, bool* bpfState, bool* hpfState)
 {
-    filterComponent.getScreenRects(screenRect, gainRect, freqRect);
+    filterComponent.getFilterButtonStates(lpfState, bpfState, hpfState);
 }
 
-void AudioPluginAudioProcessorEditor::getPluginRect(juce::Rectangle<float>* plugin)
+void AudioPluginAudioProcessorEditor::lpfButtonTriggerClick()
 {
-    *plugin = getBounds().toFloat();
+    filterComponent.lpfButtonTriggerClick();
 }
 
-void AudioPluginAudioProcessorEditor::getFilterCompKnobRect(juce::Rectangle<float>* filterKnob)
+void AudioPluginAudioProcessorEditor::hpfButtonTriggerClick()
 {
-    filterComponent.getKnobRects(filterKnob);
+    filterComponent.hpfButtonTriggerClick();
 }
 
-juce::Rectangle<float> AudioPluginAudioProcessorEditor::getFilterCompButtonRect(void)
+void AudioPluginAudioProcessorEditor::bpfButtonTriggerClick()
 {
-    return filterComponent.getButtonRect();
+    filterComponent.bpfButtonTriggerClick();
 }
-
-void AudioPluginAudioProcessorEditor::getFilterButtonStates(bool* peakState, bool* bandState)
-{
-    filterComponent.getButtonsStates(peakState, bandState);
-}
-
-void AudioPluginAudioProcessorEditor::triggerPeakButtonClick()
-{
-    filterComponent.triggerPeakButtonClick();
-}
-
-void AudioPluginAudioProcessorEditor::triggerBandButtonClick()
-{
-    filterComponent.triggerBandButtonClick();
-}
+#endif /* JUCE_UNIT_TESTS */

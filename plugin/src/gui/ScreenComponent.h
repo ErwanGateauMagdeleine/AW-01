@@ -29,8 +29,6 @@ public:
 
     void resized() override;
 
-    void getScreenRects(juce::Rectangle<float>* screen, juce::Rectangle<float>* gain, juce::Rectangle<float>* freq);
-
 private:
     juce::Rectangle<float> gainLabelArea;
     juce::Rectangle<float> screenArea;

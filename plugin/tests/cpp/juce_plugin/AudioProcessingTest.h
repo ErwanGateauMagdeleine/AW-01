@@ -66,9 +66,9 @@ TEST_CASE("Matching outputs", "[process]")
         100.0f, /* envAttack */
         500.0f, /* envDecay */
         5.0f,   /* envAmount */
+        LPF,
         1000.0,  /* filtCutoff */
         0.7f,   /* filtRes */
-        0.5f    /* filtMorph */
     };
     autoWah.prepare(sampleRate);
     autoWah.updateSettings(settings);
@@ -103,7 +103,7 @@ TEST_CASE("Matching outputs", "[process]")
 
     for (int n = 0; n < numSamples; n++)
     {
-        REQUIRE(autoWahOutput[n] == Catch::Approx(PluginChannel0Output[n]).margin(0.0001));
-        REQUIRE(autoWahOutput[n] == Catch::Approx(PluginChannel1Output[n]).margin(0.0001));
+        REQUIRE(autoWahOutput[n] == Catch::Approx(PluginChannel0Output[n]).margin(0.000001));
+        REQUIRE(autoWahOutput[n] == Catch::Approx(PluginChannel1Output[n]).margin(0.000001));
     }
 }

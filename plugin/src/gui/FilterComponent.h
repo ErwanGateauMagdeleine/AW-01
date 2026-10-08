@@ -32,26 +32,20 @@ public:
 
     void resized() override;
 
+#if defined(JUCE_UNIT_TESTS)
     void getKnobSize(int* width, int* height);
 
-    void getScreenRects(juce::Rectangle<float>* screenRect, juce::Rectangle<float>* gainRect, juce::Rectangle<float>* freqRect);
+    void getFilterButtonStates(bool* lpfState, bool* bpfState, bool* hpfState);
 
-    void getKnobRects(juce::Rectangle<float>* filterKnob);
+    void lpfButtonTriggerClick();
 
-    juce::Rectangle<float> getButtonRect();
+    void hpfButtonTriggerClick();
 
-    std::function<void(bool)> onChange;
-
-    void setFilterType(bool isPeak);
-
-    void getButtonsStates(bool* peakState, bool* bandState);
-
-    void triggerPeakButtonClick();
-
-    void triggerBandButtonClick();
+    void bpfButtonTriggerClick();
+#endif
 
 private:
-    CustomRotarySlider freqSlider, resSlider, morphSlider, gainSlider;
+    CustomRotarySlider freqSlider, resSlider;
 
     FilterTypeSelector filterSelector;
 
@@ -59,8 +53,7 @@ private:
     using SliderAttachment = APVTS::SliderAttachment;
     using ButtonAttachment = APVTS::ButtonAttachment;
 
-    SliderAttachment freqAttachment, resAttachment, morphAttachment, gainAttachement;
-    ButtonAttachment typeAttachment;
+    SliderAttachment freqAttachment, resAttachment;
 
     ScreenComponent screen;
 

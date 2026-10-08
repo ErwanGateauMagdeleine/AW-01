@@ -39,11 +39,9 @@ AudioPluginAudioProcessor::AudioPluginAudioProcessor()
     parameters.addParameterListener("Envelope Follower Attack", this);
     parameters.addParameterListener("Envelope Follower Decay", this);
     parameters.addParameterListener("Envelope Follower Amount", this);
-    parameters.addParameterListener("Filter Center Frequency", this);
     parameters.addParameterListener("Filter Renonance", this);
-    parameters.addParameterListener("Filter Morph", this);
+    parameters.addParameterListener("Filter Center Frequency", this);
     parameters.addParameterListener("Filter Type", this);
-    parameters.addParameterListener("Filter Gain", this);
 }
 
 AudioPluginAudioProcessor::~AudioPluginAudioProcessor()
@@ -269,22 +267,10 @@ juce::AudioProcessorValueTreeState::ParameterLayout AudioPluginAudioProcessor::c
                                                            0.7f
                                                           ));
 
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Morph",
-                                                           "Filter Morph",
-                                                           juce::NormalisableRange<float>(0.0f, 1.0f, 0.1f, 1.0f),
-                                                           0.5f
-                                                          ));
-
     layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Type",
                                                            "Filter Type",
-                                                           juce::NormalisableRange<float>(0.0f, 1.0f),
+                                                           juce::NormalisableRange<float>(0.0f, 2.0f),
                                                            0.0f
-                                                          ));
-
-    layout.add(std::make_unique<juce::AudioParameterFloat>("Filter Gain",
-                                                           "Filter Gain",
-                                                           juce::NormalisableRange<float>(-8.0f, 8.0f, 0.1f),
-                                                           3.0f
                                                           ));
 
     return layout;
@@ -298,9 +284,7 @@ void AudioPluginAudioProcessor::updateAllWahSettings()
     wahSettings.envAmnt = parameters.getRawParameterValue("Envelope Follower Amount")->load();
     wahSettings.filtFreq = parameters.getRawParameterValue("Filter Center Frequency")->load();
     wahSettings.filtRes = parameters.getRawParameterValue("Filter Renonance")->load();
-    wahSettings.filtMorph = parameters.getRawParameterValue("Filter Morph")->load();
-    wahSettings.isPeak = (bool) parameters.getRawParameterValue("Filter Type")->load();
-    wahSettings.filtGain = parameters.getRawParameterValue("Filter Gain")->load();
+    wahSettings.filterType = static_cast<filters_t>(parameters.getRawParameterValue("Filter Type")->load());
 
     leftWah.updateSettings(wahSettings);
     rightWah.updateSettings(wahSettings);
@@ -335,20 +319,10 @@ void AudioPluginAudioProcessor::parameterChanged(const juce::String& parameterID
         leftWah.updateFiltRes(newValue);
         rightWah.updateFiltRes(newValue);
     }
-    else if (parameterID == "Filter Morph")
-    {
-        leftWah.updateFiltMorph(newValue);
-        rightWah.updateFiltMorph(newValue);
-    }
     if (parameterID == "Filter Type")
     {
-        leftWah.updateFilterType((bool)newValue);
-        rightWah.updateFilterType((bool)newValue);
-    }
-    if (parameterID == "Filter Gain")
-    {
-        leftWah.updateFilterGain(newValue);
-        rightWah.updateFilterGain(newValue);
+        leftWah.updateFilterType((filters_t)newValue);
+        rightWah.updateFilterType((filters_t)newValue);
     }
 }
 
